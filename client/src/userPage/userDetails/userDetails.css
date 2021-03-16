@@ -1,0 +1,56 @@
+
+.userp_details_wrapper{
+    display: none;
+}
+
+@media (min-width:1000px){
+    .userp_details_wrapper{
+        display: flex;
+        flex-direction: column;
+        width: fit-content;
+        margin-right: 60px;
+        align-items:flex-start;
+    }
+
+    .userp_details_img{
+        width: 200px;
+        height: 200px;
+        background-color: #ccc;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+        align-items: center;
+    }
+    .userp_details_img > p{
+        font-size: 20px;
+        font-weight: bold;
+        color:rgb(109, 109, 109);
+    }
+
+    .userp_details_info{
+        margin-top: 10px;
+        margin-left: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        height: 170px;
+        justify-content: space-between;
+    }
+
+    .userp_details_info > p:first-child{
+        font-size: 30px;
+        font-weight: bold;
+    }
+
+    .userp_details_btn{
+        margin-top: 15px;
+        width: 85px;
+        height: 35px;
+        border:none;
+        color:white;
+        font-size: 16px;
+        background-color: #20ebae;
+        
+    }
+}

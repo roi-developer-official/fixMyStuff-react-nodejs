@@ -1,0 +1,58 @@
+
+.filter_btn
+{
+    
+    position: absolute;
+    right:40px;
+    top:0px;
+    background-color: white;
+    border-radius: 5px;
+    width: 40px;
+    height: 40px;
+    border:none;
+    box-shadow: 1px 1px 1px 1px rgba(0,0,0,.1);
+    font-size: 16px;
+    background-image: url('../assets/filter.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.sort_btn
+{
+    position: absolute;
+    right:90px;
+    top:0px;
+    background-color: white;
+    color:#08a072;
+    padding: 10px;
+    border-radius: 5px;
+    width: 120px;
+    height: 40px;
+    border:none;
+    box-shadow: 1px 1px 1px 1px rgba(0,0,0,.1);
+    font-size: 16px;
+}
+@media(min-width:1000px)
+{
+    .filter_btn
+    {
+        display: block;
+        right: 160px;
+    }
+    .sort_btn
+    {
+        right: 210px;
+    }
+}
+
+@media(min-width:1268px)
+{
+    .filter_btn
+    {
+        right: 260px;
+    }
+    .sort_btn
+    {
+        right: 310px;
+    }
+}

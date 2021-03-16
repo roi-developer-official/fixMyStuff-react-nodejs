@@ -1,0 +1,10 @@
+.form_feedback_wrapper{
+    width:370px;
+    height: 55px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    margin-top: 4px;
+}
