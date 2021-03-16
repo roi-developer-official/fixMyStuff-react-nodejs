@@ -1,6 +1,6 @@
 
 
-export default function Textarea ({cols,rows,label,style}){
+export function Textarea ({cols,rows,label,style}){
 
     return <div className="form_textarea_wrapper">
         <label>{label}</label>

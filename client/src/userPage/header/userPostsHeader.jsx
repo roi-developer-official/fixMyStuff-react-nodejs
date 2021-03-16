@@ -1,5 +1,5 @@
-import Select from '../../Global_UI/select/select';
-import Button from '../../Global_UI/button/button';
+import {Button,Select} from '../../Global_UI';
+
 import './userPostsHeader.css';
 import { useHistory } from 'react-router';
 

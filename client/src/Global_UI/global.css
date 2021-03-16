@@ -1,0 +1,82 @@
+
+/* Steps */
+.steps
+{
+    position: relative;
+    height: 75px;
+    top:0px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 200px;
+
+}
+.connector
+{
+    width: 55px;
+    border-top: 2.4px dashed rgb(88, 88, 88);
+}
+.circle
+{
+    background-color: rgb(123, 123, 123);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 23px;
+    color:white;
+}
+
+.current
+{
+    background-color: #08c982;
+}
+
+
+/* Select */
+
+.select
+{
+    height: 30px;
+    width: 100%;
+    margin: auto;
+    border: 1px solid #ccc;
+}
+
+
+/* Logo */
+
+.logo_wrapper{
+    display: flex;
+}
+.logo
+{
+    color : #08a072;
+    font-size: 25px;
+    font-weight: 400;
+    font-family: 'Patua One' , sans-serif ;
+}
+.logo_icon{
+    margin-right: 3px;
+}
+@media (min-width:1000px){
+    .logo{
+        font-size: 30px;
+    }
+}
+
+
+/*  Form Feedback */
+.form_feedback_wrapper{
+    width:370px;
+    height: 55px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    margin-top: 4px;
+}

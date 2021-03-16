@@ -1,7 +1,7 @@
 
 .login_page_container{
     margin:auto;
-    margin-top: 80px;
+    margin-top: 100px;
     max-width: 400px;
 }
 .login_wrapper_page{
@@ -30,4 +30,10 @@
 
 .login_header > p {
     margin: 5px 0px;
+}
+
+@media(min-width:1000px){
+    .login_wrapper_page{
+        margin-top: 140px;
+    }
 }

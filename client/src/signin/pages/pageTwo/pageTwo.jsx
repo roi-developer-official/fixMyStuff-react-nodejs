@@ -1,7 +1,6 @@
 import {  useState } from 'react';
-import Button from '../../../Global_UI/button/button';
-import './pageTwo.css'
-import AddImagePage from '../../../Global_UI/addImagePage/addImage';
+import {Button,AddImage } from '../../../Global_UI';
+import './pageTwo.css';
 function PageTwo({moveBetweenPages,show}){
     let [input,setInput] = useState({
         name:'image',
@@ -29,7 +28,7 @@ function PageTwo({moveBetweenPages,show}){
 
       return (
             <div className={`signup_wrapper_page ${show? 'show' :''}`}>
-                <AddImagePage setInputValue={setImageValue}></AddImagePage>
+                <AddImage setInputValue={setImageValue}></AddImage>
                 <div className="form_buttons_wrapper">
                         {buttons.map((btn,i)=>{
                             return <Button

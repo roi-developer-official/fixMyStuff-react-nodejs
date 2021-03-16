@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 
-function Input({
+export function Input({
     label, 
     type, 
     validate, 
@@ -31,4 +31,3 @@ function Input({
     )
 }
 
-export default Input;

@@ -1,5 +1,5 @@
-import './select.css'
-function Select({options,label,onChange,error,validate,onBlur}){
+import './global.css'
+export function Select({options,label,onChange,error,validate,onBlur}){
 
     return (
         <>
@@ -17,5 +17,3 @@ function Select({options,label,onChange,error,validate,onBlur}){
     </>
     )
 }
-
-export default Select;

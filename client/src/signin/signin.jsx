@@ -1,5 +1,5 @@
-import React, { Fragment } from 'react';
-import Steps from '../Global_UI/steps/steps';
+import React from 'react';
+import {Steps,FormFeedback} from '../Global_UI';
 import PageOne from './pages/pageOne/pageOne';
 import './signin.css'
 import PageTwo from './pages/pageTwo/pageTwo';
@@ -9,8 +9,6 @@ import {connect} from 'react-redux';
 import {signIn} from '../store/actions/actionsCreators/auth.actionCreator';
 import * as actions from '../store/actions/auth.actions';
 import { AuthContext } from '../context/authContext';
-import FormFeedback from '../Global_UI/formFeedback/formFeedback';
-import Logo from '../Global_UI/logo/logo';
 class Signin extends React.Component{
 
     static contextType = AuthContext;

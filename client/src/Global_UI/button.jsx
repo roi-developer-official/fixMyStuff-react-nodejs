@@ -1,5 +1,5 @@
 
-function Button({style,onClick,label,className}){
+export function Button({style,onClick,label,className}){
     
         return <button 
         className={className}
@@ -7,5 +7,3 @@ function Button({style,onClick,label,className}){
         onClick={()=>onClick(label)}
         type="button">{label}</button> 
 }
-
-export default  Button;

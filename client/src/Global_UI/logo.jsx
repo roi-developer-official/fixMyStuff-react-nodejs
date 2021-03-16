@@ -1,6 +1,6 @@
-import './logo.css'
-import logo from '../../assets/logo.svg'
-function Logo(){
+import './global.css'
+import logo from '../assets/logo.svg'
+export function Logo(){
 
     return (
         <div className='logo_wrapper'>
@@ -9,5 +9,3 @@ function Logo(){
         </div>
     )
 }
-
-export default Logo;

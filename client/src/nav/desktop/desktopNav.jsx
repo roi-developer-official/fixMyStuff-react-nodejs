@@ -1,7 +1,6 @@
 
-import Logo from '../../Global_UI/logo/logo';
+import {Logo,Button} from '../../Global_UI';
 import searchIcon from '../../assets/search.png';
-import Button from '../../Global_UI/button/button';
 import RenderCustomNavItem from '../util/customRender';
 import { useHistory } from 'react-router';
 import {NavLink} from 'react-router-dom';

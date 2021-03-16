@@ -1,6 +1,6 @@
 
-import './formFeedback.css'
-function FormFeedback({error, message}){
+import './global.css'
+export function FormFeedback({error, message}){
 
     let style =  {
         backgroundColor: error? ' rgba(255, 0, 21, 0.61)' : 'rgba(68, 196, 68, 0.671)',
@@ -15,5 +15,3 @@ function FormFeedback({error, message}){
     );
 
 }
-
-export default FormFeedback;

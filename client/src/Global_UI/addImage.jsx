@@ -1,7 +1,6 @@
 import { useRef, useState } from "react"
-import './addImagePage.css'
 
-export default function AddImage({setInputValue}){
+ export function AddImage({setInputValue}){
     const [dragOver,setDraggedOver] = useState(false);
     const imagePreviewRef = useRef();
     const inputRef = useRef();
@@ -91,6 +90,5 @@ export default function AddImage({setInputValue}){
     </div>
     </div>
     )
-
-
 }
+

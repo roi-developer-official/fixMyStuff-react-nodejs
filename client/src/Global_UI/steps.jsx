@@ -1,6 +1,6 @@
-import './steps.css';
+import './global.css';
 import React from 'react';
-function Steps({currnetStep,steps}){
+export function Steps({currnetStep,steps}){
 
     return (
         <div className='steps' style={{maxWidth: (steps.length * 110) + 'px'}}>
@@ -17,4 +17,3 @@ function Steps({currnetStep,steps}){
 
 }
 
-export default Steps;

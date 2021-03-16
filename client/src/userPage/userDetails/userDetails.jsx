@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { useHistory } from "react-router";
 import {AuthContext} from '../../context/authContext';
-import Button from '../../Global_UI/button/button';
+import {Button} from '../../Global_UI/';
 import './userDetails.css'
 function UserDetails(){
 

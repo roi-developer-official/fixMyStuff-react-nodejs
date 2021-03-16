@@ -1,12 +1,9 @@
 import { useContext, useEffect, useState } from 'react';
 import validation from '../validations/Validations';
-import Input from '../Global_UI/input/input';
-import Button from '../Global_UI/button/button';
+import {Input,Button,Logo,FormFeedback} from '../Global_UI';
 import * as actions from '../store/actions/auth.actions';
 import {login} from '../store/actions/actionsCreators/auth.actionCreator';
-import FormFeedback from '../Global_UI/formFeedback/formFeedback';
 import './login.css';
-import Logo from '../Global_UI/logo/logo';
 import { NavLink, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { AuthContext } from '../context/authContext';

@@ -1,7 +1,7 @@
 
 import {NavLink, useHistory} from 'react-router-dom';
 import RenderCustomNavItem from '../util/customRender';
-import Button from '../../Global_UI/button/button';
+import {Button} from '../../Global_UI';
 function MobileNav({navItems,hideAndShowAuthDialog, isAuth}){
     const history = useHistory();
     return (
