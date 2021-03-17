@@ -1,61 +1,29 @@
 const { validationResult } = require('express-validator');
 const User = require('../models/user');
 const Password = require('../models/password');
-const Profession = require('../models/peofession');
+const Profession = require('../models/profession');
 const Role = require('../models/role');
 const ProfessionName = require('../models/profession_name');
 const Experience = require('../models/experience');
 const sequelize = require('../util/database');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-
+const getToken = require('../util/token').getToken;
+const {throwError,validateInputs} = require('../util/throwError');
 require('dotenv').config();
 
-const GENERIC_ERROR = 'something went wrong!';
-const USER_CREATED = 'user created succesfully!';
 const USER_ALREADY_EXSISTS = 'user with that email is already exsits';
 const LOGIN_FAIL = 'email or password invalid';
-
 const TOKEN_EXPIRY = 3600000;
-function validateInput(errors){
-
-    if(!errors.isEmpty()){
-        let message = '';
-        for(let i of errors.array()){
-            message += i.param + ':' + i.msg + ', '
-        }
-        throw message;
-    }
-}
-
-function returnToken(email, createdAt,updatedAt,image){
-
-    if(!email || !createdAt)
-        throw new Error('returnToken not implemented currect')
-
-    const token =  jwt.sign({
-        email:email, 
-        createdAt:createdAt,
-        updatedAt: updatedAt,
-        image: image
-    }, process.env.TOKEN_SECRET,{
-        expiresIn: '1h',
-        algorithm: 'HS256'
-    });
-
-    return token;
-}
-
-function throwError(message,code,next){
-    const error = new Error();
-    error.code = code;
-    error.message = message;
-    return next(error);
-}
 
 
 module.exports.signUp = async (req,res,next)=>{
-    validateInput(validationResult(req));
+    
+    if(validateInputs(validationResult(req)))
+    {
+      return throwError('invalid input',400,next);
+    }
+
     let isEmailExsists = await User.findOne({
         where: {
            email: req.body.email
@@ -135,7 +103,7 @@ module.exports.signUp = async (req,res,next)=>{
             expiresIn: TOKEN_EXPIRY
     };
 
-    const token = returnToken(email,createdAt,updatedAt,image);
+    const token = getToken(email,createdAt,updatedAt,image);
     res.cookie('connect', token,{
         httpOnly: true,
         sameSite: true,
@@ -147,9 +115,12 @@ module.exports.signUp = async (req,res,next)=>{
 
 module.exports.login = async(req,res,next)=>{
 
-    validateInput(validationResult(req));
-    const {email, password} = req.body;
+    if(validateInputs(validationResult(req)))
+    {
+      return throwError('invalid input',400,next);
+    }
 
+    const {email, password} = req.body;
 
     const user = await User.findOne({
         where: {
@@ -182,7 +153,7 @@ module.exports.login = async(req,res,next)=>{
             expiresIn: TOKEN_EXPIRY
         }
 
-        const token = returnToken(email,createdAt,updatedAt,image);
+        const token = getToken(email,createdAt,updatedAt,image);
         res.cookie('connect', token,{
             httpOnly: true,
             sameSite: true,
@@ -194,7 +165,6 @@ module.exports.login = async(req,res,next)=>{
         throwError(LOGIN_FAIL, 401,next)
     }
 }
-
 
 module.exports.refreshPage = async (req,res,next)=>{
 
@@ -223,7 +193,6 @@ module.exports.refreshPage = async (req,res,next)=>{
     res.status(200).send('token expired');
 
 }
-
 
 module.exports.logout = (req,res,next)=>{
     res.clearCookie('connect');

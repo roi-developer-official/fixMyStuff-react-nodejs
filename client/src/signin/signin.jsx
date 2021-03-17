@@ -6,8 +6,8 @@ import PageTwo from './pages/pageTwo/pageTwo';
 import PageThree from './pages/pageThree/pageThree';
 import PageFour from './pages/pageFour/pageFour';
 import {connect} from 'react-redux';
-import {signIn} from '../store/actions/actionsCreators/auth.actionCreator';
-import * as actions from '../store/actions/auth.actions';
+import {signIn} from '../store/actions/actionsCreators/state.actionCreator';
+import * as actions from '../store/actions/state.actions';
 import { AuthContext } from '../context/authContext';
 class Signin extends React.Component{
 

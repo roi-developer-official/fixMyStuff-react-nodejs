@@ -1,8 +1,10 @@
 import {useState} from 'react'
 import {Input, Button, Textarea, Logo} from '../../../Global_UI';
-
+import updatedInputs from '../../../util/useInputs';
+import validation from '../../../validations/Validations';
+import {useHistory} from 'react-router-dom'
 export default function PageOne({show,changePage}){
-    const [input,setInpust] = useState(
+    const [inputs,setInputs] = useState([
         {
             label: 'Title', 
             type: 'text',
@@ -13,14 +15,14 @@ export default function PageOne({show,changePage}){
                 required:true
             },
             error:'',
-        }
-    );
-    const [numberInput,setNumberInput] = useState(
+        },
         {
             label: 'Max', 
             type: 'number',
-            name: 'from',
+            name: 'maxPayment',
+            validate: false,
             value:'',
+            min: 0,
             error:'',
             style:{
                 width:'32%',
@@ -28,22 +30,24 @@ export default function PageOne({show,changePage}){
                 paddingLeft:'5px',
                 marginLeft:'5px',
                 marginRight: 'auto'
-            }
-        });
-    const [desInput,setDesInput] = useState(
-        {
-            label: 'Description', 
-            name: 'description',
-            cols:30,
-            rows:5,
-            value:'',
-            validate:true,
-            validations:{
-                required:true
             },
+            validations:{},
             error:'',
-        }
-    );
+        },
+        {
+                label: 'Description', 
+                name: 'description',
+                cols:30,
+                rows:5,
+                value:'',
+                validate:true,
+                validations:{
+                    required:true
+                },
+                error:'',
+         }
+    ]);
+
     const Buttons = [
         {
             label: 'Cancel',            
@@ -58,34 +62,96 @@ export default function PageOne({show,changePage}){
             }
         }
     ];
+    const history = useHistory();
+    function onInputChange(e,name){
+        updatedInputs(inputs,setInputs, name, e);
+    
+    }
+
+    function validateInputOnBlur(name){
+        let index = inputs.findIndex(input=>input.name === name);
+        let errorMsg = validation(inputs[index].validations,inputs[index].value);
+        if(errorMsg){
+           
+            let updatedInputs = inputs.slice();
+            updatedInputs[index].error = errorMsg;
+            setInputs(updatedInputs)
+        } 
+    }
+
+    function onButtonClicked(label){
+        switch(label){
+            case 'Cancel':
+                history.push('/My-page');
+            break;
+            case 'Next':
+                validateInputsOnPageSubmmited(label)
+                break;
+        }
+    }
+
+    function validateInputsOnPageSubmmited(label){
+        let isValidPage = true;
+        let updatedInputs = inputs.slice();
+        for(let input of updatedInputs){
+            let errorMsg = validation(input.validations, input.value);
+            if(errorMsg){
+                isValidPage = false;
+                input.error = errorMsg;
+            }
+        }
+        if(isValidPage)
+            changePage(label,inputs);
+        else{
+            setInputs(updatedInputs);
+        }
+    }
+
+
 
     return (
         <div className={`add_post_page ${show ? 'show' : ''}`}>
             <div className="logo_header">
                     <Logo></Logo>
             </div>
-            <div key={input.label} className="form_input_wrapper">
+            <div key={inputs[0].label} className="form_input_wrapper">
                 <Input
-                        label={input.label}
-                        type={input.type}></Input>
+                        label={inputs[0].label}
+                        onChange={onInputChange}
+                        onBlur={validateInputOnBlur}
+                        name={inputs[0].name}
+                        error={inputs[0].error}
+                        validate={inputs[0].validate}
+                        type={inputs[0].type}></Input>
             </div>
             <div className="form_input_wrapper">
                 <label>Peek the price you are willing to pay:</label>
             </div>
             <div className="form_number_input_wrapper">
             <Input 
-            label={numberInput.label} 
-            type={numberInput.type} 
-            style={numberInput.style}></Input>
+            name={inputs[1].name}
+            label={inputs[1].label} 
+            min={inputs[1].min}
+            type={inputs[1].type} 
+            onChange={onInputChange}
+            onBlur={()=>{}}
+            validate={inputs[1].validate}
+            style={inputs[1].style}></Input>
             </div>
-            <Textarea label={desInput.label} 
-            cols={desInput.cols}
-            rows={desInput.rows}></Textarea>
+            <Textarea 
+            label={inputs[2].label} 
+            cols={inputs[2].cols}
+            onBlur={validateInputOnBlur}
+            onchange={onInputChange}
+            name={inputs[2].name}
+            validate={inputs[2].validate}
+            error={inputs[2].error}
+            rows={inputs[2].rows}></Textarea>
             <div className="form_buttons_wrapper">
                 {Buttons.map(btn=>{
                     return <Button 
                     label={btn.label} 
-                    onClick={changePage} 
+                    onClick={onButtonClicked} 
                     style={btn.style}
                     />
                 })}

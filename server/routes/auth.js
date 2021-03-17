@@ -4,19 +4,19 @@ const authController = require('../controllers/auth');
 const { body } = require('express-validator');
 
 router.post('/signup', [
-    body('firstName').escape().trim().isString().notEmpty(),
-    body('lastName').escape().isString().trim().notEmpty(),
-    body('city').escape().trim().isString().notEmpty(),
-    body('image').trim().escape(),
-    body('email').escape().trim().isEmail().normalizeEmail().notEmpty(),
-    body('role').isInt().notEmpty(),
-    body('password').escape().isString().trim().notEmpty().isLength({min:8, max:255}),
-    body('profession').escape().isString().trim().optional()
+    body('firstName').notEmpty().isString().trim().escape(),
+    body('lastName').notEmpty().isString().trim().escape(),
+    body('city').notEmpty().isString().trim().escape(),
+    body('image').optional().trim().escape(),
+    body('email').notEmpty().isEmail().normalizeEmail().trim().escape(),
+    body('role').notEmpty().isInt().escape(),
+    body('password').notEmpty().isString().isLength({min:8, max:255}).trim().escape(),
+    body('profession').optional().isString().trim().escape()
 ],authController.signUp);
 
 router.post('/login',[
-    body('email').escape().isString().trim().normalizeEmail().notEmpty(),
-    body('password').escape().isString().trim().notEmpty().isLength({min:8})
+    body('email').notEmpty().isString().isEmail().normalizeEmail().trim().escape(),
+    body('password').notEmpty().isString().isLength({min:8}).trim().escape()
 ], authController.login);
 
 router.get('/refresh', authController.refreshPage);

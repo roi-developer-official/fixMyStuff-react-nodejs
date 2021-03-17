@@ -3,6 +3,7 @@ import { useState } from 'react';
 import './pageThree.css';
 import {Input,Button, Select} from '../../../Global_UI';
 import validation from '../../../validations/Validations';
+import updateInputs from '../../../util/useInputs';
 
 function PageThree({moveBetweenPages,show}){
 
@@ -112,12 +113,9 @@ function PageThree({moveBetweenPages,show}){
     }
 
     function onSelectChange(e,name){
-        let updatedSelect = selectInputs.slice();
-        let index = selectInputs.findIndex(sel=>sel.name === name);
-        updatedSelect[index].value = e.target.value;
-        updatedSelect[index].error = '';
-        setSelectInputs(updatedSelect);
+        updateInputs(selectInputs, setSelectInputs, name, e);
     }
+    
 
     return (
         <div className={`signup_wrapper_page ${show? 'show' :''}`}>
@@ -129,10 +127,11 @@ function PageThree({moveBetweenPages,show}){
                         key={i}
                         label={input.label} 
                         name={input.name} 
-                        onChange={(e)=>onInputChange(e)}
+                        onChange={onInputChange}
                         type={input.type}
                         value={input.value}
                         validate={input.validate}
+                        onBlur={()=>{}}
                         error={input.error}
                     ></Input>
                 })}
@@ -145,7 +144,7 @@ function PageThree({moveBetweenPages,show}){
                     label={input.label} 
                     error={input.error}
                     validate={input.validate}
-                    onBlur={(e)=>validateInputs(e,input.name)}
+                    onBlur={validateInputs}
                     options={input.options}
                     error={input.error}
                     onChange={(e)=>onSelectChange(e,input.name)}

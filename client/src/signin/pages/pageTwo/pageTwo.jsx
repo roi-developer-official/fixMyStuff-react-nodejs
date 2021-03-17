@@ -26,6 +26,7 @@ function PageTwo({moveBetweenPages,show}){
         setInput({...input,value});
     }
 
+    
       return (
             <div className={`signup_wrapper_page ${show? 'show' :''}`}>
                 <AddImage setInputValue={setImageValue}></AddImage>

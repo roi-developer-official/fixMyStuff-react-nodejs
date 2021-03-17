@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const sequelize = require('./util/database');
 const authRoute = require('./routes/auth');
+const userRoute = require('./routes/user');
 const path = require('path');
 const {multer} = require('./util/storage');
 const cookieParser = require('cookie-parser');
@@ -26,17 +27,13 @@ const csurfProtection = csurf({
     }
 });
 
-app.use(csurfProtection);
+// app.use(csurfProtection);
+
 
 app.get('/initv', (req,res,next)=>{
     res.json({csrfToken: req.csrfToken()}); 
 });
 
-
-app.all('/api', csurfProtection, (req,res,next)=>
-{
-    next();
-});
 
 app.use((req,res,next)=>{
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
@@ -47,6 +44,7 @@ app.use((req,res,next)=>{
 app.use('/public',express.static(path.join(__dirname, '/public')));
 app.use(multer);
 
+app.use('/api/user', userRoute);
 app.use('/api/auth',authRoute);
 
 app.use((error,req,res,next)=>{

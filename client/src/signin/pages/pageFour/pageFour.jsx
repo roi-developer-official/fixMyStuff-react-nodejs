@@ -68,11 +68,11 @@ function PageFour({moveBetweenPages,show}){
         setInputs(updatedInputs);
     }
 
-    function validateOnBlur(e,name){
+    function validateOnBlur(name){
         let index = inputs.findIndex(input=>input.name === name);
         if(name === 'confirm password'){
             let password = inputs.find(input=>input.name === 'password');
-            let errorMsg = validation(inputs[index].validations,e.target.value,password.value);
+            let errorMsg = validation(inputs[index].validations,inputs[index].value,password.value);
             if(errorMsg){
                 let updatedInputs = inputs.slice();
                 updatedInputs[index].error = errorMsg;
@@ -80,7 +80,7 @@ function PageFour({moveBetweenPages,show}){
             }
         }
         else {
-            let errorMsg = validation(inputs[index].validations,e.target.value);
+            let errorMsg = validation(inputs[index].validations,inputs[index].value);
             if(errorMsg){
                 let updatedInputs = inputs.slice();
                 updatedInputs[index].error = errorMsg;
@@ -126,8 +126,8 @@ function PageFour({moveBetweenPages,show}){
                         <Input 
                         label={input.label} 
                         name={input.name} 
-                        onChange={(e)=>onInputChange(e,input.name)}
-                        onBlur={(e)=>validateOnBlur(e,input.name)}
+                        onChange={onInputChange}
+                        onBlur={validateOnBlur}
                         error={input.error}
                         type={input.type}
                         value={input.value}

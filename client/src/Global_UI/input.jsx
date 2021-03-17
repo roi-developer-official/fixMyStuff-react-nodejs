@@ -11,18 +11,21 @@ export function Input({
     error,
     accept,
     style,
-    ref
+    ref,
+    min
 }){
+
 
     return (
         <Fragment>
             <label>{label}</label>
             <input
+            min={min}
             ref={ref} 
             type={type} 
             name={name} 
-            onChange={onChange} 
-            onBlur={onBlur}
+            onChange={(e)=>onChange(e,name)} 
+            onBlur={()=>onBlur(name)}
             accept={accept}
             style={{...style}}
             value={value}/>

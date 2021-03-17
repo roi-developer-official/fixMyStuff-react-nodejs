@@ -1,12 +1,13 @@
 import { useContext, useEffect, useState } from 'react';
 import validation from '../validations/Validations';
 import {Input,Button,Logo,FormFeedback} from '../Global_UI';
-import * as actions from '../store/actions/auth.actions';
-import {login} from '../store/actions/actionsCreators/auth.actionCreator';
+import * as actions from '../store/actions/state.actions';
+import {login} from '../store/actions/actionsCreators/state.actionCreator';
 import './login.css';
 import { NavLink, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { AuthContext } from '../context/authContext';
+import updateInputs from '../util/useInputs';
 
 function LoginPage(props){
     const history = useHistory();
@@ -55,16 +56,12 @@ function LoginPage(props){
   
 
     function onInputChange(e,name){
-        let index = inputs.findIndex(input=>input.name === name);
-        let updatedInputs = inputs.slice();
-        updatedInputs[index].value = e.target.value;
-        updatedInputs[index].error = '';
-        setInputs(updatedInputs);
+        updateInputs(inputs,setInputs, name, e);
     }
 
-    function validateOnBlur(e,name){
+    function validateOnBlur(name){
         let index = inputs.findIndex(input=>input.name === name);
-        let errorMsg = validation(inputs[index].validations, e.target.value);
+        let errorMsg = validation(inputs[index].validations, inputs[index].value);
         if(errorMsg){
             let updatedInputs = inputs.slice();
             updatedInputs[index].error = errorMsg;
@@ -142,8 +139,8 @@ function LoginPage(props){
                     <Input label={input.label}
                     name={input.name}
                     error={input.error}
-                    onChange={(e)=>onInputChange(e,input.name)}
-                    onBlur={(e)=>validateOnBlur(e,input.name)}
+                    onChange={onInputChange}
+                    onBlur={validateOnBlur}
                     type={input.type}
                     value={input.value}
                     validate={input.validate}

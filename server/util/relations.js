@@ -1,6 +1,8 @@
+const Bid = require('../models/bid');
 const Experience = require('../models/experience');
 const Password = require('../models/password');
-const Profession = require('../models/peofession');
+const Post = require('../models/Post');
+const Profession = require('../models/profession');
 const ProfessionName = require('../models/profession_name');
 const Role = require('../models/role');
 const RoleName = require('../models/role_name');
@@ -8,6 +10,10 @@ const User = require('../models/user');
 
 
 (function setRelations(){
+    User.hasMany(Post);
+    Post.belongsTo(User);
+    User.hasMany(Bid);
+    Bid.belongsTo(User);
     User.hasMany(Role);
     Role.belongsTo(User);
     User.hasOne(Password);
@@ -17,3 +23,4 @@ const User = require('../models/user');
     Experience.hasOne(Profession);
     Profession.belongsTo(Experience);
 })();
+

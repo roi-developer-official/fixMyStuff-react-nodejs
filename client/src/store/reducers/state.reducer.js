@@ -1,4 +1,4 @@
-import * as actions from '../actions/auth.actions';
+import * as actions from '../actions/state.actions';
 
 const initialState = {
     error:null,
@@ -7,7 +7,7 @@ const initialState = {
     token:null
 };
 
-const authReducer = (state = initialState, action)=>{
+const stateReducer = (state = initialState, action)=>{
    
     switch(action.type){
         case actions.ACTION_START:
@@ -29,4 +29,4 @@ const authReducer = (state = initialState, action)=>{
     }
 };
 
-export default authReducer;
+export default stateReducer;

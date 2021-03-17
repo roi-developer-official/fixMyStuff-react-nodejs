@@ -3,6 +3,7 @@ import { useState } from 'react';
 import {Button,Input,Logo,Select} from '../../../Global_UI';
 import validation from '../../../validations/Validations';
 import {useHistory} from 'react-router-dom';
+import updateInputs from '../../../util/useInputs';
 
 const citiesString = ",Akko,Afula,Arad,Ashdod,Ashqelon,Bat Yam,Beersheba,Bet Sheʾan,Bet Sheʿarim,Bnei Brak,Caesarea,Dimona,Dor,Elat,En Gedi,Givʿatayim,H̱adera,Haifa,Herzliyya,H̱olon,Jerusalem,Karmiʾel,Kefar Sava,Lod,Meron,Nahariyya,Nazareth,Netanya,Petaẖ Tiqwa,Qiryat Shemona,Ramat Gan,Ramla,Reẖovot,Rishon LeẔiyyon,Sedom,Tel Aviv–Yafo,Tiberias,Ẕefat";
 function PageOne({moveBetweenPages,show,pageSubmmited}){
@@ -93,11 +94,7 @@ function PageOne({moveBetweenPages,show,pageSubmmited}){
     }
     
     function onInputChange(e, name){
-        let index = inputs.findIndex(input=>input.name === name);
-        let updatedInputs = inputs.slice();
-        updatedInputs[index].value = e.target.value;
-        updatedInputs[index].error = '';
-        setInputs(updatedInputs);
+        updateInputs(inputs,setInputs, name, e)
     }
 
     function onSelectChange(e){
@@ -112,10 +109,11 @@ function PageOne({moveBetweenPages,show,pageSubmmited}){
             setSelectInput(updatedSelectedInput)
         }
     }
+    
 
-    function validateInputOnBlur(e,name){
+    function validateInputOnBlur(name){
         let index = inputs.findIndex(input=>input.name === name);
-        let errorMsg = validation(inputs[index].validations,e.target.value);
+        let errorMsg = validation(inputs[index].validations,inputs[index].value);
         if(errorMsg){
             let updatedInputs = inputs.slice();
             updatedInputs[index].error = errorMsg;
@@ -136,8 +134,8 @@ function PageOne({moveBetweenPages,show,pageSubmmited}){
                 name={input.name} 
                 value={input.value}
                 error={input.error}
-                onChange={(e)=>onInputChange(e,input.name)}
-                onBlur={(e)=>validateInputOnBlur(e,input.name)}
+                onChange={onInputChange}
+                onBlur={validateInputOnBlur}
                 validate={input.validate}
                 ></Input>
             </div>

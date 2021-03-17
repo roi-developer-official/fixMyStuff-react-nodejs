@@ -1,5 +1,6 @@
-import * as actions from '../auth.actions';
+// import * as actions from '../state.actions';
 import {Axios} from '../../../util/axios';
+import {actionSuccess,actionFailed} from '../state.actions';
 
 export const signIn = (reqData,callBack)=>{
     return dispatch =>{
@@ -34,15 +35,15 @@ export const login = (reqData,callback)=>{
     }
 }
 
-const actionFailed = (error)=>{
-    return {
-        type: actions.ACTION_FAIL,
-        payload: error
-    }
-}
+// const actionFailed = (error)=>{
+//     return {
+//         type: actions.ACTION_FAIL,
+//         payload: error
+//     }
+// }
 
-const actionSuccess = () =>{
-    return {
-        type: actions.ACTION_SUCCESS
-    }
-}
+// const actionSuccess = () =>{
+//     return {
+//         type: actions.ACTION_SUCCESS
+//     }
+// }

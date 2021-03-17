@@ -1,3 +1,0 @@
-export const ACTION_START ='ACTION_START';
-export const ACTION_SUCCESS = 'ACTION_SUCCESS';
-export const ACTION_FAIL = 'ACTION_FAIL';
