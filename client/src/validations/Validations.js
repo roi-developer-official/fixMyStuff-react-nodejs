@@ -23,6 +23,11 @@ function validation(validationParams,input,compareString = null){
                 return 'this field cannot contain symbolic characters'
            }
         }
+        if(key === 'numeric'){
+            if(!(/^[0-9]*$/.test(input))){
+                return 'this field cannot contain characters'
+           }
+        }
         if(key === 'compareTo'){
             if(input !== compareString){
                 return "passwords do not match";

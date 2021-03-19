@@ -7,7 +7,7 @@ router.post('/signup', [
     body('firstName').notEmpty().isString().trim().escape(),
     body('lastName').notEmpty().isString().trim().escape(),
     body('city').notEmpty().isString().trim().escape(),
-    body('image').optional().trim().escape(),
+    body('image').optional(),
     body('email').notEmpty().isEmail().normalizeEmail().trim().escape(),
     body('role').notEmpty().isInt().escape(),
     body('password').notEmpty().isString().isLength({min:8, max:255}).trim().escape(),

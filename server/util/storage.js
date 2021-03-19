@@ -1,13 +1,37 @@
 const multer = require('multer');
 
+function makeid() {
+    var result = '';
+    var characters  = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for (var i = 0; i < 5; i++ ) {
+       result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+ }
+ 
+// const storage = multer.diskStorage({
+//     destination:(req,file,cb)=>{
+//             cb(null,'public/uploads');
+//     },
+//     filename:(req,file,cb)=>{
+//         cb(null, Date.now() + makeid() + file.originalname)
+//     }
+// });
+
+
 const storage = multer.diskStorage({
     destination:(req,file,cb)=>{
-        cb(null, 'public/uploads')
+        if(req.url === '/api/auth/signup')
+            cb(null,'public/uploads/users');
+        else if(req.url === '/api/user/create-post')
+            cb(null,'public/uploads/posts');
     },
     filename:(req,file,cb)=>{
-        cb(null, file.filename)
+        cb(null, Date.now() + makeid() + file.originalname)
     }
 });
+
 
 const fileFilter = (req,file,cb)=>{
     if(file.mimetype === 'image/png' || file.mimetype === 'image/jpeg' ||
@@ -18,4 +42,4 @@ const fileFilter = (req,file,cb)=>{
     }
 }
 
-module.exports.multer = multer({dest:'public/uploads', fileFilter: fileFilter}).single('image');
+module.exports.multer = multer({storage:storage, fileFilter: fileFilter}).single('image');

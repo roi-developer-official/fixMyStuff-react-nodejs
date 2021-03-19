@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import validation from '../validations/Validations';
 import {Input,Button,Logo,FormFeedback} from '../Global_UI';
 import * as actions from '../store/actions/state.actions';
-import {login} from '../store/actions/actionsCreators/state.actionCreator';
+import {login} from '../store/actions/actionsCreators/auth.actionCreator';
 import './login.css';
 import { NavLink, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -54,6 +54,11 @@ function LoginPage(props){
         }
     ];
   
+
+    useEffect(()=>{
+        props.resetState();
+    },[]);
+
 
     function onInputChange(e,name){
         updateInputs(inputs,setInputs, name, e);
@@ -127,7 +132,7 @@ function LoginPage(props){
 
     return (
         <div className='login_page_container'>
-        {returnCustomFeedback()}
+             {returnCustomFeedback()}
         <div className="login_wrapper_page">
             <div className="login_header">
             {props.loading && <div className='loader'></div>}
@@ -174,7 +179,8 @@ const mapStateToProps = (state)=>{
 const mapDispatchToProps = (dispath)=>{
     return {
         loginStart: ()=>dispath({type: actions.ACTION_START}),
-        login: (reqData, callback)=>dispath(login(reqData,callback))
+        login: (reqData, callback)=>dispath(login(reqData,callback)),
+        resetState: ()=>dispath({type: actions.RESET_STATE})
     }
 }
 

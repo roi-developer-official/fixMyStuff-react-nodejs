@@ -11,19 +11,21 @@
 
 .userp_header_select{
     width: 150px;
-    margin-top:30px;
+    margin-top:27px;
+    margin-left: 10px;
 }
 
 .userp_header_btn{
-    width: 130px;
+    width: 155px;
     height: 40px;
     border:none;
     color:white;
     background-color: #08a072;
     position: absolute;
-    right: 20px;
+    right:0;
     top:-30px;
     font-size: 16px;
     border-radius: 5px;
     cursor: pointer;
 }
+

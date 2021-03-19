@@ -8,11 +8,11 @@ const Post = sequelize.define('Post',
         type:DataTypes.STRING,
         allowNull:false
     },
-    manPayment:{
+    maxPayment:{
         type: DataTypes.INTEGER,
         allowNull:true,
         validate:{
-            isInt:true,
+            isNumeric:true,
             min:0
         }
     },

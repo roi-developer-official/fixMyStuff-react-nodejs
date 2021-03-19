@@ -40,10 +40,10 @@ function App(props) {
       <UnAuthRoute path='/Log-in'>
         <LoginPage></LoginPage>
       </UnAuthRoute>
-      <UnAuthRoute path='/Sign-in' history={props.history}>
-        <Signin></Signin>
+      <UnAuthRoute path='/Sign-in'>
+        <Signin history={props.history}></Signin>
       </UnAuthRoute>
-      <Route path='/Add-Post' component={AddPostPage}></Route>
+      <Route path='/Create-Post' component={AddPostPage}></Route>
       <Route path='/My-page' component={UserPage}></Route>
       <Redirect exact from ='/'  to='/Find-jobs'></Redirect>
       <Redirect from='*' to='/'></Redirect>

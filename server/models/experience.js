@@ -12,4 +12,11 @@ const Experience = sequalize.define('experience',{
     timestamps:false
 });
 
+Experience.addScope('findByName', (name)=>{
+    return {
+        where:{
+            name: name
+        }
+    }
+});
 module.exports = Experience;

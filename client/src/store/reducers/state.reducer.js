@@ -25,6 +25,11 @@ const stateReducer = (state = initialState, action)=>{
                 error: action.payload,
                 loading:false,
         }
+        case actions.RESET_STATE:
+            return {
+                error:null,
+                loading:false
+            }
         default: return state;
     }
 };

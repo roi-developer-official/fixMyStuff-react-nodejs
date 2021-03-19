@@ -7,4 +7,13 @@ const ProfessionName = sequalize.define('profession_name',{
     timestamps:false
 });
 
+
+ProfessionName.addScope('findByName',(name)=>{
+    return {
+        where: {
+                name : name
+            }
+    }
+})
+
 module.exports = ProfessionName;

@@ -18,10 +18,10 @@ export default function PageOne({show,changePage}){
         },
         {
             label: 'Max', 
-            type: 'number',
+            type: 'text',
             name: 'maxPayment',
-            validate: false,
-            value:'',
+            validate: true,
+            value:0,
             min: 0,
             error:'',
             style:{
@@ -31,7 +31,9 @@ export default function PageOne({show,changePage}){
                 marginLeft:'5px',
                 marginRight: 'auto'
             },
-            validations:{},
+            validations:{
+                numeric:true
+            },
             error:'',
         },
         {
@@ -64,15 +66,15 @@ export default function PageOne({show,changePage}){
     ];
     const history = useHistory();
     function onInputChange(e,name){
+
         updatedInputs(inputs,setInputs, name, e);
-    
     }
+
 
     function validateInputOnBlur(name){
         let index = inputs.findIndex(input=>input.name === name);
         let errorMsg = validation(inputs[index].validations,inputs[index].value);
         if(errorMsg){
-           
             let updatedInputs = inputs.slice();
             updatedInputs[index].error = errorMsg;
             setInputs(updatedInputs)
@@ -100,13 +102,16 @@ export default function PageOne({show,changePage}){
                 input.error = errorMsg;
             }
         }
-        if(isValidPage)
-            changePage(label,inputs);
+        if(isValidPage){
+            let output = inputs.slice();
+            output[1].value = output[1].value ? output[1].value : 0;
+    
+            changePage(label,output);
+        }
         else{
             setInputs(updatedInputs);
         }
     }
-
 
 
     return (
@@ -133,8 +138,9 @@ export default function PageOne({show,changePage}){
             label={inputs[1].label} 
             min={inputs[1].min}
             type={inputs[1].type} 
+            onBlur={validateInputOnBlur}
             onChange={onInputChange}
-            onBlur={()=>{}}
+            error={inputs[1].error}
             validate={inputs[1].validate}
             style={inputs[1].style}></Input>
             </div>

@@ -13,6 +13,7 @@ const validateInputs = function(errors,next){
         for(let i of errors.array()){
             message += i.param + ':' + i.msg + ', '
         }
+        console.log(message);
         return message;
     }
     return null;

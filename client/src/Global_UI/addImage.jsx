@@ -20,11 +20,17 @@ import { useRef, useState } from "react"
     function onFileAdded(e){
         e.preventDefault();
         e.stopPropagation();
-        if(e.type === 'change'){
-            setImageInput(e.target.files[0])
-        } else {
-            setImageInput(e.dataTransfer.files[0])
-        }
+
+        let file;
+        if(e.type === 'change')
+            file = e.target.files[0];
+        else 
+            file = e.dataTransfer.files[0];
+        
+        if(!file.type.startsWith('image'))
+            return;
+
+        setImageInput(file)
     }
 
     function onFileDeleted(){
@@ -44,11 +50,10 @@ import { useRef, useState } from "react"
                 setImage(file);
             }
             setInputValue(file);
+            setImagePreview(file)
         }
-        setImagePreview(file)
     }
 
-    
     function setImagePreview(file){
         let reader = new FileReader();
         reader.onload = (function(aImg){

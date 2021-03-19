@@ -5,18 +5,18 @@
     margin:auto;
     height: 630px;
     max-width: 450px;
-    margin-top: 50px;
+    margin-top: 60px;
     padding:0 20px
 }
 
 .add_post_page{
     position: absolute;
-    width: 90%;
+    width: 100%;
     height: fit-content;
+    left:0;
     margin: auto;
     background-color: white;
     padding:20px 40px;
-    top:80px;
     visibility: hidden;
 }
 
@@ -27,7 +27,7 @@
 
 @media(min-width:1000px){
     .add_post_page_wrapper{
-        margin-top: 100px;
+        margin-top: 70px;
         height: 500px;
     }
 }

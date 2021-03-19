@@ -6,15 +6,15 @@ import PageTwo from './pages/pageTwo/pageTwo';
 import PageThree from './pages/pageThree/pageThree';
 import PageFour from './pages/pageFour/pageFour';
 import {connect} from 'react-redux';
-import {signIn} from '../store/actions/actionsCreators/state.actionCreator';
+import {signIn} from '../store/actions/actionsCreators/auth.actionCreator';
 import * as actions from '../store/actions/state.actions';
 import { AuthContext } from '../context/authContext';
 class Signin extends React.Component{
 
     static contextType = AuthContext;
     state = {};
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state = {
             currentStep : 1, 
             inputsValues: new Map(),
@@ -24,9 +24,7 @@ class Signin extends React.Component{
     }
 
     componentDidMount(){
-        if(this.context.isAuth()){
-            this.props.history.push('/');
-        }
+        this.props.resetState();
     }
 
     moveBetweenPages(label,inputs){  
@@ -78,13 +76,13 @@ class Signin extends React.Component{
 
 
     signupSuccess(result){
-        this.context.setAuthState(result);
         this.setState({
             ...this.state,
             signupSuccess : true
         });
-
+        
         setTimeout(()=>{
+            this.context.setAuthState(result);
             this.props.history.push('/');
         },700)
     }
@@ -144,6 +142,7 @@ const mapDispatchToProps = (dispatch)=>{
     return{
         signupStart: ()=> dispatch({type: actions.ACTION_START}),
         signIn: (reqData,callback)=>dispatch(signIn(reqData,callback)),
+        resetState:()=>dispatch({type:actions.RESET_STATE})
     }
 }
 

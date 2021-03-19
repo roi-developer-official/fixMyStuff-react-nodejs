@@ -15,6 +15,7 @@ const Role = require('./models/role');
 const User = require('./models/user');
 const RoleName = require('./models/role_name');
 const Experience = require('./models/experience');
+const Password = require('./models/password');
 
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -29,8 +30,7 @@ const csurfProtection = csurf({
 
 // app.use(csurfProtection);
 
-
-app.get('/initv', (req,res,next)=>{
+app.get('/initv', (req,res)=>{
     res.json({csrfToken: req.csrfToken()}); 
 });
 
@@ -41,19 +41,21 @@ app.use((req,res,next)=>{
     next();
 });
 
-app.use('/public',express.static(path.join(__dirname, '/public')));
+app.use('/public/uploads',express.static(path.join(__dirname, 'public/uploads')));
+
+// app.use('/public',express.static(path.join(__dirname, '/public')));
 app.use(multer);
 
-app.use('/api/user', userRoute);
+app.use('/api/user',csurfProtection, userRoute);
 app.use('/api/auth',authRoute);
+
+
 
 app.use((error,req,res,next)=>{
     const status = error.code || 500;
     const message = error.message || 'something went wrong';
     res.status(status).json({error: {message: message , code: status}});
 });
-
-
 
 
 const PORT = process.env.PORT || 4200;
@@ -67,6 +69,9 @@ const PORT = process.env.PORT || 4200;
                 console.log('sucess_connection_server');
             }
         });
+
+
+    
 
         // await sequelize.sync({force:true}) // create the table dropping it first
         // await ProfessionName.bulkCreate([
@@ -94,6 +99,27 @@ const PORT = process.env.PORT || 4200;
         //     {name: 'offer', roleId: 1},
         //     {name: 'bidder', roleId: 2},
         // ]);
+
+
+        // await User.create({
+        //     firstName: 'Bob', lastName: 'alice', email: 'test@test.com',city: 'TLV'
+        // });
+        // const user = await User.scope({method:['getByEmail','test@test.com']}).findOne({attributes:['id', 'email']});
+        // console.log(user.email); // this will return without the need of toJSON()
+
+        // two way of creating password to the user:
+        // const password = await Password.create({value:'sfdsfdsffs'});
+        // await password.setUser(user); // this will work
+        // await user.createPassword({value:'bla bla bla'}); //this will work
+
+        // await user.setPassword(password); // this will not work!!!
+        
+        // const pswd = (await user.getPassword()).toJSON();
+        // console.log(pswd.value);
+
+        //unassociate the password and the user
+        // await user.setPassword(null);
+
 
         console.log('sucess_connection_database');
    

@@ -45,15 +45,15 @@ function Avatar (){
     if(isAuth && showAvatar)
         return (
         <>  
-        <div className={`avatar_container ${history.location.pathname.toLowerCase() === '/my-page' ? 'my_page_avatar' : ''}`}>
-            <div className="avatar_wrapper">
+        <div className={`avatar_wrapper ${history.location.pathname.toLowerCase() === '/my-page' ? 'my_page_avatar' : ''}`}>
+         {showMenu && <AvatarMenu></AvatarMenu> }
+
             <div onClick={(e)=>toggleAvatarMenu(e)} className="avatar_menu_wrapper">
                 <p>&#9660;</p>
                 <p className="avatar_name">{user.firstName}</p>
             </div>
             {returnImageIfExsists()}
-        </div>
-            {showMenu && <AvatarMenu></AvatarMenu> }
+   
         </div>
         </>
         );

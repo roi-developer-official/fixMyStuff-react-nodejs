@@ -15,9 +15,9 @@ export default function UserPostsHeader(){
             </div>
             <div className="userp_header_button">
             <Button
-            label={'Add a post'}
+            label={'Create new post'}
             className={'userp_header_btn'}
-            onClick={()=>history.push('/Add-post')}
+            onClick={()=>history.push('/Create-post')}
             >
             </Button>
             </div>

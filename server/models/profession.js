@@ -14,4 +14,5 @@ const Profession = sequalize.define('profession',{
     timestamps:false
 });
 
+
 module.exports = Profession;

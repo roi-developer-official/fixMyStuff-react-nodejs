@@ -33,7 +33,15 @@ const User = sequelize.define('user',{
         type: DataTypes.STRING,
         allowNull:true
     }
+    
 });
 
+User.addScope('findByEmail',(email)=>{
+    return {
+        where:{
+            email : email
+        }
+    }
+});
 
 module.exports = User;

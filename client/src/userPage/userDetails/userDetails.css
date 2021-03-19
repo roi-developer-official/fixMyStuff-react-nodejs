@@ -21,6 +21,12 @@
         justify-content: center;
         margin-bottom: 20px;
         align-items: center;
+        overflow: hidden;
+    }
+
+    .userp_details_img > img{
+        width: 100%;
+        height: 100%;
     }
     .userp_details_img > p{
         font-size: 20px;

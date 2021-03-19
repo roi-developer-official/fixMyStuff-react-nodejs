@@ -8,7 +8,7 @@ import {actionSuccess,actionFailed} from '../state.actions';
 export const addPost = (reqData,callBack)=>{
     console.log(reqData);
     return dispatch =>{
-        Axios.post('user/addpost', reqData)
+        Axios.post('user/create-post', reqData)
         .then(res=>{
             dispatch(actionSuccess())
             callBack();

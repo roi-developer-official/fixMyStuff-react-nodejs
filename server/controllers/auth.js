@@ -10,6 +10,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const getToken = require('../util/token').getToken;
 const {throwError,validateInputs} = require('../util/throwError');
+const deleteFile = require('../util/deleteFile').deleteFile
 require('dotenv').config();
 
 const USER_ALREADY_EXSISTS = 'user with that email is already exsits';
@@ -21,28 +22,28 @@ module.exports.signUp = async (req,res,next)=>{
     
     if(validateInputs(validationResult(req)))
     {
-      return throwError('invalid input',400,next);
+        if(req.file){
+            deleteFile(req.file.path);
+        }
+        return throwError('invalid input',400,next);
     }
 
-    let isEmailExsists = await User.findOne({
-        where: {
-           email: req.body.email
-        }
-    });
+    const isEmailExsists = await User.scope({method:['findByEmail',req.body.email]}).findOne({attributes:['email']});
+
 
     if(isEmailExsists){
        return throwError(USER_ALREADY_EXSISTS, 401 , next);
     }
 
     const data = req.body;
-    if(req.file)
-        Object.defineProperty(data,'image',{
-            value: req.file.path
-    });
+    if(req.file){
+        data.image = req.file.path;
+    }
+ 
 
     let password = data.password;
     delete data['password'];
-    let roleId = data.role;
+    let roleId = Number.parseInt(data.role);
     delete data['role'];
     let professionName = data.profession;
     delete data['profession'];
@@ -52,35 +53,29 @@ module.exports.signUp = async (req,res,next)=>{
     let result;
     let professionId;
     let experienceId;
+
+    const hash = await bcrypt.hash(password, 12);
+
     try {
          result = await sequelize.transaction(async (t)=>{
                 let user = await User.create({...data},{transaction:t});
-                Password.build({value:password,userId: user.id},{transaction:t}).save();
+                await Password.create({value: hash, userId:user.id},{transaction : t});
                 await Role.create({ roleId:roleId ,userId:user.id },{transaction:t});
 
             if(roleId === 2){
-                professionId = await ProfessionName.findOne({
-                    where: {
-                        name : professionName
-                    },
-                    attributes: ['id']
-                });
 
-                experienceId = await Experience.findOne({
-                    where:{
-                        name: experienceName
-                    },
-                    attributes:['id']
-                });
-    
-                professionId = professionId.dataValues.id;
-                experienceId = experienceId.dataValues.id;
+                professionId = await ProfessionName.scope({method:['findByName',professionName]}).findOne({attributes: ['id'],transaction: t});
+                experienceId = await Experience.scope({method:['findByName',experienceName]}).findOne({attributes: ['id'],transaction:t});
+
+                professionId = professionId.id;
+                experienceId = experienceId.id;
 
                 await Profession.create({
                     userId: user.id, 
                     professionId: professionId,
                     experienceId: experienceId},{transaction:t});
                 }
+
 
                 return user;
         })
@@ -94,9 +89,9 @@ module.exports.signUp = async (req,res,next)=>{
     const user = {
         firstName: firstName,
         lastName : lastName,
+        email:email,
         image: image
     }
-
 
     let output = {
             user: user,
@@ -119,32 +114,23 @@ module.exports.login = async(req,res,next)=>{
     {
       return throwError('invalid input',400,next);
     }
-
+   
     const {email, password} = req.body;
-
-    const user = await User.findOne({
-        where: {
-            email: email
-        }
-    });
+    const user = (await User.scope({method:['findByEmail',email]}).findOne());
 
     if(!user){
         return throwError(LOGIN_FAIL, 401, next);
     }
 
-    const {id: userId, firstName, lastName,createdAt,image,updatedAt} = user.dataValues;
+    const hash = await (await user.getPassword()).toJSON();
+    const {firstName, lastName,createdAt,image,updatedAt} = user.toJSON();
 
-    const hash = await Password.findOne({
-        where:{
-         userId : userId
-        }
-    });
-
-    const match = await bcrypt.compare(password,hash.dataValues.value);
+    const match = await bcrypt.compare(password,hash.value);
     if(match){
         const user = {
             firstName : firstName,
             lastName : lastName,
+            email:email,
             image:image
         }
 
@@ -160,6 +146,7 @@ module.exports.login = async(req,res,next)=>{
             maxAge: TOKEN_EXPIRY,
             secure: process.env.NODE_ENV !== "development" ? true : false
         });
+       
         res.status(200).json(output);
     } else{
         throwError(LOGIN_FAIL, 401,next)
@@ -175,13 +162,8 @@ module.exports.refreshPage = async (req,res,next)=>{
     else {
         const decoded = jwt.verify(req.cookies.connect,process.env.TOKEN_SECRET);
         if(decoded){
-            let user = await User.findOne({
-                where:{
-                    email : decoded.email
-                },
-                attributes:['firstName' , 'lastName', 'image']
-            });
-            user = user.dataValues;
+            const user = await User.scope({method:['findByEmail',decoded.email]}).findOne({attributes:['firstName' , 'lastName', 'image','email']});
+
             const output ={
                 user: user,
                 expiresIn: decoded.exp
@@ -194,7 +176,9 @@ module.exports.refreshPage = async (req,res,next)=>{
 
 }
 
+
+
 module.exports.logout = (req,res,next)=>{
     res.clearCookie('connect');
-    res.send('loggedout')
+    res.sendStatus(200);
 }
