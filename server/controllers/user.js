@@ -1,20 +1,10 @@
 const sequelize = require('../util/database');
 const User = require('../models/user');
 const Post = require('../models/Post');
-const { validationResult } = require('express-validator');
-const {throwError,validateInputs} = require('../util/throwError');
+const {throwError} = require('../util/throwError');
 const deleteFile = require('../util/deleteFile').deleteFile;
 
-
 module.exports.createPost = async (req,res,next)=>{
-
-  if(validateInputs(validationResult(req)))
-    {
-      if(req.file){
-        deleteFile(req.file.path);
-      }
-      return throwError('Invalid input',400,next);
-    }
 
     const user = req.cookies.connect;
 

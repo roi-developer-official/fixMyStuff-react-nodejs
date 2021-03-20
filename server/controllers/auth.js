@@ -1,4 +1,3 @@
-const { validationResult } = require('express-validator');
 const User = require('../models/user');
 const Password = require('../models/password');
 const Profession = require('../models/profession');
@@ -9,29 +8,18 @@ const sequelize = require('../util/database');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const getToken = require('../util/token').getToken;
-const {throwError,validateInputs} = require('../util/throwError');
+const {throwError} = require('../util/throwError');
 const deleteFile = require('../util/deleteFile').deleteFile
 require('dotenv').config();
 
 const LOGIN_FAIL = 'Invalid email or password';
 const TOKEN_EXPIRY = 3600000;
 
-
 module.exports.signUp = async (req,res,next)=>{
-    
-    if(validateInputs(validationResult(req)))
-    {
-        if(req.file){
-            deleteFile(req.file.path);
-        }
-        return throwError('invalid input',400,next);
-    }
-
     const data = req.body;
     if(req.file){
         data.image = req.file.path;
     }
-
     let password = data.password;
     delete data['password'];
     let roleId = Number.parseInt(data.role);
@@ -44,7 +32,6 @@ module.exports.signUp = async (req,res,next)=>{
     let result;
     let professionId;
     let experienceId;
-
     const hash = await bcrypt.hash(password, 12);
 
     try {
@@ -65,8 +52,6 @@ module.exports.signUp = async (req,res,next)=>{
                     professionId: professionId,
                     experienceId: experienceId},{transaction:t});
                 }
-
-
                 return user;
         })
     } 
@@ -74,10 +59,9 @@ module.exports.signUp = async (req,res,next)=>{
         if(req.file){
             deleteFile(req.file.path);
         }
-         console.log(error);
+        console.log(error);
         return next(error);
     }
-
     const {firstName, lastName, email,image, createdAt,updatedAt}  = result.dataValues;
     const user = {
         firstName: firstName,
@@ -85,12 +69,10 @@ module.exports.signUp = async (req,res,next)=>{
         email:email,
         image: image
     }
-
     let output = {
             user: user,
             expiresIn: TOKEN_EXPIRY
     };
-
     const token = getToken(email,createdAt,updatedAt,image);
     res.cookie('connect', token,{
         httpOnly: true,
@@ -103,19 +85,9 @@ module.exports.signUp = async (req,res,next)=>{
 
 module.exports.login = async(req,res,next)=>{
 
-    if(validateInputs(validationResult(req)))
-    {
-      return throwError('invalid input',400,next);
-    }
-   
     const {email, password} = req.body;
 
-    const user = (await User.scope({method:['findByEmail',email]}).findOne());
-
-    if(!user){
-        return throwError(LOGIN_FAIL, 401, next);
-    }
-
+    const user = req.user;
     const hash = await (await user.getPassword()).toJSON();
     const {firstName, lastName,createdAt,image,updatedAt} = user.toJSON();
 
@@ -127,12 +99,11 @@ module.exports.login = async(req,res,next)=>{
             email:email,
             image:image
         }
-
         let output = {
             user: user,
             expiresIn: TOKEN_EXPIRY
         }
-
+        
         const token = getToken(email,createdAt,updatedAt,image);
         res.cookie('connect', token,{
             httpOnly: true,
@@ -144,6 +115,7 @@ module.exports.login = async(req,res,next)=>{
         res.status(200).json(output);
     } else{
         throwError(LOGIN_FAIL, 401,next)
+
     }
 }
 
@@ -167,10 +139,7 @@ module.exports.refreshPage = async (req,res,next)=>{
         }
     }
     res.status(200).send('token expired');
-
 }
-
-
 
 module.exports.logout = (req,res,next)=>{
     res.clearCookie('connect');

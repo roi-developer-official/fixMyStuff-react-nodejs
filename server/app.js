@@ -11,7 +11,6 @@ const csurf = require('csurf');
 const expressJwt = require('express-jwt');
 require('./util/relations');
 
-
 const ProfessionName = require('./models/profession_name');
 const Role = require('./models/role');
 const User = require('./models/user');
@@ -21,8 +20,6 @@ const Password = require('./models/password');
 
 app.use(bodyParser.json());
 app.use(cookieParser());
-
-
 
 const csurfProtection = csurf({
     cookie: {
@@ -56,18 +53,25 @@ app.use('/public/uploads',express.static(path.join(__dirname, 'public/uploads'))
 // app.use('/public',express.static(path.join(__dirname, '/public')));
 app.use(multer);
 
-
-
 app.use('/api/user', checkJwt, userRoute);
 app.use('/api/auth',authRoute);
 
 
 app.use((error,req,res,next)=>{
+
     console.log('error',error);
     const status = error.status ? error.status : error.code ? error.code  : 500;
     const message = error.message ? error.message : error.inner ? error.inner.message : 'something went wrong';
+    let reqError = {
+        error: {
+            message: message
+        }
+    }
+    if(error.invalidInputs && error.invalidInputs.length > 0){
+        reqError.error.invalidInputs = error.invalidInputs
+    }
 
-    res.status(status).json({error: {message: message , code: status}});
+    res.status(status).json(reqError);
 });
 
 
