@@ -13,8 +13,7 @@ const {throwError,validateInputs} = require('../util/throwError');
 const deleteFile = require('../util/deleteFile').deleteFile
 require('dotenv').config();
 
-const USER_ALREADY_EXSISTS = 'user with that email is already exsits';
-const LOGIN_FAIL = 'email or password invalid';
+const LOGIN_FAIL = 'Invalid email or password';
 const TOKEN_EXPIRY = 3600000;
 
 
@@ -28,18 +27,10 @@ module.exports.signUp = async (req,res,next)=>{
         return throwError('invalid input',400,next);
     }
 
-    const isEmailExsists = await User.scope({method:['findByEmail',req.body.email]}).findOne({attributes:['email']});
-
-
-    if(isEmailExsists){
-       return throwError(USER_ALREADY_EXSISTS, 401 , next);
-    }
-
     const data = req.body;
     if(req.file){
         data.image = req.file.path;
     }
- 
 
     let password = data.password;
     delete data['password'];
@@ -63,7 +54,6 @@ module.exports.signUp = async (req,res,next)=>{
                 await Role.create({ roleId:roleId ,userId:user.id },{transaction:t});
 
             if(roleId === 2){
-
                 professionId = await ProfessionName.scope({method:['findByName',professionName]}).findOne({attributes: ['id'],transaction: t});
                 experienceId = await Experience.scope({method:['findByName',experienceName]}).findOne({attributes: ['id'],transaction:t});
 
@@ -81,6 +71,9 @@ module.exports.signUp = async (req,res,next)=>{
         })
     } 
      catch (error) {
+        if(req.file){
+            deleteFile(req.file.path);
+        }
          console.log(error);
         return next(error);
     }
@@ -116,6 +109,7 @@ module.exports.login = async(req,res,next)=>{
     }
    
     const {email, password} = req.body;
+
     const user = (await User.scope({method:['findByEmail',email]}).findOne());
 
     if(!user){

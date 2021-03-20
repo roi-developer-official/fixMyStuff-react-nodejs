@@ -8,8 +8,10 @@ const path = require('path');
 const {multer} = require('./util/storage');
 const cookieParser = require('cookie-parser');
 const csurf = require('csurf');
-
+const expressJwt = require('express-jwt');
 require('./util/relations');
+
+
 const ProfessionName = require('./models/profession_name');
 const Role = require('./models/role');
 const User = require('./models/user');
@@ -20,6 +22,8 @@ const Password = require('./models/password');
 app.use(bodyParser.json());
 app.use(cookieParser());
 
+
+
 const csurfProtection = csurf({
     cookie: {
         httpOnly:true,
@@ -28,7 +32,13 @@ const csurfProtection = csurf({
     }
 });
 
-// app.use(csurfProtection);
+const checkJwt = expressJwt({
+    secret: process.env.TOKEN_SECRET,
+    getToken: req=> req.cookies.connect,
+    algorithms:['HS256']
+});
+
+app.use(csurfProtection);
 
 app.get('/initv', (req,res)=>{
     res.json({csrfToken: req.csrfToken()}); 
@@ -46,14 +56,17 @@ app.use('/public/uploads',express.static(path.join(__dirname, 'public/uploads'))
 // app.use('/public',express.static(path.join(__dirname, '/public')));
 app.use(multer);
 
-app.use('/api/user',csurfProtection, userRoute);
+
+
+app.use('/api/user', checkJwt, userRoute);
 app.use('/api/auth',authRoute);
 
 
-
 app.use((error,req,res,next)=>{
-    const status = error.code || 500;
-    const message = error.message || 'something went wrong';
+    console.log('error',error);
+    const status = error.status ? error.status : error.code ? error.code  : 500;
+    const message = error.message ? error.message : error.inner ? error.inner.message : 'something went wrong';
+
     res.status(status).json({error: {message: message , code: status}});
 });
 
@@ -101,25 +114,6 @@ const PORT = process.env.PORT || 4200;
         // ]);
 
 
-        // await User.create({
-        //     firstName: 'Bob', lastName: 'alice', email: 'test@test.com',city: 'TLV'
-        // });
-        // const user = await User.scope({method:['getByEmail','test@test.com']}).findOne({attributes:['id', 'email']});
-        // console.log(user.email); // this will return without the need of toJSON()
-
-        // two way of creating password to the user:
-        // const password = await Password.create({value:'sfdsfdsffs'});
-        // await password.setUser(user); // this will work
-        // await user.createPassword({value:'bla bla bla'}); //this will work
-
-        // await user.setPassword(password); // this will not work!!!
-        
-        // const pswd = (await user.getPassword()).toJSON();
-        // console.log(pswd.value);
-
-        //unassociate the password and the user
-        // await user.setPassword(null);
-
 
         console.log('sucess_connection_database');
    
@@ -128,42 +122,3 @@ const PORT = process.env.PORT || 4200;
     }
 })();
 
-// await User.sync(); create a table if do not exsists
-// await User.sync({alter:true}); //check the table columns and types update the changes
-// await sequelize.sync({force:true}) // create the table dropping it first
-//create a user way one : preffered
-// const jane =await User.create({id: 12312313,
-//     firstName:'meme',lastName :'miriam',
-//     email: 'jena@gmail.com',
-//     password:'1234',
-//     city: 'Tel Aviv',
-//     role: 'advertizer'
-// });
-
-//way 2
-// const jasse = User.build({id: 12312313,
-//         firstName:'meme',lastName :'miriam',
-//         email: 'jena@gmail.com',
-//         password:'1234',
-//         city: 'Tel Aviv',
-//         role: 'advertizer'
-// });
-//create a user instance 
-//save it
-// jasse.save()
-
-
-
-
-        // let user = await User.findOne({
-        //     where: {
-        //         id :1
-        //     }
-        // });
-        // let roles = await Role.findAll({
-        //     where :{
-        //      userId : user.id
-        //     },
-        //     include: RoleName
-        // });        roles.forEach(role=>console.log(role.role_name.name));
- 

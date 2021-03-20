@@ -4,7 +4,7 @@ const Post = require('../models/Post');
 const { validationResult } = require('express-validator');
 const {throwError,validateInputs} = require('../util/throwError');
 const deleteFile = require('../util/deleteFile').deleteFile;
-const jwt = require('jsonwebtoken');
+
 
 module.exports.createPost = async (req,res,next)=>{
 
@@ -16,26 +16,9 @@ module.exports.createPost = async (req,res,next)=>{
       return throwError('Invalid input',400,next);
     }
 
-    const token = req.cookies.connect;
-    if(!token){
-        return throwError('un-authenticated',401,next);
-    }
-    const decoded = jwt.verify(req.cookies.connect,process.env.TOKEN_SECRET);
-    let user;
-    if(decoded){
-          user = await User.findOne({
-            where:{
-                email : decoded.email
-            },
-            attributes:['id','email']
-    });
+    const user = req.cookies.connect;
 
-    }
-  
-    if(user && user.getDataValue("email") !== req.body.email)
-      return throwError('un-authorized',401, next);
-    else {
-    const id = user.getDataValue("id");
+    const id = user.id;
     const data = req.body;
     let image = null;
 
@@ -57,11 +40,7 @@ module.exports.createPost = async (req,res,next)=>{
     }
     else 
       res.status(200).send('post created');
-
   }
-
-
-}
 
 
 
