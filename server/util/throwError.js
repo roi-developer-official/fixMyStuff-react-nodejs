@@ -6,6 +6,5 @@ const throwError = function(message,code,next){
     return next(error);
 }
 
-
 exports.throwError =  throwError;
 

@@ -7,4 +7,5 @@ const RoleName = sequalize.define('role_name',{
     timestamps:false
 });
 
+
 module.exports = RoleName;

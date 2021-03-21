@@ -1,11 +1,17 @@
 const {Sequelize} = require('sequelize');
+const config = require('config');
+console.log(config.get("db"));
 
-const sequelize = new Sequelize('fixmystuff','root', '1234', {dialect : 'mysql',storage: './session.mysql'});
+const sequelize = new Sequelize(config.get("db"),'root', '1234', {dialect : 'mysql'});
 
-module.exports = sequelize;
+(async function connect(){
+  try {
+      await sequelize.authenticate();
 
+    } catch (error) {
+      console.log(error);
+    }
+  })();
 
-
-
-
-
+  module.exports = sequelize;
+  

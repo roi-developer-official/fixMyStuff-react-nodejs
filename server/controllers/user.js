@@ -6,8 +6,8 @@ const deleteFile = require('../util/deleteFile').deleteFile;
 
 module.exports.createPost = async (req,res,next)=>{
 
-    const user = req.cookies.connect;
-
+    const user = req.user;
+    
     const id = user.id;
     const data = req.body;
     let image = null;

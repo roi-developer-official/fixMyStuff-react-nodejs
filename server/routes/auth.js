@@ -11,17 +11,15 @@ router.post(
     body("firstName").notEmpty().isString().trim().escape(),
     body("lastName").notEmpty().isString().trim().escape(),
     body("city").notEmpty().isString().trim().escape(),
-    body("image").optional(),
+    body("image").optional().escape(),
     body("email").notEmpty().trim().isEmail().normalizeEmail()
-      .custom(async (value) => {
-
-        const user = await User.scope({method: ["findByEmail", value],})
+      .custom(async (value, {req}) => {
+        const user = await User.scope({method: ["findByEmail", value]})
         .findOne();
           if (user) {
             return Promise.reject("user with that email already exists");
           }
          return value;
-
       })
       .escape(),
     body("role").notEmpty().isInt().escape(),
@@ -29,6 +27,7 @@ router.post(
       .trim()
       .escape(),
     body("profession").optional().isString().trim().escape(),
+    body('experience').optional().isString().trim().escape()
   ]),
   authController.signUp
 );
@@ -38,15 +37,13 @@ router.post(
   inputValidation([
     body("email").notEmpty().isString().isEmail().normalizeEmail().trim()
     .custom(async(value, {req})=>{
-        
         const user = await User.scope({method:['findByEmail',value]}).findOne();
         if(!user){
           return Promise.reject("Invalid email or password");
         }
         else{
-          req.user = user;
+          req.user = user.toJSON();
         }
-
       })
       .escape(),
     body("password").notEmpty().isString().isLength({ min: 8 }).trim().escape(),

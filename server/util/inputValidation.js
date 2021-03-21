@@ -8,11 +8,11 @@ module.exports.validate = validations =>{
         if(errors.isEmpty()){
             return next();
         }
-
+        
         if(req.file){
             deleteFile(req.file.path);
         }
-        
+
         const error = new Error();
         error.message = errors.array()[0].msg;
         error.code = 401;
@@ -20,4 +20,5 @@ module.exports.validate = validations =>{
         return next(error);
     };
 };
+
 

@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const sequelize = require('./util/database');
 const authRoute = require('./routes/auth');
 const userRoute = require('./routes/user');
 const path = require('path');
@@ -9,14 +8,9 @@ const {multer} = require('./util/storage');
 const cookieParser = require('cookie-parser');
 const csurf = require('csurf');
 const expressJwt = require('express-jwt');
-require('./util/relations');
+require('../server/util/database');
+// require('./util/fillDatabase');
 
-const ProfessionName = require('./models/profession_name');
-const Role = require('./models/role');
-const User = require('./models/user');
-const RoleName = require('./models/role_name');
-const Experience = require('./models/experience');
-const Password = require('./models/password');
 
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -35,10 +29,11 @@ const checkJwt = expressJwt({
     algorithms:['HS256']
 });
 
+
 app.use(csurfProtection);
 
-app.get('/initv', (req,res)=>{
-    res.json({csrfToken: req.csrfToken()}); 
+app.get('/api/initv',(req,res)=>{
+    res.status(200).json({csrfToken: req.csrfToken()}); 
 });
 
 
@@ -49,7 +44,6 @@ app.use((req,res,next)=>{
 });
 
 app.use('/public/uploads',express.static(path.join(__dirname, 'public/uploads')));
-
 // app.use('/public',express.static(path.join(__dirname, '/public')));
 app.use(multer);
 
@@ -76,53 +70,18 @@ app.use((error,req,res,next)=>{
 
 
 const PORT = process.env.PORT || 4200;
-(async function connect(){
-    try {
-        await sequelize.authenticate();
-        app.listen(PORT, (err)=>{
-            if(err){
-                console.log(err);
-            } else {
-                console.log('sucess_connection_server');
-            }
-        });
+let server;
 
+server = app.listen(PORT, (err)=>{
+    if(err){
+        console.log(err);
+    } else {
 
-    
-
-        // await sequelize.sync({force:true}) // create the table dropping it first
-        // await ProfessionName.bulkCreate([
-        //     {name: 'Carpenter'},
-        //     {name: 'Electrician'},
-        //     {name: 'Mechanic'},
-        //     {name: 'Painter'},
-        //     {name: 'Plumber'},
-        //     {name: 'Tailor'},
-        //     {name: 'Bricklayer'},
-        //     {name: 'Window cleaner'},
-        //     {name: 'Cleaner'},
-        //     {name: 'other'}]
-        //     );
-        
-        // await Experience.bulkCreate([
-        //     {name: 'none'},
-        //     {name: '1-2 years'},
-        //     {name: '2-3 years'},
-        //     {name: '3-4 years'},
-        //     {name: '5 or more years'},
-        // ]);
-
-        // await RoleName.bulkCreate([
-        //     {name: 'offer', roleId: 1},
-        //     {name: 'bidder', roleId: 2},
-        // ]);
-
-
-
-        console.log('sucess_connection_database');
-   
-    } catch (error) {
-        console.log(error);
+        // console.log('sucess_connection_server');
     }
-})();
+});
+
+module.exports = server;
+
+
 
