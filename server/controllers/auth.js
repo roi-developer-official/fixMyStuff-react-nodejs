@@ -96,7 +96,7 @@ module.exports.login = async(req,res,next)=>{
 
     try {
     const match = await bcrypt.compare(password,hash.value);
-    
+
     if(match){
         const user = {
             firstName : firstName,
@@ -132,24 +132,29 @@ module.exports.refreshPage = async (req,res,next)=>{
 
     const token = req.cookies.connect;
     if(!token){
-        return res.status(200).send('unauthenticated');
+        return res.status(200).json({message: 'no token'});
     }
     else {
+        try {
         const decoded = jwt.verify(req.cookies.connect,process.env.TOKEN_SECRET);
+        
         if(decoded){
             const user = await User.scope({method:['findByEmail',decoded.email]}).findOne({attributes:['firstName' , 'lastName', 'image','email']});
-            
             const output ={
                 user: user,
                 expiresIn: decoded.exp
             }
            return res.status(200).json(output);
         }
+        } catch (error) {
+            
+            return next(error);  
+        }
     }
-    res.status(200).send('token expired');
 }
 
 module.exports.logout = (req,res,next)=>{
+    console.log('object');
     res.clearCookie('connect');
     res.sendStatus(200);
 }
