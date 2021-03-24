@@ -1,7 +1,13 @@
 
 .userp_container{
+    position: relative;
     margin-top: 0px;
     display: flex;
+    
+}
+.userp_posts{
+    width: 100%;
+    margin-bottom: 100px;
 }
 
 

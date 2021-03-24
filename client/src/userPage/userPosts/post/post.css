@@ -1,0 +1,95 @@
+
+
+.userp_post_container{
+    background-color: white;
+    display: flex;
+    height: 80px;
+    align-items: center;
+    position: relative;
+}
+
+.userp_post{
+    width: 82%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left:3px;
+}
+
+.userp_post > div{
+    min-width: 70px;
+    margin:0 6px;
+}
+
+.userp_td_image_wrapper{
+    height: 70%;
+    width: 75px;
+    background-color: steelblue;
+}
+
+.userp_td_title{
+    margin: 0 15px;
+    min-width: 100px;
+}
+.userp_td_title > p, .userp_td_max_payment{
+    font-size: 15px;
+    text-align: center;
+}
+.userp_td_description > p{
+    font-size: 13px;
+}
+
+.userp_post_container > button{
+    position: absolute;
+    right:39px;
+    width: 55px;
+    height: 35px;
+    background-color: white;
+    border:.2px solid #ccc;
+    color:#ccc;
+    cursor: pointer;
+}
+
+.userp_post_container > button:hover{
+    background-color: #ccc;
+    color:white;
+}
+
+.userp_post_container > input[type="checkbox"]{
+    position: absolute;
+    right:20px;
+}
+
+@media(min-width:1000px){
+    .userp_head_items
+    {
+        width:calc(77% - 13px);
+    }
+    .userp_post_container{
+        height: 80px;
+    }
+    .userp_post_container > button {
+        height: 35px;
+        width: 65px;
+        right: 55px;
+    }
+    .userp_post_container > input[type="checkbox"]{
+        right:30px;
+    }
+    .userp_post{
+        width: 79%;
+    }
+    .userp_td_title > p, .userp_td_max_payment{
+        font-size: 17px;
+    }
+    .userp_td_description > p{
+        font-size: 15px;
+    }
+}
+
+@media(min-width:1268px){
+    .userp_post{
+        width: 78%;
+    }
+}

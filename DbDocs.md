@@ -1,3 +1,43 @@
+await User.sync(); create a table if do not exsists
+await User.sync({alter:true}); //check the table columns and types update the changes
+await sequelize.sync({force:true}) create the table dropping it first
+
+//create a user way one : preffered
+const jane =await User.create({id: 12312313,
+    firstName:'meme',lastName :'miriam',
+    email: 'jena@gmail.com',
+    password:'1234',
+    city: 'Tel Aviv',
+    role: 'advertizer'
+});
+
+//way 2
+const jasse = User.build({id: 12312313,
+        firstName:'meme',lastName :'miriam',
+        email: 'jena@gmail.com',
+        password:'1234',
+        city: 'Tel Aviv',
+        role: 'advertizer'
+});
+
+//create a user instance 
+//save it
+jasse.save()
+
+let user = await User.findOne({
+    where: {
+        id :1
+    }
+});
+let roles = await Role.findAll({
+    where :{
+        userId : user.id
+    },
+    include: RoleName
+});        
+roles.forEach(role=>console.log(role.role_name.name));
+ 
+
 User.findAll({
     include: { Task }
 });
@@ -5,6 +45,7 @@ User.findAll({
 SELECT * FROM users u LEFT JOIN tasks t ON
     u.id = t.userId;
 
+--- 
 
 User.findAll({
     include: {
@@ -45,7 +86,7 @@ SELECT * FROM users u
     INNER JOIN tools t ON u.id = t.user_id 
     AND t.size != 'small'; 
 
-// maybe a faster way to execute the same query: 
+maybe a faster way to execute the same query: 
 
 //required false
 User.findAll({
@@ -63,7 +104,7 @@ SELECT * FROM users u
         u.id = t.userId 
     WHERE t.size != 'small';
 
-// ecsplictly required true (INNER JOIN)
+ecsplictly required true (INNER JOIN)
 User.findAll({
     include:[
         {
@@ -142,9 +183,24 @@ Foo.findOne({
 });
 
 
+await User.create({
+        firstName: 'Bob', lastName: 'alice', email: 'test@test.com',city: 'TLV'
+});
+const user = await User.scope({method:['getByEmail','test@test.com']}).findOne({attributes:['id', 'email']});
+console.log(user.email); // this will return without the need of toJSON()
 
+two way of creating password to the user:
+const password = await Password.create({value:'sfdsfdsffs'});
+await password.setUser(user); // this will work
+await user.createPassword({value:'bla bla bla'}); //this will work
 
+await user.setPassword(password); // this will not work!!!
 
+const pswd = (await user.getPassword()).toJSON();
+console.log(pswd.value);
+
+unassociate the password and the user
+await user.setPassword(null);
 
 
 

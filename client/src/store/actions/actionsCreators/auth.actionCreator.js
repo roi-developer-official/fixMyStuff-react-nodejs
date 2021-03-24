@@ -9,7 +9,6 @@ export const signIn = (reqData,callBack)=>{
             callBack(res.data);
         })
         .catch(error=>{
-            console.log(error);
              const message = error.response.data.error.message;
             dispatch(actionFailed(message))
         })

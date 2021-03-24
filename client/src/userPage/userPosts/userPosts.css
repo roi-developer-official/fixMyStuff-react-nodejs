@@ -1,0 +1,26 @@
+.userp_posts_container{
+    width: 100%;
+    position: relative;
+    height: 500px;
+    margin:auto;
+    max-width: 700px;
+    margin-top: 20px;
+}
+
+.userp_posts_delete_btn{
+    position: absolute;
+    right: 10px;
+    top:-40px;
+    width: 70px;
+    height: 30px;
+    background-color: white;
+    border: .5px solid #ccc;
+}
+
+@media(min-width:1000px){
+    .userp_posts_container{
+        max-width: 100%;
+    }
+}
+
+

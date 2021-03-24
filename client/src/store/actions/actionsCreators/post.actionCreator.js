@@ -1,4 +1,4 @@
-import * as actions from '../state.actions';
+
 import {Axios} from '../../../util/axios';
 import {actionSuccess,actionFailed} from '../state.actions';
 
@@ -6,7 +6,7 @@ import {actionSuccess,actionFailed} from '../state.actions';
 
 
 export const addPost = (reqData,callBack)=>{
-    console.log(reqData);
+   
     return dispatch =>{
         Axios.post('user/create-post', reqData)
         .then(res=>{

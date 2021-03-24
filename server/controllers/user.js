@@ -1,5 +1,3 @@
-const sequelize = require('../util/database');
-const User = require('../models/user');
 const Post = require('../models/Post');
 const {throwError} = require('../util/throwError');
 const deleteFile = require('../util/deleteFile').deleteFile;
@@ -7,7 +5,6 @@ const deleteFile = require('../util/deleteFile').deleteFile;
 module.exports.createPost = async (req,res,next)=>{
 
     const user = req.user;
-    
     const id = user.id;
     const data = req.body;
     let image = null;

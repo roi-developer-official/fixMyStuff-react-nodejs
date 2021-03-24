@@ -154,7 +154,6 @@ module.exports.refreshPage = async (req,res,next)=>{
 }
 
 module.exports.logout = (req,res,next)=>{
-    console.log('object');
     res.clearCookie('connect');
     res.sendStatus(200);
 }

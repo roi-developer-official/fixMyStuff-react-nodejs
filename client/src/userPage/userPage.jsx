@@ -7,8 +7,10 @@ function UserPage(){
     return (
         <div className="userp_container">
             <UserDetails></UserDetails>
+            <div className="userp_posts">
             <UserPostsHeader></UserPostsHeader>
             <UserPosts></UserPosts>
+            </div>
         </div>
     )
 

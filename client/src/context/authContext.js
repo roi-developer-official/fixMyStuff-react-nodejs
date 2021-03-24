@@ -11,7 +11,7 @@ const AuthProvider = ({children}) =>{
     });
 
     useEffect(()=>{
-        axios.get('/initv')
+        axios.get('/api/initv')
         .then(res=>{
             const csrfToken = res.data.csrfToken;
             Axios.defaults.headers['x-csrf-token'] = csrfToken;
