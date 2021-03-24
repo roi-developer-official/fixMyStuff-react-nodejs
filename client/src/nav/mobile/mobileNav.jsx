@@ -1,8 +1,8 @@
 
 import {NavLink, useHistory} from 'react-router-dom';
-import RenderCustomNavItem from '../util/customRender';
 import {Button} from '../../Global_UI';
-function MobileNav({navItems,hideAndShowAuthDialog, isAuth}){
+import RenderAuthNavItem from '../util/RenderAuthNavItem';
+function MobileNav({navItems, isAuth}){
     const history = useHistory();
     return (
         <>
@@ -10,7 +10,7 @@ function MobileNav({navItems,hideAndShowAuthDialog, isAuth}){
             <ul className='mobile_nav_items'>
                     {navItems.map((i,idx)=>{
                     if (idx === 1)
-                        return RenderCustomNavItem(i.name,hideAndShowAuthDialog);
+                        return RenderAuthNavItem({path: i.name});
                     return <li key={i.name}><NavLink 
                     className='mobile_nav_item' 
                     to={i.name.replace(' ', '-')} >{i.name}</NavLink></li>
@@ -20,7 +20,6 @@ function MobileNav({navItems,hideAndShowAuthDialog, isAuth}){
     {!isAuth && <Button className={'mobile_login_btn'} onClick={()=>history.push('/Log-in')} label={'Login'}></Button>}
      </>
     )
-
 
 }
 

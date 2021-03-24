@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom';
-import './authDialog.css'
+import './authDialog.css';
+
 function AuthDialog(){
     return (
         <div className='auth_dialog'>

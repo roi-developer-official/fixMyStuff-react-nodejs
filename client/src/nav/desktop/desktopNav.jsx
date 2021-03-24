@@ -1,14 +1,14 @@
 
 import {Logo,Button} from '../../Global_UI';
 import searchIcon from '../../assets/search.png';
-import RenderCustomNavItem from '../util/customRender';
+import RenderAuthNavItem from '../util/RenderAuthNavItem';
 import { useHistory } from 'react-router';
 import {NavLink} from 'react-router-dom';
 import Avatar from '../avatar/avatar';
-export default function DesktopNav({navItems,hideAndShowAuthDialog,isAuth}){
+
+export default function DesktopNav({navItems,isAuth,userInfo}){
 
     const history = useHistory();
-
     return (
     <nav className='nav'>
         <Logo></Logo>
@@ -19,7 +19,7 @@ export default function DesktopNav({navItems,hideAndShowAuthDialog,isAuth}){
         <ul className='nav_items' >
             {navItems.map((i,idx)=>{
                 if (idx === 1)
-                    return RenderCustomNavItem(i.name,hideAndShowAuthDialog);
+                    return RenderAuthNavItem({path: i.name,isAuth});
                 else 
                     return (
                         <li key={i.name}>
@@ -35,7 +35,9 @@ export default function DesktopNav({navItems,hideAndShowAuthDialog,isAuth}){
          <Button className={'desktop_login_btn'} onClick={()=>history.push('/Log-in')} label={'Login'}></Button>
         </li>}
         </ul>
-     <Avatar></Avatar>
+     <Avatar userInfo={userInfo} isAuth={isAuth}></Avatar>
     </nav>
     )
 }
+
+

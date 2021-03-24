@@ -1,14 +1,10 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
-import { AuthContext } from '../../context/authContext';
 import './avatar.css'
 import AvatarMenu from './menu/avatarMenu';
-function Avatar (){
-
-    const authContext = useContext(AuthContext);
+function Avatar ({isAuth, userInfo}){
+    
     const history = useHistory();
-    const isAuth =  authContext.isAuth();
-    const user = authContext.getUserInfo();
     const [showMenu, setShowMenu] = useState(false);
     const [showAvatar,setShowAvatar] = useState(false);
 
@@ -32,9 +28,9 @@ function Avatar (){
     }
     
     function returnImageIfExsists(){
-            if((user.image) !== 'null'){
+            if((userInfo.image) !== 'null'){
                 return <div className="avatar_image">
-                    <img className="avatar_image" src={user.image} alt=""/>
+                    <img className="avatar_image" src={userInfo.image} alt=""/>
                  </div>
             } else {
                 return <div className="avatar_image_alt"></div>
@@ -50,7 +46,7 @@ function Avatar (){
 
             <div onClick={(e)=>toggleAvatarMenu(e)} className="avatar_menu_wrapper">
                 <p>&#9660;</p>
-                <p className="avatar_name">{user.firstName}</p>
+                <p className="avatar_name">{userInfo.firstName}</p>
             </div>
             {returnImageIfExsists()}
    
