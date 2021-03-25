@@ -29,7 +29,6 @@ function Nav(){
         setPathName(formattedpath.current)
     },[history.location.pathname])
 
-
     return (
         <React.Fragment>
         {!(/my-page/i.test(pathname))  && <h2 className="path">{pathname}</h2>}
@@ -37,12 +36,11 @@ function Nav(){
         <DesktopNav
           userInfo={userInfo}
           navItems={navItems}
-          isAuth={isAuth}
           pathname={pathname}
+          isAuth={isAuth}
         ></DesktopNav>
 
         <MobileNav 
-        pathname={pathname}
         navItems={navItems} 
         isAuth={isAuth}></MobileNav>
       </React.Fragment>

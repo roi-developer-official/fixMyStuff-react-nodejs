@@ -12,8 +12,9 @@ const navItems = [
     { name: "Contact us" },
   ];
 
+
 describe("Desktop nav", () => {
-  test("displays a logo and input search and login button", async () => {
+  test("displays a logo, input search and login button", async () => {
     const history = createMemoryHistory();
     render(
       <Router history={history}>
@@ -28,6 +29,7 @@ describe("Desktop nav", () => {
     const loginBottun = screen.getByRole("button", {
       name: "Login",
     });
+    
     const inputSearch = screen.getByRole("textbox");
     expect(logo).toBeInTheDocument();
     expect(inputSearch).toBeInTheDocument();

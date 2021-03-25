@@ -1,30 +1,24 @@
 
-import {Logo,Button} from '../../Global_UI';
-import searchIcon from '../../assets/search.png';
+import {Logo} from '../../Global_UI';
 import RenderAuthNavItem from '../util/RenderAuthNavItem';
-import { NavLink, useHistory} from 'react-router-dom';
+import { NavLink} from 'react-router-dom';
 import Avatar from '../avatar/Avatar';
+import LoginButton from '../loginbutton/LoginButton';
+import NavSearch from './nav-search/NavSearch';
 
-export default function DesktopNav({navItems,isAuth,userInfo}){
+export default function DesktopNav({navItems,isAuth,userInfo,pathname}){
 
-    const history = useHistory();
-    const pathname = history.location.pathname;
-
-    
     return (
     <nav className='nav'>
         <Logo></Logo>
-       <div className='nav_search'>
-        <input className='search_input' type="text"/>
-        <img className='search_image' src={searchIcon} alt=""/>
-       </div>
+        <NavSearch />
         <ul className='nav_items' >
             {navItems.map((i,idx)=>{
                 if (idx === 1)
                     return RenderAuthNavItem({path: i.name,isAuth});
                 else 
                     return (
-                        <li key={i.name}>
+                    <li key={i.name}>
                         <NavLink
                         className='nav_item' 
                         to={i.name.replace(' ', '-')}
@@ -33,10 +27,8 @@ export default function DesktopNav({navItems,isAuth,userInfo}){
                     </NavLink></li>
                     )
         })}
-       {!isAuth && <li>
-         <Button className={'desktop_login_btn'} onClick={()=>history.push('/Log-in')} label={'Login'}></Button>
-        </li>}
-        </ul>
+      <li><LoginButton isAuth={isAuth}/></li>
+    </ul>
      <Avatar 
      userInfo={userInfo} 
      isAuth={isAuth}
