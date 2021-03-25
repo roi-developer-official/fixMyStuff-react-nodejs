@@ -9,10 +9,9 @@ export default function AvatarMenu(){
     const authContext = useContext(AuthContext);
     const history = useHistory();
 
-
     function logout(){
         authContext.clearUserInfo();
-        history.push('/log-in');
+        history.push('/Log-in');
     }
 
     return (

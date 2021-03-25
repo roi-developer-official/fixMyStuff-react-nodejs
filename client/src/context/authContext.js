@@ -18,12 +18,10 @@ const AuthProvider = ({children}) =>{
         }).catch(err=>{
             //do somthing with the error
         })
-       
 
         Axios.get('/auth/refresh')
         .then(res=>{
             if(res.data.user){
-                console.log(res.data);
                 setAuthInfo(res.data)
             }
         })
@@ -36,6 +34,9 @@ const AuthProvider = ({children}) =>{
     const setAuthInfo = ({
         expiresIn , user
     }) =>{
+        if(user.image === "null"){
+            user.image = null;
+        }
         setAuthState({expiresIn: expiresIn, user: user});
     };
 
