@@ -119,6 +119,7 @@ function PageFour({moveBetweenPages,show}){
             
     }   
 
+    
     return (
             <div className={`signup_wrapper_page ${show? 'show' :''}`}>
             {inputs.map((input,i)=>{

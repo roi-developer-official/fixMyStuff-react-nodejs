@@ -18,8 +18,9 @@ export function Input({
 
     return (
         <Fragment>
-            <label>{label}</label>
+            <label htmlFor={name}>{label}</label>
             <input
+            id={name}
             min={min}
             ref={ref} 
             type={type} 

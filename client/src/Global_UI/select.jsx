@@ -3,8 +3,9 @@ export function Select({options,label,onChange,error,validate,onBlur}){
 
     return (
         <>
-            <label className='label'>{label}</label>
+            <label htmlFor={label} className='label'>{label}</label>
             <select 
+            id={label}
             className='select' 
             onChange={onChange}
             onBlur={onBlur}

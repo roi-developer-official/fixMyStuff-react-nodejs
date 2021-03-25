@@ -3,7 +3,6 @@
   margin-top: 50px;
 }
 
-
 .signup_wrapper_page
 {
     width: 100%;
@@ -25,7 +24,6 @@
     opacity: 1;
     z-index: 1;
 }
-
 
 
 @media (min-width:1000px)

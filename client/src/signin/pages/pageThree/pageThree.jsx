@@ -116,7 +116,6 @@ function PageThree({moveBetweenPages,show}){
         updateInputs(selectInputs, setSelectInputs, name, e);
     }
     
-
     return (
         <div className={`signup_wrapper_page ${show? 'show' :''}`}>
             <p style={{marginTop: '10px', fontSize: '19px'}}>Are you looking for Jobs?</p>
@@ -146,7 +145,6 @@ function PageThree({moveBetweenPages,show}){
                     validate={input.validate}
                     onBlur={validateInputs}
                     options={input.options}
-                    error={input.error}
                     onChange={(e)=>onSelectChange(e,input.name)}
                     />
              </div>

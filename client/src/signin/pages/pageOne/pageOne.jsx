@@ -6,7 +6,7 @@ import {useHistory} from 'react-router-dom';
 import updateInputs from '../../../util/useInputs';
 
 const citiesString = ",Akko,Afula,Arad,Ashdod,Ashqelon,Bat Yam,Beersheba,Bet Sheʾan,Bet Sheʿarim,Bnei Brak,Caesarea,Dimona,Dor,Elat,En Gedi,Givʿatayim,H̱adera,Haifa,Herzliyya,H̱olon,Jerusalem,Karmiʾel,Kefar Sava,Lod,Meron,Nahariyya,Nazareth,Netanya,Petaẖ Tiqwa,Qiryat Shemona,Ramat Gan,Ramla,Reẖovot,Rishon LeẔiyyon,Sedom,Tel Aviv–Yafo,Tiberias,Ẕefat";
-function PageOne({moveBetweenPages,show,pageSubmmited}){
+function PageOne({moveBetweenPages,show}){
     let [inputs,setInputs] = useState([
         {
             label: 'First name', 
@@ -61,6 +61,7 @@ function PageOne({moveBetweenPages,show,pageSubmmited}){
             required:true
         }
     });
+
     function changePage(action){
         let isValidPage = true;
         let updatedInputs = inputs.slice();
@@ -89,10 +90,10 @@ function PageOne({moveBetweenPages,show,pageSubmmited}){
         } else {
             let groupedInputs = [...inputs, selectInput]
             moveBetweenPages(action,groupedInputs);
-        }
-               
+        }      
     }
-    
+
+
     function onInputChange(e, name){
         updateInputs(inputs,setInputs, name, e)
     }
@@ -120,7 +121,6 @@ function PageOne({moveBetweenPages,show,pageSubmmited}){
             setInputs(updatedInputs)
         } 
     }
-
     return (
         <div className={`signup_wrapper_page ${show? 'show' :''}`}>
                 <div className="logo_header">
@@ -140,7 +140,7 @@ function PageOne({moveBetweenPages,show,pageSubmmited}){
                 ></Input>
             </div>
             })}
-             <div className="form_select_wrapper">
+            <div className="form_select_wrapper">
             <Select 
             label='City' 
             error={selectInput.error}
