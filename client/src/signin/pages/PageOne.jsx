@@ -1,9 +1,9 @@
 
 import { useState } from 'react';
-import {Button,Input,Logo,Select} from '../../../Global_UI';
-import validation from '../../../validations/Validations';
+import {Button,Input,Logo,Select} from '../../Global_UI';
+import validation from '../../validations/Validations';
 import {useHistory} from 'react-router-dom';
-import updateInputs from '../../../util/useInputs';
+import updateInputs from '../../util/useInputs';
 
 const citiesString = ",Akko,Afula,Arad,Ashdod,Ashqelon,Bat Yam,Beersheba,Bet Sheʾan,Bet Sheʿarim,Bnei Brak,Caesarea,Dimona,Dor,Elat,En Gedi,Givʿatayim,H̱adera,Haifa,Herzliyya,H̱olon,Jerusalem,Karmiʾel,Kefar Sava,Lod,Meron,Nahariyya,Nazareth,Netanya,Petaẖ Tiqwa,Qiryat Shemona,Ramat Gan,Ramla,Reẖovot,Rishon LeẔiyyon,Sedom,Tel Aviv–Yafo,Tiberias,Ẕefat";
 function PageOne({moveBetweenPages,show}){

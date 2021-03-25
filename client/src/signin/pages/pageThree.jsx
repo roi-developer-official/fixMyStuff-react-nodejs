@@ -1,9 +1,9 @@
 
 import { useState } from 'react';
 import './pageThree.css';
-import {Input,Button, Select} from '../../../Global_UI';
-import validation from '../../../validations/Validations';
-import updateInputs from '../../../util/useInputs';
+import {Input,Button, Select} from '../../Global_UI';
+import validation from '../../validations/Validations';
+import updateInputs from '../../util/useInputs';
 
 function PageThree({moveBetweenPages,show}){
 
