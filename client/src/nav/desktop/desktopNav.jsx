@@ -2,13 +2,13 @@
 import {Logo,Button} from '../../Global_UI';
 import searchIcon from '../../assets/search.png';
 import RenderAuthNavItem from '../util/RenderAuthNavItem';
-import { useHistory } from 'react-router';
-import {NavLink} from 'react-router-dom';
+import {NavLink, useHistory} from 'react-router-dom';
 import Avatar from '../avatar/avatar';
 
 export default function DesktopNav({navItems,isAuth,userInfo}){
 
     const history = useHistory();
+    
     return (
     <nav className='nav'>
         <Logo></Logo>

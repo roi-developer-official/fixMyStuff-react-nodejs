@@ -1,55 +1,54 @@
-import React from "react";
-import "./nav.css";
-import { withRouter } from "react-router-dom";
+import React, { useContext, useEffect, useState, useRef } from "react";
+import "./Nav.css";
+import { useHistory, withRouter } from "react-router-dom";
 import { AuthContext } from "../context/authContext";
 import MobileNav from "./mobile/MobileNav";
 import DesktopNav from "./desktop/DesktopNav";
-class Nav extends React.Component {
-  static contextType = AuthContext;
 
-  constructor(props) {
-    super();
-    this.state = {
-      pathname: this.formatPath(props.location.pathname),
-    };
-    this.navItems = [
-      { name: "Find jobs" },
-      { name: "My page" },
-      { name: "FAQ" },
-      { name: "Contact us" },
-    ];
-  }
+const navItems =  [
+    { name: "Find jobs" },
+    { name: "My page" },
+    { name: "FAQ" },
+    { name: "Contact us" },
+  ];
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.location.pathname !== this.props.location.pathname)
-      this.setState({
-        ...this.state,
-        pathname: this.formatPath(this.props.location.pathname),
-      });
-  }
-
-  formatPath(path) {
+export function formatPath(path) {
     return path.substring(1).replace("-", " ");
-  }
+}
 
-  render() {
-    const isAuth = this.context.isAuth();
+function Nav(){
+    const history = useHistory();
+    const formattedpath = useRef();
+    const [pathname,setPathName] = useState('');
+    const context = useContext(AuthContext);
+    const userInfo = context.getUserInfo();
+    const isAuth = context.isAuth();
+
+    useEffect(()=>{
+        formattedpath.current = formatPath(history.location.pathname);
+        setPathName(formattedpath.current)
+    },[history.location.pathname])
+
+
     return (
-      <React.Fragment>
-        {this.props.location.pathname.toLowerCase() !== "/my-page" && (
-          <h2 className="path">{this.state.pathname}</h2>
-        )}
+        <React.Fragment>
+        {!(/my-page/i.test(pathname))  && <h2 className="path">{pathname}</h2>}
 
         <DesktopNav
-          userInfo={this.context.getUserInfo()}
-          navItems={this.navItems}
+          userInfo={userInfo}
+          navItems={navItems}
           isAuth={isAuth}
+          pathname={pathname}
         ></DesktopNav>
 
-        <MobileNav navItems={this.navItems} isAuth={isAuth}></MobileNav>
+        <MobileNav 
+        pathname={pathname}
+        navItems={navItems} 
+        isAuth={isAuth}></MobileNav>
       </React.Fragment>
-    );
-  }
+
+    )
+
 }
 
 export default withRouter(Nav);

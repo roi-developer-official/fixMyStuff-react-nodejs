@@ -1,12 +1,14 @@
 import { NavLink } from 'react-router-dom';
 import './authDialog.css';
 
-function AuthDialog(){
+function AuthDialog({hideDialog}){
     return (
         <div className='auth_dialog'>
             <p>You are not logged in</p>
             <div className='auth_links'>
-                <NavLink className='link ' to='/Sign-in'>Sign-up for an account</NavLink>
+                <NavLink className='link' 
+                onClick={hideDialog}
+                to='/Sign-in'>Sign-up for an account</NavLink>
             </div>
         </div>
     )

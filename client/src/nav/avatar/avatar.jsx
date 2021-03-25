@@ -3,7 +3,6 @@ import { useHistory } from 'react-router';
 import './avatar.css'
 import AvatarMenu from './menu/avatarMenu';
 function Avatar ({isAuth, userInfo}){
-    
     const history = useHistory();
     const [showMenu, setShowMenu] = useState(false);
     const [showAvatar,setShowAvatar] = useState(false);
@@ -36,7 +35,6 @@ function Avatar ({isAuth, userInfo}){
                 return <div className="avatar_image_alt"></div>
             }
     }
-
 
     if(isAuth && showAvatar)
         return (
