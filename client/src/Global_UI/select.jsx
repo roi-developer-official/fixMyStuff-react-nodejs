@@ -1,5 +1,31 @@
+import { useState } from 'react';
 import './global.css'
-export function Select({options,label,onChange,error,validate,onBlur}){
+import validation from '../validations/Validations';
+export function Select({
+    options,
+    label,
+    onChange,
+    validate,
+    validations,
+    updatedInput
+    }
+    ){
+    const [error,setError] = useState("");
+
+    function onBlur(input){
+        let errorMsg = validation(validations,input.value);
+        if(errorMsg){
+           setError(errorMsg)
+        }
+    }
+
+    function onChange(input){
+        const value = input.value;
+        const name = input.name;
+        updatedInput(name, value);
+    }
+
+
 
     return (
         <>
@@ -8,7 +34,7 @@ export function Select({options,label,onChange,error,validate,onBlur}){
             id={label}
             className='select' 
             onChange={onChange}
-            onBlur={onBlur}
+            onBlur={(e)=>onBlur(e.target)}
             >
                 {options.map((opt,i)=>{
                     return <option key={i} value={opt}>{opt}</option>

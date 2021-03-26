@@ -1,20 +1,41 @@
-import { Fragment } from "react";
+import React, { Fragment } from "react";
+import {validation} from '../validations/Validations';
 
 export function Input({
     label, 
     type, 
-    validate, 
-    onChange,
     name,
-    value,
-    onBlur,
-    error,
     accept,
     style,
     ref,
-    min
+    min,
+    updateInput,
+    validations
 }){
+    const [state, setState] = React.useState({
+        error: '',
+        value: ''
+    });
 
+     function validateOnBlur(input){
+        let errorMsg = validation(validations ,input.value);
+        if(errorMsg){
+            setState({
+                ...state,
+                error: errorMsg
+            })
+        } 
+    }
+
+    function onChange(input){
+        const value = input.value;
+        const name = input.name;
+        updateInput(name,value);
+        setState({
+            ...state,
+            value: input.value
+        });
+    }
 
     return (
         <Fragment>
@@ -25,12 +46,12 @@ export function Input({
             ref={ref} 
             type={type} 
             name={name} 
-            onChange={(e)=>onChange(e,name)} 
-            onBlur={()=>onBlur(name)}
+            onChange={(e)=>onChange(e)} 
+            onBlur={(e)=>validateOnBlur(e.target)}
             accept={accept}
             style={{...style}}
-            value={value}/>
-            {validate && <span className='validation_text'>{error}</span>}
+            value={state.value}/>
+            {state.error && <span className='validation_text'>{state.error}</span>}
         </Fragment>
     )
 }

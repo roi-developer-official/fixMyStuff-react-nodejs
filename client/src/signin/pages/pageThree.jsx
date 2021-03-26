@@ -7,43 +7,9 @@ import updateInputs from '../../util/useInputs';
 
 function PageThree({moveBetweenPages,show}){
 
-    let [inputs,setInputs] = useState([{
-        label: "Yes, I'm looking for jobs.",
-        type: 'radio',
-        name : 'role',
-        value:2
-    },
-    {
-        label: "No, I'm not looking for jobs.",
-        type: 'radio',
-        name : 'role',
-        validate:true,
-        value:1,
-        error: ''
-    }]);
+    let [inputs,setInputs] = useState([]);
     const [selectInputs,setSelectInputs] = useState([
-        {
-            name: 'profession',
-            label: 'Profession',
-            value:'',
-            error:'',
-            validate:true,
-            validations:{
-                required:true
-            },
-            options: ['','Carpenter ','Electrician','Mechanic','Painter','Plumber','Tailor','Bricklayer','Window cleaner','Cleaner', 'other']
-        },
-        {
-            name: 'experience',
-            label: 'Experience',
-            value:'',
-            error:'',
-            validate:true,
-            validations:{
-                required:true
-            },
-            options: ['','none', '1-2 years', '2-3 years', '3-4 years', '5 and more years']
-        }
+        
     ]);
     let [userSelction,setUserSelction] = useState({
         name:'role',

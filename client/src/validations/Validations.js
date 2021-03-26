@@ -1,6 +1,6 @@
 
 
-function validation(validationParams,input,compareString = null){
+export const validation = (validationParams,input,compareString = null)=>{
     for(let key of Object.keys(validationParams)){
       
         if(key === 'required' && validationParams[key]){
@@ -41,5 +41,3 @@ function validation(validationParams,input,compareString = null){
     }
     return null;
 }
-
-export default validation;
