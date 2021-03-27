@@ -122,7 +122,7 @@ function PageFour({moveBetweenPages,show}){
     
     return (
             <div className={`signup_wrapper_page ${show? 'show' :''}`}>
-            {inputs.map((input,i)=>{
+            {/* {inputs.map((input,i)=>{
             return <div key={i} className="form_input_wrapper">
                         <Input 
                         label={input.label} 
@@ -135,7 +135,7 @@ function PageFour({moveBetweenPages,show}){
                         validate={input.validate}
                     ></Input>
             </div>
-                })}
+                })} */}
             <div className="form_buttons_wrapper">
                 {buttons.map((btn,i)=>{
                     return <Button key={i} label={btn.label} onClick={()=>changePage(btn.label)}

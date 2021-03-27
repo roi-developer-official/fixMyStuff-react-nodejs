@@ -26,28 +26,28 @@ export function Input({
             })
         } 
     }
-    
+
     const  onInputChange =(input)=>{
-        console.log(input);
         const value = input.value;
         const name = input.name;
-        updateInput(name,value);
         setState({
             ...state,
             value: input.value
         });
+        updateInput(name,value);
     }
 
     return (
         <Fragment>
             <label htmlFor={name}>{label}</label>
             <input
+            data-test={`${name}`}
             id={name}
             min={min}
             ref={ref} 
             type={type} 
             name={name}
-            onChange={(e)=>onInputChange(e.target)}
+            onChange={(e)=>{onInputChange(e.target)}}
             onBlur={(e)=>validateOnBlur(e.target)}
             accept={accept}
             style={{...style}}

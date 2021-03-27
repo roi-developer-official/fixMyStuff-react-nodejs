@@ -65,15 +65,15 @@ describe("page one", () => {
     let originalUseReducer;
     let wrapper;
     const event = {
-      traget : {
+      target : {
         value: 'hello',
-        name: 'firstname'
+        name: 'firstName'
       }
     }
 
     beforeEach(()=>{
       originalUseReducer = React.useReducer;
-      React.useReducer = jest.fn(()=>[{}, mockDispatch]);
+      React.useReducer = jest.fn(()=> [{}, mockDispatch]);
       wrapper = setup();
     });
 
@@ -81,14 +81,14 @@ describe("page one", () => {
       React.useReducer = originalUseReducer;
     })
 
+
     test('updateInput called when input is change',  ()=>{
-        const input = wrapper.find({label : 'First name'});
+        const input = wrapper.find({ "data-test" : 'firstName'});
         expect(input.length).toBe(1);
         input.simulate('change', event);
-        expect(mockDispatch).toBeCalled();
+        expect(mockDispatch).toBeCalledWith({"action": {"name": "firstName", "value": "hello"}, "type": "SET_INPUT"});
     });
 
-
-  })
+  });
 
 });

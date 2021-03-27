@@ -1,7 +1,7 @@
 import { useReducer, useState } from "react";
 import { Button, Input, Logo, Select } from "../../Global_UI";
 import validation from "../../validations/Validations";
-import React from 'react';
+import React from "react";
 import { useHistory } from "react-router-dom";
 import {
   buttons,
@@ -11,16 +11,11 @@ import {
 
 const SET_INPUT = "SET_INPUT";
 
-
 const initialState = {
   inputs: [
-    (pageInputs.page1[0].name = {
-      value: "",
-    }),
-    (pageInputs.page1[1].name = {
-      value: "",
-    }),
-    (pageSelects.page1[0].name = { value: "" }),
+    { name: "firstName", value: "" },
+    { name: "lastName", value: "" },
+    { name: "city", value: "" },
   ],
 };
 
@@ -28,7 +23,10 @@ function reducer(state = initialState, action) {
   switch (action.type) {
     case SET_INPUT:
       const updatedInput = state.inputs.slice();
-      updatedInput[action.inputName].value = action.value;
+      const index = updatedInput.findIndex(
+        (input) => (input.name === action.name)
+      );
+      updatedInput[index].value = action.value;
       return {
         ...state,
         inputs: updatedInput,
@@ -44,43 +42,42 @@ function PageOne({ moveBetweenPages, show }) {
   const history = useHistory();
   const [state, dispatch] = React.useReducer(reducer, initialState);
 
-//   function changePage(action) {
-//     let isValidPage = true;
-//     let updatedInputs = inputs.slice();
+  //   function changePage(action) {
+  //     let isValidPage = true;
+  //     let updatedInputs = inputs.slice();
 
-//     if (action === "Next") {
-//       for (let index in Object.keys(inputs)) {
-//         let message = validation(
-//           inputs[index].validations,
-//           inputs[index].value
-//         );
-//         if (message) {
-//           isValidPage = false;
-//           updatedInputs[index].error = message;
-//         }
-//       }
-//       let message = validation(selectInput.validations, selectInput.value);
-//       if (message) {
-//         let updatedSelectedInput = { ...selectInput };
-//         updatedSelectedInput.error = message;
-//         isValidPage = false;
-//         setSelectInput(updatedSelectedInput);
-//       }
-//     } else {
-//       history.push("/");
-//     }
+  //     if (action === "Next") {
+  //       for (let index in Object.keys(inputs)) {
+  //         let message = validation(
+  //           inputs[index].validations,
+  //           inputs[index].value
+  //         );
+  //         if (message) {
+  //           isValidPage = false;
+  //           updatedInputs[index].error = message;
+  //         }
+  //       }
+  //       let message = validation(selectInput.validations, selectInput.value);
+  //       if (message) {
+  //         let updatedSelectedInput = { ...selectInput };
+  //         updatedSelectedInput.error = message;
+  //         isValidPage = false;
+  //         setSelectInput(updatedSelectedInput);
+  //       }
+  //     } else {
+  //       history.push("/");
+  //     }
 
-//     if (!isValidPage) {
-//       setInputs(updatedInputs);
-//     } else {
-//       let groupedInputs = [...inputs, selectInput];
-//       moveBetweenPages(action, groupedInputs);
-//     }
-//   }
+  //     if (!isValidPage) {
+  //       setInputs(updatedInputs);
+  //     } else {
+  //       let groupedInputs = [...inputs, selectInput];
+  //       moveBetweenPages(action, groupedInputs);
+  //     }
+  //   }
 
   function onInputChange(name, value) {
-    console.log('hello');
-    dispatch({ type: SET_INPUT, inputName: name, value: value });
+    dispatch({ type: SET_INPUT,  name: name, value: value });
   }
 
 
