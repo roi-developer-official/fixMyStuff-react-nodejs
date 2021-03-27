@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {Input,Button} from '../../Global_UI';
 import {validation} from "../../validations/Validations";
-function PageFour({moveBetweenPages,show}){
+function PageFour({changePage,show}){
 
     let [inputs,setInputs] = useState([
         {
@@ -106,7 +106,7 @@ function PageFour({moveBetweenPages,show}){
                 }
             }
         } else{
-            moveBetweenPages(action)
+            changePage(action)
         }
 
         if(!isValidPage){
@@ -114,7 +114,7 @@ function PageFour({moveBetweenPages,show}){
         } else {
             let ouput = inputs.slice();
             ouput.pop();
-            moveBetweenPages(action, ouput);
+            changePage(action, ouput);
         }
             
     }   

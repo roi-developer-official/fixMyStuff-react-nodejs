@@ -106,22 +106,22 @@ class Signin extends React.Component{
             <PageOne
             show={this.state.currentStep === 1}
             pageSubmmited={this.pageSubmmited}
-            moveBetweenPages={this.moveBetweenPages.bind(this)}
+            changePage={this.moveBetweenPages.bind(this)}
              />
             <PageTwo 
             pageSubmmited={this.pageSubmmited}
             show={this.state.currentStep === 2}
-            moveBetweenPages={this.moveBetweenPages.bind(this)}
+            changePage={this.moveBetweenPages.bind(this)}
              />
             <PageThree 
             pageSubmmited={this.pageSubmmited}
             show={this.state.currentStep === 3}
-            moveBetweenPages={this.moveBetweenPages.bind(this)}
+            changePage={this.moveBetweenPages.bind(this)}
             ></PageThree>
             <PageFour 
             pageSubmmited={this.pageSubmmited}
             show={this.state.currentStep === 4}
-            moveBetweenPages={this.moveBetweenPages.bind(this)}
+            changePage={this.moveBetweenPages.bind(this)}
             ></PageFour>
            </div>
         </div>  

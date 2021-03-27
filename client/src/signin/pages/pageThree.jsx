@@ -1,9 +1,9 @@
 
 import { useState } from 'react';
-import {Input,Button, Select} from '../../Global_UI';
+import {Input,Button} from '../../Global_UI';
 import {validation} from '../../validations/Validations';
 
-function PageThree({moveBetweenPages,show}){
+function PageThree({changePage,show}){
 
     let [inputs,setInputs] = useState([]);
     const [selectInputs,setSelectInputs] = useState([
@@ -36,10 +36,10 @@ function PageThree({moveBetweenPages,show}){
             let output = [];
             output.push({...userSelction});
             selectInputs.map(sel=>output.push({...sel}));
-            moveBetweenPages(action, output) 
+            changePage(action, output) 
         } 
         else if(action === 'Back') {
-             moveBetweenPages(action);
+             changePage(action);
         }
     }
 
@@ -102,7 +102,8 @@ function PageThree({moveBetweenPages,show}){
             {userSelction.value === 2 && selectInputs.map(input=>{
                 return (
              <div className="form_select_wrapper">
-                    <Select 
+                    <Input 
+                    inputType="select"
                     key={input.name}
                     label={input.label} 
                     error={input.error}

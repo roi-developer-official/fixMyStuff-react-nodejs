@@ -1,4 +1,4 @@
-import {Button,Select} from '../../Global_UI';
+import {Button,Input} from '../../Global_UI';
 
 import './userPostsHeader.css';
 import { useHistory } from 'react-router';
@@ -11,7 +11,7 @@ export default function UserPostsHeader(){
         <div className="userp_header_wrapper">
             <h1>Posts</h1>
             <div className="userp_header_select">
-                <Select options={[]}></Select>
+                <Input inputType="select" options={[]}/>
             </div>
             <div className="userp_header_button">
             <Button

@@ -1,9 +1,10 @@
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEvent from '@testing-library/user-event';
+import { createMemoryHistory} from 'history';
 import Pageone from "../PageOne";
-import { inputs } from '../elements';
-import enzyme, { mount, shallow } from 'enzyme';
-import React from 'react';
+import { mount } from "enzyme";
+import React from "react";
+import { Router } from "react-router";
 
 describe("page one", () => {
   test("number of text inputs is 2", () => {
@@ -18,8 +19,7 @@ describe("page one", () => {
     expect(lastName).toBeInTheDocument();
   });
 
-
-  test.skip("number of select input 1", () => {
+  test("number of select input 1", () => {
     render(<Pageone />);
     const citySelect = screen.getByRole("combobox", {
       name: /city/i,
@@ -27,7 +27,7 @@ describe("page one", () => {
     expect(citySelect).toBeInTheDocument();
   });
 
-  test.skip("number of buttons", () => {
+  test("number of buttons", () => {
     render(<Pageone />);
 
     const cancelButton = screen.getByRole("button", {
@@ -40,13 +40,11 @@ describe("page one", () => {
     expect(nextButton).toBeInTheDocument();
   });
 
-
   test("should not be visible when show is false", () => {
     const { container } = render(<Pageone show={false} />);
     const showClass = container.children[0].className.split(" ")[1];
     expect(showClass).not.toBe("show");
   });
-
 
   test("should  be visible when show is true", () => {
     const { container } = render(<Pageone show={true} />);
@@ -54,41 +52,99 @@ describe("page one", () => {
     expect(showClass).toBe("show");
   });
 
-
-
-  describe('inputs', ()=>{
-    const setup = (props ={})=>{
-      return mount(<Pageone  {...props} />);
-    }
+  describe("inputs and selects", () => {
+    const setup = (props = {}) => {
+      return mount(<Pageone {...props} />);
+    };
 
     const mockDispatch = jest.fn();
     let originalUseReducer;
     let wrapper;
-    const event = {
-      target : {
-        value: 'hello',
-        name: 'firstName'
-      }
-    }
+    let inputEvent;
+    let input;
+    let select;
 
-    beforeEach(()=>{
+    beforeEach(() => {
+      inputEvent = {
+        target: {
+          value: "hello",
+          name: "firstName",
+        },
+      };
       originalUseReducer = React.useReducer;
-      React.useReducer = jest.fn(()=> [{}, mockDispatch]);
+      React.useReducer = jest.fn(() => [{}, mockDispatch]);
       wrapper = setup();
+      input = wrapper.find({ "data-test": "firstName" });
+      select = wrapper.find({ "data-test": "city" });
     });
 
-    afterEach(()=>{
+    afterEach(() => {
+      inputEvent = {
+        target: {
+          value: "hello",
+          name: "firstName",
+        },
+      };
       React.useReducer = originalUseReducer;
-    })
+    });
+
+    test("updateInput called when input is change", () => {
+
+      expect(input.length).toBe(1);
+      input.simulate("change", inputEvent);
+      expect(mockDispatch).toBeCalledWith({"name": "firstName", "type": "SET_INPUT", "value": "hello"});
+
+      inputEvent.target.name = "city";
+      select.simulate('change', inputEvent);
+      expect(mockDispatch).toBeCalledWith({"name": "city", "type": "SET_INPUT", "value": "hello"});
+    });
 
 
-    test('updateInput called when input is change',  ()=>{
-        const input = wrapper.find({ "data-test" : 'firstName'});
-        expect(input.length).toBe(1);
-        input.simulate('change', event);
-        expect(mockDispatch).toBeCalledWith({"action": {"name": "firstName", "value": "hello"}, "type": "SET_INPUT"});
+    test('updateError called when error exsists', ()=>{
+      inputEvent.target.value = "a"
+      input.simulate("blur", inputEvent);
+      expect(mockDispatch).toBeCalledWith({"error": "this field must be at least 2 chracters", "name": "firstName", "type": "SET_INPUT_ERROR"})
+      
+      inputEvent.target.value = "" 
+      inputEvent.target.name = "city"
+      select.simulate('blur', inputEvent);
+      expect(mockDispatch).toBeCalledWith({"error": "this field is required", "name": "city","type": "SET_INPUT_ERROR"});
     });
 
   });
 
+  describe('change page', ()=>{
+    const mockChangePage = jest.fn();
+
+    test('wont change the page when the input are not valid', ()=>{
+      const wrapper = mount(<Pageone changePage={mockChangePage} />);
+
+      const nextButton = wrapper.find({ name: 'Next'});
+      expect(nextButton.length).toBe(1);
+      nextButton.simulate('click');
+      expect(mockChangePage).not.toBeCalled();
+
+    });
+
+    test('should redirect to / when cancel clicked', ()=>{
+      const history = createMemoryHistory();
+      render(
+        <Router history={history}>
+          <Pageone /> 
+        </Router>
+      );
+      const backButton = screen.getByRole('button' ,{
+        name: 'Cancel'
+      });
+      userEvent.click(backButton);
+
+      expect(history.location.pathname).toBe('/');
+    });
+
+
+
+  });
+
 });
+
+

@@ -1,6 +1,6 @@
 import {  useState } from 'react';
 import {Button,AddImage } from '../../Global_UI';
-function PageTwo({moveBetweenPages,show}){
+function PageTwo({changePage,show}){
     let [input,setInput] = useState({
         name:'image',
         value:null
@@ -32,7 +32,7 @@ function PageTwo({moveBetweenPages,show}){
                 <div className="form_buttons_wrapper">
                         {buttons.map((btn,i)=>{
                             return <Button
-                            key={i} label={btn.label} onClick={()=>moveBetweenPages(btn.label,[{...input}])}
+                            key={i} label={btn.label} onClick={()=>changePage(btn.label,[{...input}])}
                             style={btn.style}></Button>
                         })}
                 </div>

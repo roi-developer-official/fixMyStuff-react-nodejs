@@ -50,6 +50,7 @@ export const inputs = {
 export const selects = {
     page1: [
         {
+            label: 'City',
             name: 'city',
             value:'',
             error:'',
@@ -85,19 +86,24 @@ export const selects = {
     ]
 };
 
-export const buttons = [{
+export const buttons = {
     page1: [
         {
             label: 'Cancel', 
+            name: 'cancel',
             style:{
                 backgroundColor: '#ccc',   
             }
         },
         {
             label: 'Next', 
+            name:'next',
             style:{
                 backgroundColor: '#08c982'  
             }
         }
     ]
-}]
+}
+
+export const citiesString =
+  ",Akko,Afula,Arad,Ashdod,Ashqelon,Bat Yam,Beersheba,Bet Sheʾan,Bet Sheʿarim,Bnei Brak,Caesarea,Dimona,Dor,Elat,En Gedi,Givʿatayim,H̱adera,Haifa,Herzliyya,H̱olon,Jerusalem,Karmiʾel,Kefar Sava,Lod,Meron,Nahariyya,Nazareth,Netanya,Petaẖ Tiqwa,Qiryat Shemona,Ramat Gan,Ramla,Reẖovot,Rishon LeẔiyyon,Sedom,Tel Aviv–Yafo,Tiberias,Ẕefat";

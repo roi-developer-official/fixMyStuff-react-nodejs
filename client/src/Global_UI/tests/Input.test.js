@@ -3,6 +3,7 @@ import { Input } from "../Input";
 import React from "react";
 
 const props = {
+  inputType:"text",
   label: "First name",
   type: "text",
   name: "firstName",
@@ -24,6 +25,7 @@ const setup = (props = {}, custom) => {
 describe("input", () => {
   const mockState = jest.fn();
   const mockUpdateInput = jest.fn();
+  const mockUpdateError = jest.fn();
   let originalUsState;
   let wrapper;
   const event = {
@@ -32,10 +34,11 @@ describe("input", () => {
       name: "firstname",
     },
   };
+
   beforeEach(() => {
     originalUsState = React.useState;
     React.useState = jest.fn(() => [{ error: "", value: "" }, mockState]);
-    wrapper = setup(props, { updateInput: mockUpdateInput });
+    wrapper = setup(props, { updateInput: mockUpdateInput, updateError: mockUpdateError });
   });
 
   afterEach(() => {
@@ -49,18 +52,26 @@ describe("input", () => {
 
 
   test("update input on change", () => {
-    const inputEl = wrapper.find({ name: "firstName" });
-    inputEl.simulate("change", event);
+    const input = wrapper.find({ name: "firstName" });
+    input.simulate("change", event);
+
     expect(mockUpdateInput).toBeCalledWith("firstname", "a");
     expect(mockState).toBeCalledWith({"value" : "a", "error": ""});
+
   });
 
 
-  test("update error when input is blur with wrong input", () => {
+  test("update error onblur with wrong input and clears on change", () => {
     const inputEl = wrapper.find({ name: "firstName" });
     inputEl.simulate("focus");
     inputEl.simulate("blur", event);
     expect(mockState).toBeCalledWith({"error": "this field must be at least 2 chracters", "value": ""});
+    expect(mockUpdateError).toBeCalledWith("firstname", "this field must be at least 2 chracters");
+
+    inputEl.simulate('change', event);
+    expect(mockState).toBeCalledWith({"error": "", "value": "a"});
+    expect(mockUpdateError).toBeCalledWith("firstname", "");
+
   });
 
 
@@ -71,5 +82,7 @@ describe("input", () => {
     inputEl.simulate("blur", event);
     expect(mockState).not.toBeCalled();
   });
+
+
 
 });

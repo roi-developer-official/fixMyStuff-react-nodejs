@@ -1,32 +1,35 @@
-import { useReducer, useState } from "react";
-import { Button, Input, Logo, Select } from "../../Global_UI";
-import validation from "../../validations/Validations";
+import { Button, Input, Logo } from "../../Global_UI";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import {
-  buttons,
+  buttons as pageButtons,
   inputs as pageInputs,
   selects as pageSelects,
+  citiesString
 } from "./elements";
 
 const SET_INPUT = "SET_INPUT";
-
+const SET_INPUT_ERROR = "SET_INPUT_ERROR";
 const initialState = {
   inputs: [
-    { name: "firstName", value: "" },
-    { name: "lastName", value: "" },
-    { name: "city", value: "" },
+    { name: "firstName", value: "", error: "" },
+    { name: "lastName", value: "", error: "" },
+    { name: "city", value: "", error: "" },
   ],
 };
 
 function reducer(state = initialState, action) {
+  const updatedInput = state.inputs.slice();
+  const index = updatedInput.findIndex((input) => input.name === action.name);
   switch (action.type) {
     case SET_INPUT:
-      const updatedInput = state.inputs.slice();
-      const index = updatedInput.findIndex(
-        (input) => (input.name === action.name)
-      );
       updatedInput[index].value = action.value;
+      return {
+        ...state,
+        inputs: updatedInput,
+      };
+    case SET_INPUT_ERROR:
+      updatedInput[index].error = action.error;
       return {
         ...state,
         inputs: updatedInput,
@@ -35,51 +38,34 @@ function reducer(state = initialState, action) {
   }
 }
 
-const citiesString =
-  ",Akko,Afula,Arad,Ashdod,Ashqelon,Bat Yam,Beersheba,Bet Sheʾan,Bet Sheʿarim,Bnei Brak,Caesarea,Dimona,Dor,Elat,En Gedi,Givʿatayim,H̱adera,Haifa,Herzliyya,H̱olon,Jerusalem,Karmiʾel,Kefar Sava,Lod,Meron,Nahariyya,Nazareth,Netanya,Petaẖ Tiqwa,Qiryat Shemona,Ramat Gan,Ramla,Reẖovot,Rishon LeẔiyyon,Sedom,Tel Aviv–Yafo,Tiberias,Ẕefat";
-function PageOne({ moveBetweenPages, show }) {
+function PageOne({ changePage, show }) {
   const cities = citiesString.split(",");
   const history = useHistory();
   const [state, dispatch] = React.useReducer(reducer, initialState);
 
-  //   function changePage(action) {
-  //     let isValidPage = true;
-  //     let updatedInputs = inputs.slice();
+  function onButtonClick(action) {
+    let isInvalidPage = false;
 
-  //     if (action === "Next") {
-  //       for (let index in Object.keys(inputs)) {
-  //         let message = validation(
-  //           inputs[index].validations,
-  //           inputs[index].value
-  //         );
-  //         if (message) {
-  //           isValidPage = false;
-  //           updatedInputs[index].error = message;
-  //         }
-  //       }
-  //       let message = validation(selectInput.validations, selectInput.value);
-  //       if (message) {
-  //         let updatedSelectedInput = { ...selectInput };
-  //         updatedSelectedInput.error = message;
-  //         isValidPage = false;
-  //         setSelectInput(updatedSelectedInput);
-  //       }
-  //     } else {
-  //       history.push("/");
-  //     }
-
-  //     if (!isValidPage) {
-  //       setInputs(updatedInputs);
-  //     } else {
-  //       let groupedInputs = [...inputs, selectInput];
-  //       moveBetweenPages(action, groupedInputs);
-  //     }
-  //   }
-
+    if (action === "Cancel") {
+      history.push("/");
+    } else if (action === "Next") {
+      isInvalidPage = state.inputs.find(
+        (input) => input.error.length > 0 || input.value.length === 0
+      );
+      if (isInvalidPage) {
+        return;
+      } else {
+        changePage(action, state.inputs);
+      }
+    }
+  }
   function onInputChange(name, value) {
-    dispatch({ type: SET_INPUT,  name: name, value: value });
+    dispatch({ type: SET_INPUT, name: name, value: value });
   }
 
+  function onErrorChange(name, error) {
+    dispatch({ type: SET_INPUT_ERROR, name: name, error: error });
+  }
 
   return (
     <div className={`signup_wrapper_page ${show ? "show" : ""}`}>
@@ -90,40 +76,46 @@ function PageOne({ moveBetweenPages, show }) {
         return (
           <div key={i} className="form_input_wrapper">
             <Input
+              inputType="text"
               label={input.label}
               type={input.type}
               name={input.name}
-              value={input.value}
-              error={input.error}
               updateInput={onInputChange}
+              updateError={onErrorChange}
               validate={input.validate}
               validations={input.validations}
             ></Input>
           </div>
         );
       })}
-      {/* <div className="form_select_wrapper">
-        <Select
-          label="City"
-          error={selectInput.error}
-          validate={selectInput.validate}
-          onBlur={(e) => validateSelectOnBlur(e)}
-          options={cities}
-          onChange={onSelectChange}
-        />
-      </div>
+      {pageSelects.page1.map((input) => {
+        return (
+          <div key={input.name} className="form_select_wrapper">
+            <Input
+              inputType="select"
+              label={input.label}
+              validate={input.validate}
+              validations={input.validations}
+              name={input.name}
+              options={cities}
+              updateInput={onInputChange}
+              updateError={onErrorChange}
+            />
+          </div>
+        );
+      })}
       <div className="form_buttons_wrapper">
-        {buttons.map((btn, i) => {
+        {pageButtons.page1.map((btn, i) => {
           return (
             <Button
               key={i}
               label={btn.label}
-              onClick={() => changePage(btn.label)}
+              onClick={onButtonClick}
               style={btn.style}
             ></Button>
           );
         })}
-      </div> */}
+      </div>
     </div>
   );
 }

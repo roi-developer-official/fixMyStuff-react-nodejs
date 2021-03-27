@@ -2,6 +2,8 @@ import React, { Fragment } from "react";
 import {validation} from '../validations/Validations';
 
 export function Input({
+    inputType,
+    options,
     label, 
     type, 
     name,
@@ -10,6 +12,7 @@ export function Input({
     ref,
     min,
     updateInput,
+    updateError,
     validations
 }){
     const [state, setState] = React.useState({
@@ -18,25 +21,31 @@ export function Input({
     });
 
      function validateOnBlur(input){
-        let errorMsg = validation(validations ,input.value);
+        const value = input.value;
+        const name = input.name;
+        let errorMsg = validation(validations ,value);
         if(errorMsg){
             setState({
                 ...state,
                 error: errorMsg
-            })
+            });
+            updateError(name,errorMsg)
         } 
     }
 
-    const  onInputChange =(input)=>{
+    const onInputChange =(input)=>{
         const value = input.value;
         const name = input.name;
         setState({
             ...state,
-            value: input.value
+            value: input.value,
+            error: ""
         });
         updateInput(name,value);
+        updateError(name, "");
     }
 
+if(inputType === 'text'){
     return (
         <Fragment>
             <label htmlFor={name}>{label}</label>
@@ -55,5 +64,26 @@ export function Input({
             {state.error && <span className='validation_text'>{state.error}</span>}
         </Fragment>
     )
+    }
+    else {
+        return (
+            <>
+            <label htmlFor={label} className='label'>{label}</label>
+            <select 
+            id={label}
+            data-test={name}
+            name={name}
+            className='select' 
+            onChange={(e)=>{onInputChange(e.target)}}
+            onBlur={(e)=>validateOnBlur(e.target)}
+            >
+                {options.map((opt,i)=>{
+                    return <option key={i} value={opt}>{opt}</option>
+                })}
+            </select>
+            {state.error && <span className='validation_text'>{state.error}</span>}
+            </>
+        )
+    }
 }
 
