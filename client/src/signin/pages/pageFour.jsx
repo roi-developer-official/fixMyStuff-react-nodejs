@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {Input,Button} from '../../Global_UI';
-import validation from "../../validations/Validations";
+import {validation} from "../../validations/Validations";
 function PageFour({moveBetweenPages,show}){
 
     let [inputs,setInputs] = useState([

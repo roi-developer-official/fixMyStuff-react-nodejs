@@ -1,9 +1,7 @@
 
 import { useState } from 'react';
-import './pageThree.css';
 import {Input,Button, Select} from '../../Global_UI';
-import validation from '../../validations/Validations';
-import updateInputs from '../../util/useInputs';
+import {validation} from '../../validations/Validations';
 
 function PageThree({moveBetweenPages,show}){
 
@@ -79,7 +77,7 @@ function PageThree({moveBetweenPages,show}){
     }
 
     function onSelectChange(e,name){
-        updateInputs(selectInputs, setSelectInputs, name, e);
+        // updateInputs(selectInputs, setSelectInputs, name, e);
     }
     
     return (

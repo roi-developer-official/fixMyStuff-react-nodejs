@@ -50,7 +50,7 @@ describe("input", () => {
 
   test("update input on change", () => {
     const inputEl = wrapper.find({ name: "firstName" });
-    inputEl.simulate("change", event.target);
+    inputEl.simulate("change", event);
     expect(mockUpdateInput).toBeCalledWith("firstname", "a");
     expect(mockState).toBeCalledWith({"value" : "a", "error": ""});
   });

@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Pageone from "../PageOne";
 import { inputs } from '../elements';
-import enzyme, { shallow } from 'enzyme';
+import enzyme, { mount, shallow } from 'enzyme';
 import React from 'react';
 
 describe("page one", () => {
@@ -54,14 +54,22 @@ describe("page one", () => {
     expect(showClass).toBe("show");
   });
 
-  describe('inputs', ()=>{
 
+
+  describe('inputs', ()=>{
     const setup = (props ={})=>{
-      return shallow(<Pageone  {...props} />);
+      return mount(<Pageone  {...props} />);
     }
+
     const mockDispatch = jest.fn();
     let originalUseReducer;
     let wrapper;
+    const event = {
+      traget : {
+        value: 'hello',
+        name: 'firstname'
+      }
+    }
 
     beforeEach(()=>{
       originalUseReducer = React.useReducer;
@@ -75,7 +83,8 @@ describe("page one", () => {
 
     test('updateInput called when input is change',  ()=>{
         const input = wrapper.find({label : 'First name'});
-        input.simulate('change', 'hallo');
+        expect(input.length).toBe(1);
+        input.simulate('change', event);
         expect(mockDispatch).toBeCalled();
     });
 

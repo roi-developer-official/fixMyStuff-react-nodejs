@@ -79,8 +79,10 @@ function PageOne({ moveBetweenPages, show }) {
 //   }
 
   function onInputChange(name, value) {
+    console.log('hello');
     dispatch({ type: SET_INPUT, inputName: name, value: value });
   }
+
 
   return (
     <div className={`signup_wrapper_page ${show ? "show" : ""}`}>
@@ -96,7 +98,7 @@ function PageOne({ moveBetweenPages, show }) {
               name={input.name}
               value={input.value}
               error={input.error}
-              onChange={onInputChange}
+              updateInput={onInputChange}
               validate={input.validate}
               validations={input.validations}
             ></Input>

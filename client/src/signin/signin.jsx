@@ -2,9 +2,9 @@ import React from 'react';
 import {Steps,FormFeedback} from '../Global_UI';
 import PageOne from './pages/PageOne';
 import './signin.css'
-import PageTwo from './pages/pageTwo';
-import PageThree from './pages/pageThree';
-import PageFour from './pages/pageFour';
+import PageTwo from './pages/PageTwo';
+import PageThree from './pages/PageThree';
+import PageFour from './pages/PageFour';
 import {connect} from 'react-redux';
 import {signIn} from '../store/actions/actionsCreators/auth.actionCreator';
 import * as actions from '../store/actions/state.actions';

@@ -26,8 +26,9 @@ export function Input({
             })
         } 
     }
-
-    function onChange(input){
+    
+    const  onInputChange =(input)=>{
+        console.log(input);
         const value = input.value;
         const name = input.name;
         updateInput(name,value);
@@ -45,8 +46,8 @@ export function Input({
             min={min}
             ref={ref} 
             type={type} 
-            name={name} 
-            onChange={(e)=>onChange(e)} 
+            name={name}
+            onChange={(e)=>onInputChange(e.target)}
             onBlur={(e)=>validateOnBlur(e.target)}
             accept={accept}
             style={{...style}}

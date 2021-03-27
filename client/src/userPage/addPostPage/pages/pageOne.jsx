@@ -1,7 +1,6 @@
 import {useState} from 'react'
 import {Input, Button, Textarea, Logo} from '../../../Global_UI';
-import updatedInputs from '../../../util/useInputs';
-import validation from '../../../validations/Validations';
+import {validation} from '../../../validations/Validations';
 import {useHistory} from 'react-router-dom'
 export default function PageOne({show,changePage}){
     const [inputs,setInputs] = useState([
@@ -67,7 +66,7 @@ export default function PageOne({show,changePage}){
     const history = useHistory();
     function onInputChange(e,name){
 
-        updatedInputs(inputs,setInputs, name, e);
+        // updatedInputs(inputs,setInputs, name, e);
     }
 
 

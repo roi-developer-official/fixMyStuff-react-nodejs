@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './global.css'
-import validation from '../validations/Validations';
+import {validation} from '../validations/Validations';
 export function Select({
     options,
     label,

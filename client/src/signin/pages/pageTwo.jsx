@@ -1,6 +1,5 @@
 import {  useState } from 'react';
 import {Button,AddImage } from '../../Global_UI';
-import './pageTwo.css';
 function PageTwo({moveBetweenPages,show}){
     let [input,setInput] = useState({
         name:'image',

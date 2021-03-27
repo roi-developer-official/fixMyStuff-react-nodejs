@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import validation from '../validations/Validations';
+import {validation} from '../validations/Validations';
 import {Input,Button,Logo,FormFeedback} from '../Global_UI';
 import * as actions from '../store/actions/state.actions';
 import {login} from '../store/actions/actionsCreators/auth.actionCreator';
@@ -7,7 +7,6 @@ import './login.css';
 import { NavLink, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { AuthContext } from '../context/authContext';
-import updateInputs from '../util/useInputs';
 
 function LoginPage(props){
     const history = useHistory();
@@ -61,7 +60,7 @@ function LoginPage(props){
 
 
     function onInputChange(e,name){
-        updateInputs(inputs,setInputs, name, e);
+        // updateInputs(inputs,setInputs, name, e);
     }
 
     function validateOnBlur(name){
