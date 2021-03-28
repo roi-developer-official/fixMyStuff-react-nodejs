@@ -102,6 +102,20 @@ export const buttons = {
                 backgroundColor: '#08c982'  
             }
         }
+    ],
+    page3: [
+        {
+            label: 'Back',
+            style:{
+                backgroundColor:'#ccc'
+            }
+        },
+        {
+            label: 'Next',
+            style:{
+                backgroundColor: '#08c982'
+            }
+        }
     ]
 }
 

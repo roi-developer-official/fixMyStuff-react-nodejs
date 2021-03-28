@@ -13,7 +13,8 @@ export function Input({
     min,
     updateInput,
     updateError,
-    validations
+    validations,
+    addToRefsArray
 }){
     const [state, setState] = React.useState({
         error: '',
@@ -53,7 +54,7 @@ if(inputType === 'text'){
             data-test={`${name}`}
             id={name}
             min={min}
-            ref={ref} 
+            ref={addToRefsArray} 
             type={type} 
             name={name}
             onChange={(e)=>{onInputChange(e.target)}}
@@ -70,6 +71,7 @@ if(inputType === 'text'){
             <>
             <label htmlFor={label} className='label'>{label}</label>
             <select 
+            ref={addToRefsArray}
             id={label}
             data-test={name}
             name={name}

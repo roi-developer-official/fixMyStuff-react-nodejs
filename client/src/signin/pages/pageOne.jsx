@@ -1,5 +1,5 @@
 import { Button, Input, Logo } from "../../Global_UI";
-import React from "react";
+import React, { useRef } from "react";
 import { useHistory } from "react-router-dom";
 import {
   buttons as pageButtons,
@@ -42,6 +42,12 @@ function PageOne({ changePage, show }) {
   const cities = citiesString.split(",");
   const history = useHistory();
   const [state, dispatch] = React.useReducer(reducer, initialState);
+  const refs = useRef([]);
+    
+  function addToRefsArray(el){
+    if(!refs.current.includes(el))
+      refs.current.push(el);
+  }
 
   function onButtonClick(action) {
     let isInvalidPage = false;
@@ -49,9 +55,13 @@ function PageOne({ changePage, show }) {
     if (action === "Cancel") {
       history.push("/");
     } else if (action === "Next") {
-      isInvalidPage = state.inputs.find(
-        (input) => input.error.length > 0 || input.value.length === 0
-      );
+
+      state.inputs.forEach((input,index)=>{
+        if(input.error.length > 0 || input.value.length === 0){
+          refs.current[index].focus();
+          isInvalidPage = true
+        } 
+      })
       if (isInvalidPage) {
         return;
       } else {
@@ -76,12 +86,14 @@ function PageOne({ changePage, show }) {
         return (
           <div key={i} className="form_input_wrapper">
             <Input
+              ref={refs[i]}
               inputType="text"
               label={input.label}
               type={input.type}
               name={input.name}
               updateInput={onInputChange}
               updateError={onErrorChange}
+              addToRefsArray={addToRefsArray}
               validate={input.validate}
               validations={input.validations}
             ></Input>
@@ -100,6 +112,7 @@ function PageOne({ changePage, show }) {
               options={cities}
               updateInput={onInputChange}
               updateError={onErrorChange}
+              addToRefsArray={addToRefsArray}
             />
           </div>
         );
