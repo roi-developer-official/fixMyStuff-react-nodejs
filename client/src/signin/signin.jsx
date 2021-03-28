@@ -1,8 +1,8 @@
 import React from 'react';
 import {Steps,FormFeedback} from '../Global_UI';
-import PageOne from './pages/PageOne';
+import PageOne from './pages/pageOne';
 import './signin.css'
-import PageTwo from './pages/PageTwo';
+import PageTwo from './pages/pageTwo';
 import PageThree from './pages/PageThree';
 import PageFour from './pages/PageFour';
 import {connect} from 'react-redux';

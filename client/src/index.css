@@ -159,6 +159,10 @@ code {
     width: 80%;
     flex-direction: column;
     margin: auto;
+    visibility: hidden;
+}
+.form_select_wrapper.show{
+  visibility: visible;
 }
 
 .form_select_wrapper > label
