@@ -140,6 +140,7 @@
 }
 
 .browse_btn{
+    visibility: hidden;
     background-color:transparent;
     position:absolute;
     height:30px;
@@ -153,4 +154,7 @@
     margin: 0 4px;
     top:-40px;
     border:none;
+}
+.browse_btn.show{
+    visibility: visible;
 }
