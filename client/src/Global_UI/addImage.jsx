@@ -1,6 +1,6 @@
 import { useRef, useState } from "react"
 
- export function AddImage({setInputValue}){
+ export default function AddImage({setInputValue}){
     const [dragOver,setDraggedOver] = useState(false);
     const imagePreviewRef = useRef();
     const inputRef = useRef();
@@ -17,25 +17,22 @@ import { useRef, useState } from "react"
         setDraggedOver(false);
     }
 
-    function onFileAdded(e){
+    function onFileChange(e){
         e.preventDefault();
         e.stopPropagation();
 
         let file;
         if(e.type === 'change')
             file = e.target.files[0];
-        else 
+        else if(e.type === 'drop')
             file = e.dataTransfer.files[0];
-        
-        if(!file.type.startsWith('image'))
+        if(!file){
+            return setImageInput(null); 
+        }
+        if(!file.type.startsWith('image/'))
             return;
 
         setImageInput(file)
-    }
-
-    function onFileDeleted(){
-        setImage(null);
-        setImageInput(null);
     }
 
     function setImageInput(file){
@@ -67,28 +64,29 @@ import { useRef, useState } from "react"
 
     return (
         <div>
-        <div 
+        <div
+        data-test="image-drop" 
         className={`image_drop ${dragOver? 'dragOver' :'' }`}
-        onDrop={onFileAdded} 
+        onDrop={onFileChange} 
         onDragOver={onDragOver}
         onDragLeave={onDragLeave}
         >
-        {image && <button onClick={onFileDeleted} className='delete_image'>&times;</button>}
+        <button onClick={onFileChange} data-test="delete_image" className={`delete_image${image? ' show' : ''}`}>&times;</button>
             <p>Drop an image</p>
-            {showImage && <img className={`image_preview ${ image? 'show' : ''}`} ref={imagePreviewRef}/>}
+            {showImage && <img className={`image_preview ${ image? 'show' : ''}`} alt="signup" ref={imagePreviewRef}/>}
         </div>
 
     <div className="file_input_wrapper">
       {!image && <button 
         className='browse_btn' 
         onClick={()=>inputRef.current.click()}
-        onDrop={onFileAdded} 
+        onDrop={onFileChange} 
         onDragOver={onDragOver} 
         >Browse</button>}
             <input 
             style={{opacity:0}}
             ref={inputRef}
-            onChange={onFileAdded}
+            onChange={onFileChange}
             type='file'
             accept='image/*'
          ></input>

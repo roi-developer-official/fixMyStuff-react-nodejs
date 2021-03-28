@@ -115,6 +115,7 @@
 
 .delete_image{
     z-index: 2;
+    visibility: hidden;
     color:rgb(165, 161, 161);
     position: absolute;
     right:5px;
@@ -124,6 +125,9 @@
     font-size: 25px;
     font-weight: bold;
     background-color: transparent;
+}
+.delete_image.show{
+    visibility: visible;
 }
 
 .input_file_back{
