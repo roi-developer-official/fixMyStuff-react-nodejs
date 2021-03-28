@@ -6,32 +6,35 @@ export function Input({
     options,
     label, 
     type, 
+    checked,
+    value,
     name,
     accept,
     style,
-    ref,
     min,
     updateInput,
     updateError,
     validations,
     addToRefsArray
 }){
+
     const [state, setState] = React.useState({
         error: '',
         value: ''
     });
-
      function validateOnBlur(input){
-        const value = input.value;
-        const name = input.name;
-        let errorMsg = validation(validations ,value);
-        if(errorMsg){
-            setState({
-                ...state,
-                error: errorMsg
-            });
-            updateError(name,errorMsg)
-        } 
+         if(validations){
+             const value = input.value;
+             const name = input.name;
+             let errorMsg = validation(validations ,value);
+             if(errorMsg){
+                 setState({
+                     ...state,
+                     error: errorMsg
+                 });
+                 updateError(name,errorMsg)
+             } 
+         }
     }
 
     const onInputChange =(input)=>{
@@ -43,10 +46,11 @@ export function Input({
             error: ""
         });
         updateInput(name,value);
-        updateError(name, "");
+        if(validations)
+            updateError(name, "");
     }
 
-if(inputType === 'text'){
+if(inputType !== 'select'){
     return (
         <Fragment>
             <label htmlFor={name}>{label}</label>
@@ -56,12 +60,13 @@ if(inputType === 'text'){
             min={min}
             ref={addToRefsArray} 
             type={type} 
+            checked={checked}
             name={name}
             onChange={(e)=>{onInputChange(e.target)}}
             onBlur={(e)=>validateOnBlur(e.target)}
             accept={accept}
             style={{...style}}
-            value={state.value}/>
+            value={value? value : state.value}/>
             {state.error && <span className='validation_text'>{state.error}</span>}
         </Fragment>
     )

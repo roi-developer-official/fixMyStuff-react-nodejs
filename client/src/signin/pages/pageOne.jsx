@@ -87,7 +87,7 @@ function PageOne({ changePage, show }) {
           <div key={i} className="form_input_wrapper">
             <Input
               ref={refs[i]}
-              inputType="text"
+              inputType={input.type}
               label={input.label}
               type={input.type}
               name={input.name}
@@ -102,9 +102,9 @@ function PageOne({ changePage, show }) {
       })}
       {pageSelects.page1.map((input) => {
         return (
-          <div key={input.name} className="form_select_wrapper">
+          <div key={input.name} className="form_select_wrapper show">
             <Input
-              inputType="select"
+              inputType={input.type}
               label={input.label}
               validate={input.validate}
               validations={input.validations}

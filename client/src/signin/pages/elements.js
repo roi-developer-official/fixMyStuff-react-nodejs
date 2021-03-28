@@ -5,27 +5,23 @@ export const inputs = {
             label: 'First name', 
             type: 'text',
             name: 'firstName',
-            value:'',
             validate:true,
             validations:{
                 required:true,
                 minLength:2,
                 alphaNumeric:true
-            },
-            error:'',
+            }
         },
         {
             label: 'Last name', 
             type: 'text',
             name: 'lastName',
-            value:'',
             validate:true,
             validations:{
                 required:true,
                 minLength:2,
                 alphaNumeric:true
-            },
-            error:'',
+            }
         }
     ],
     page3: [
@@ -40,8 +36,7 @@ export const inputs = {
             type: 'radio',
             name : 'role',
             validate:true,
-            value:1,
-            error: ''
+            value:1
         }
     ]
 
@@ -50,10 +45,9 @@ export const inputs = {
 export const selects = {
     page1: [
         {
+            type: 'select',
             label: 'City',
             name: 'city',
-            value:'',
-            error:'',
             validate:true,
             validations:{
                 required:true
@@ -62,10 +56,9 @@ export const selects = {
     ], 
     page3: [
         {
+            type: 'select',
             name: 'profession',
             label: 'Profession',
-            value:'',
-            error:'',
             validate:true,
             validations:{
                 required:true
@@ -73,10 +66,9 @@ export const selects = {
             options: ['','Carpenter ','Electrician','Mechanic','Painter','Plumber','Tailor','Bricklayer','Window cleaner','Cleaner', 'other']
         },
         {
+            type: 'select',
             name: 'experience',
             label: 'Experience',
-            value:'',
-            error:'',
             validate:true,
             validations:{
                 required:true

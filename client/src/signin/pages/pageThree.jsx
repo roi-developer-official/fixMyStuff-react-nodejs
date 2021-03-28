@@ -1,127 +1,114 @@
+import React, { useEffect, useRef } from "react";
+import { Input, Button } from "../../Global_UI";
+import { validation } from "../../validations/Validations";
+import { inputs as pageInputs, buttons as pageButtons, selects as pageSelects, inputs } from "./elements";
 
-import { useState } from 'react';
-import {Input,Button} from '../../Global_UI';
-import {validation} from '../../validations/Validations';
+const SET_INPUT = "SET_INPUT";
+const SET_INPUT_ERROR = "SET_INPUT_ERROR";
 
-function PageThree({changePage,show}){
+const initialState = {
+  inputs: [
+    { name: "role", value: 1 },
+    { name: "profession", value: "", error: "" },
+    { name: "experience", value: "", error: "" },
+  ],
+};
 
-    let [inputs,setInputs] = useState([]);
-    const [selectInputs,setSelectInputs] = useState([
-        
-    ]);
-    let [userSelction,setUserSelction] = useState({
-        name:'role',
-        value:'',
-        validations:{
-            required:true
-        }
-    });
-    let buttons = [
-        {
-            label: 'Back', 
-            style:{
-                backgroundColor: '#ccc',   
-        }
-        },
-        {
-            label: 'Next', 
-            style:{
-                backgroundColor: '#08c982'
-        }
-        }
-    ];
+function reducer(state = initialState, action) {
+  const updatedInput = state.inputs.slice();
+  const index = updatedInput.findIndex((input) => input.name === action.name);
+  switch (action.type) {
+    case SET_INPUT:
+      updatedInput[index].value = action.value;
+      return {
+        ...state,
+        inputs: updatedInput,
+      };
+    case SET_INPUT_ERROR:
+      updatedInput[index].error = action.error;
+      return {
+        ...state,
+        inputs: updatedInput,
+      };
+    default: return state;
+  }
+}
 
-    function changePage(action){
-        if(action === 'Next' && validateInputs()){
-            let output = [];
-            output.push({...userSelction});
-            selectInputs.map(sel=>output.push({...sel}));
-            changePage(action, output) 
-        } 
-        else if(action === 'Back') {
-             changePage(action);
-        }
-    }
+function PageThree({ changePage, show }) {
+  const [state, dispatch] = React.useReducer(reducer, initialState);
+  const checkedRef = state.inputs[0].value || 1;
 
-    function onInputChange(e){
-        setUserSelction({
-            name:'role',
-            value: Number.parseInt(e.target.value)
-        });
-        let updatedInputs = inputs.slice();
-        updatedInputs[1].error = '';
-        setInputs(updatedInputs);
-    }
+  //   function onButtonClick(action) {
+  //     if (action === "Next" && validateInputs()) {
+  //       let output = [];
+  //       output.push({ ...userSelction });
+  //       selectInputs.map((sel) => output.push({ ...sel }));
+  //       changePage(action, output);
+  //     } else if (action === "Back") {
+  //       changePage(action);
+  //     }
+  //   }
 
-    function validateInputs(){
-        let isValidPage = true;
+  function onInputChange(name, value) {
+        dispatch({ type: SET_INPUT, name, value });
+  }
 
-        if(!userSelction.value){
-            let updatedInput = inputs.slice();
-            updatedInput[1].error = 'you must select one';
-            isValidPage = false; 
-            setInputs(updatedInput)   
-        }        
-        if(userSelction.value === 2){
-            let updatedSelects = selectInputs.slice();
-            for(let i of updatedSelects){
-                let message = validation(i.validations,i.value);
-                if(message){
-                    isValidPage = false;
-                    i.error = message;
-                }
-            }
-            setSelectInputs(updatedSelects);
-        }
-        return isValidPage;
-    }
+  function onErrorChange(name, error) {
+    dispatch({ type: SET_INPUT_ERROR, name, error });
+  }
 
-    function onSelectChange(e,name){
-        // updateInputs(selectInputs, setSelectInputs, name, e);
-    }
-    
-    return (
-        <div className={`signup_wrapper_page ${show? 'show' :''}`}>
-            <p style={{marginTop: '10px', fontSize: '19px'}}>Are you looking for Jobs?</p>
-            <br/>
-            <div className="form_input_wrapper">
-            {inputs.map((input,i)=>{
-                       return <Input
-                        key={i}
-                        label={input.label} 
-                        name={input.name} 
-                        onChange={onInputChange}
-                        type={input.type}
-                        value={input.value}
-                        validate={input.validate}
-                        onBlur={()=>{}}
-                        error={input.error}
-                    ></Input>
-                })}
+  
+  return (
+    <div className={`signup_wrapper_page ${show ? "show" : ""}`}>
+      <p style={{ marginTop: "10px", fontSize: "19px" }}>
+        Are you looking for Jobs?
+      </p>
+      <br />
+      <div className="form_input_wrapper">
+        {pageInputs.page3.map((input, i) => {
+          return (
+            <Input
+              key={i}
+              type={input.type}
+              name={input.name}
+              label={input.label}
+              value={input.value}
+              checked={(checkedRef - 1) !== i}
+              updateInput={onInputChange}
+            ></Input>
+          );
+        })}
+      </div>
+      {pageSelects.page3.map((input ,i) => {
+          return (
+            <div className={`form_select_wrapper ${checkedRef === 2? 'show' : ''}`} key={i}>
+              <Input
+                inputType={input.type}
+                key={input.name}
+                name={input.name}
+                label={input.label}
+                validate={input.validate}
+                validations={input.validations}
+                options={input.options}
+                onInputChange={onInputChange}
+                onErrorChange={onErrorChange}
+              />
             </div>
-            {userSelction.value === 2 && selectInputs.map(input=>{
-                return (
-             <div className="form_select_wrapper">
-                    <Input 
-                    inputType="select"
-                    key={input.name}
-                    label={input.label} 
-                    error={input.error}
-                    validate={input.validate}
-                    onBlur={validateInputs}
-                    options={input.options}
-                    onChange={(e)=>onSelectChange(e,input.name)}
-                    />
-             </div>
-                )
-            })}
-            <div className="form_buttons_wrapper">
-                {buttons.map((btn,i)=>{
-                    return <Button key={i} label={btn.label} onClick={()=>changePage(btn.label)}
-                    style={btn.style}></Button>
-                })}
-            </div>
-        </div>
-    )
+          );
+        })}
+      {/* <div className="form_buttons_wrapper">
+        {buttons.map((btn, i) => {
+          return (
+            <Button
+              key={i}
+              label={btn.label}
+              onClick={() => onButtonClick(btn.label)}
+              style={btn.style}
+            ></Button>
+          );
+        })}
+      </div> */}
+    </div>
+  );
 }
 export default PageThree;
