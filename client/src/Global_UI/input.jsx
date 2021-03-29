@@ -24,15 +24,14 @@ export function Input({
     });
      function validateOnBlur(input){
          if(validations){
-             const value = input.value;
              const name = input.name;
-             let errorMsg = validation(validations ,value);
+             let errorMsg = validation(validations ,state.value);
              if(errorMsg){
                  setState({
                      ...state,
                      error: errorMsg
                  });
-                 updateError(name,errorMsg)
+                 updateInput(name,state.value,errorMsg)
              } 
          }
     }
@@ -41,13 +40,10 @@ export function Input({
         const value = input.value;
         const name = input.name;
         setState({
-            ...state,
             value: input.value,
             error: ""
         });
-        updateInput(name,value);
-        if(validations)
-            updateError(name, "");
+        updateInput(name,value, "");
     }
 
 if(inputType !== 'select'){

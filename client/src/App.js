@@ -5,7 +5,7 @@ import Home from './home/home';
 import Nav from './nav/Nav';
 import { Fragment, useContext }  from 'react';
 import { Redirect } from 'react-router-dom';
-import Signin from './signin/Signin';
+import Signin from './signin/signin';
 import { AuthContext } from './context/authContext';
 import LoginPage from './login/login';
 import UserPage from './userPage/userPage';

@@ -1,14 +1,12 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
+import { useHistory } from "react-router";
 import { Input, Button } from "../../Global_UI";
-import { validation } from "../../validations/Validations";
-import { inputs as pageInputs, buttons as pageButtons, selects as pageSelects, inputs } from "./elements";
+import { inputs as pageInputs, buttons as pageButtons, selects as pageSelects } from "./elements";
 
 const SET_INPUT = "SET_INPUT";
-const SET_INPUT_ERROR = "SET_INPUT_ERROR";
-
 const initialState = {
   inputs: [
-    { name: "role", value: 1 },
+    { name: "role", value: 1, error : "" },
     { name: "profession", value: "", error: "" },
     { name: "experience", value: "", error: "" },
   ],
@@ -17,14 +15,10 @@ const initialState = {
 function reducer(state = initialState, action) {
   const updatedInput = state.inputs.slice();
   const index = updatedInput.findIndex((input) => input.name === action.name);
+
   switch (action.type) {
     case SET_INPUT:
       updatedInput[index].value = action.value;
-      return {
-        ...state,
-        inputs: updatedInput,
-      };
-    case SET_INPUT_ERROR:
       updatedInput[index].error = action.error;
       return {
         ...state,
@@ -36,25 +30,38 @@ function reducer(state = initialState, action) {
 
 function PageThree({ changePage, show }) {
   const [state, dispatch] = React.useReducer(reducer, initialState);
+  const history = useHistory();
   const checkedRef = state.inputs[0].value || 1;
 
-  //   function onButtonClick(action) {
-  //     if (action === "Next" && validateInputs()) {
-  //       let output = [];
-  //       output.push({ ...userSelction });
-  //       selectInputs.map((sel) => output.push({ ...sel }));
-  //       changePage(action, output);
-  //     } else if (action === "Back") {
-  //       changePage(action);
-  //     }
-  //   }
-
-  function onInputChange(name, value) {
-        dispatch({ type: SET_INPUT, name, value });
+  const refs = React.useRef([]);
+    
+  function addToRefsArray(el){
+    if(!refs.current.includes(el))
+      refs.current.push(el);
   }
 
-  function onErrorChange(name, error) {
-    dispatch({ type: SET_INPUT_ERROR, name, error });
+  function onButtonClick(action) {
+    let isInvalidPage = false;
+    if (action === "Back") {
+      history.push("/");
+    } else if (action === "Next") {
+        if(parseInt(state.inputs[0].value) === 2)
+            state.inputs.forEach((input,index)=>{
+                if(input.error.length > 0 || input.value.length === 0){
+                refs.current[index].focus();
+                isInvalidPage = true
+                } 
+        })
+      if (isInvalidPage) {
+        return;
+      } else {
+        changePage(action, state.inputs);
+      }
+    }
+  }
+
+  function onInputChange(name, value,error) {
+        dispatch({ type: SET_INPUT, name: name, value: value, error: error });
   }
 
   
@@ -73,7 +80,7 @@ function PageThree({ changePage, show }) {
               name={input.name}
               label={input.label}
               value={input.value}
-              checked={(checkedRef - 1) !== i}
+              checked={(parseInt(checkedRef)- 1) !== i}
               updateInput={onInputChange}
             ></Input>
           );
@@ -81,23 +88,23 @@ function PageThree({ changePage, show }) {
       </div>
       {pageSelects.page3.map((input ,i) => {
           return (
-            <div className={`form_select_wrapper ${checkedRef === 2? 'show' : ''}`} key={i}>
+            <div data-test="select_wrapper" className={`form_select_wrapper${parseInt(checkedRef) === 2? ' show' : ''}`} key={i}>
               <Input
                 inputType={input.type}
                 key={input.name}
+                addToRefsArray={addToRefsArray}
                 name={input.name}
                 label={input.label}
                 validate={input.validate}
                 validations={input.validations}
                 options={input.options}
-                onInputChange={onInputChange}
-                onErrorChange={onErrorChange}
+                updateInput={onInputChange}
               />
             </div>
           );
         })}
-      {/* <div className="form_buttons_wrapper">
-        {buttons.map((btn, i) => {
+      <div className="form_buttons_wrapper">
+        {pageButtons.page3.map((btn, i) => {
           return (
             <Button
               key={i}
@@ -107,7 +114,7 @@ function PageThree({ changePage, show }) {
             ></Button>
           );
         })}
-      </div> */}
+      </div>
     </div>
   );
 }
