@@ -1,9 +1,9 @@
-import React, { useRef } from "react";
+import React from "react";
 import { useHistory } from "react-router";
 import { Input, Button } from "../../Global_UI";
 import { inputs as pageInputs, buttons as pageButtons, selects as pageSelects } from "./elements";
+import pagesReducer, {SET_INPUT, addToRefsArray} from "./pagesShared";
 
-const SET_INPUT = "SET_INPUT";
 const initialState = {
   inputs: [
     { name: "role", value: 1, error : "" },
@@ -12,34 +12,12 @@ const initialState = {
   ],
 };
 
-function reducer(state = initialState, action) {
-  const updatedInput = state.inputs.slice();
-  const index = updatedInput.findIndex((input) => input.name === action.name);
-
-  switch (action.type) {
-    case SET_INPUT:
-      updatedInput[index].value = action.value;
-      updatedInput[index].error = action.error;
-      return {
-        ...state,
-        inputs: updatedInput,
-      };
-    default: return state;
-  }
-}
-
 function PageThree({ changePage, show }) {
-  const [state, dispatch] = React.useReducer(reducer, initialState);
+  const [state, dispatch] = React.useReducer(pagesReducer, initialState);
   const history = useHistory();
   const checkedRef = state.inputs[0].value || 1;
-
   const refs = React.useRef([]);
     
-  function addToRefsArray(el){
-    if(el && !refs.current.includes(el))
-      refs.current.push(el);
-  }
-
   function onButtonClick(action) {
     if (action === "Back") {
       history.push("/");
@@ -55,12 +33,10 @@ function PageThree({ changePage, show }) {
     }
   }
   
-
   function onInputChange(name, value,error) {
         dispatch({ type: SET_INPUT, name: name, value: value, error: error });
   }
 
-  
   return (
     <div className={`signup_wrapper_page ${show ? "show" : ""}`}>
       <p style={{ marginTop: "10px", fontSize: "19px" }}>
@@ -88,7 +64,7 @@ function PageThree({ changePage, show }) {
               <Input
                 inputType={input.type}
                 key={input.name}
-                addToRefsArray={addToRefsArray}
+                addToRefsArray={(el)=>addToRefsArray(el,refs)}
                 name={input.name}
                 label={input.label}
                 validate={input.validate}

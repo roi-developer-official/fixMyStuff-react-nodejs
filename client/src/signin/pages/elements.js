@@ -38,6 +38,36 @@ export const inputs = {
             validate:true,
             value:1
         }
+    ],
+    page4: [
+        {
+            label: 'Email', 
+            type: 'text',
+            name:'email',
+            validations:{
+                required:true,
+                email:true
+            },
+        },
+        {
+            label: 'Password', 
+            type: 'password',
+            name:'password',
+            validations:{
+                required:true,
+                password:true,
+                minLength:8
+            }
+        },
+        {
+            label: 'Confirm password', 
+            type: 'password',
+            name:'confirm password',
+            validations:{
+                required :true,
+                compareTo:true
+            }
+        }
     ]
 
 };
@@ -104,6 +134,20 @@ export const buttons = {
         },
         {
             label: 'Next',
+            style:{
+                backgroundColor: '#08c982'
+            }
+        }
+    ],
+    page4:[
+        {
+            label: 'Back',
+            style:{
+                backgroundColor: '#ccc'
+            }
+        },
+        {
+            label: 'Done',
             style:{
                 backgroundColor: '#08c982'
             }

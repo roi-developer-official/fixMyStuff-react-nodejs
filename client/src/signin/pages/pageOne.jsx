@@ -7,8 +7,8 @@ import {
   selects as pageSelects,
   citiesString
 } from "./elements";
+import pagesReducer, {SET_INPUT , addToRefsArray} from "./pagesShared";
 
-const SET_INPUT = "SET_INPUT";
 const initialState = {
   inputs: [
     { name: "firstName", value: "", error: "" },
@@ -17,32 +17,12 @@ const initialState = {
   ],
 };
 
-function reducer(state = initialState, action) {
-  const updatedInput = state.inputs.slice();
-  const index = updatedInput.findIndex((input) => input.name === action.name);
-  switch (action.type) {
-    case SET_INPUT:
-      updatedInput[index].value = action.value;
-      updatedInput[index].error = action.error;
-      return {
-        ...state,
-        inputs: updatedInput,
-      };
-    default:
-  }
-}
-
 function PageOne({ changePage, show }) {
   const cities = citiesString.split(",");
   const history = useHistory();
-  const [state, dispatch] = React.useReducer(reducer, initialState);
+  const [state, dispatch] = React.useReducer(pagesReducer, initialState);
   const refs = useRef([]);
     
-  function addToRefsArray(el){
-    if(!refs.current.includes(el))
-      refs.current.push(el);
-  }
-
   function onButtonClick(action) {
     if (action === "Cancel") {
       history.push("/");
@@ -61,8 +41,6 @@ function PageOne({ changePage, show }) {
     dispatch({ type: SET_INPUT, name: name, value: value, error: error });
   }
 
-
-
   return (
     <div className={`signup_wrapper_page ${show ? "show" : ""}`}>
       <div className="logo_header">
@@ -78,7 +56,7 @@ function PageOne({ changePage, show }) {
               type={input.type}
               name={input.name}
               updateInput={onInputChange}
-              addToRefsArray={addToRefsArray}
+              addToRefsArray={(el)=>addToRefsArray(el,refs)}
               validate={input.validate}
               validations={input.validations}
             ></Input>
@@ -96,7 +74,7 @@ function PageOne({ changePage, show }) {
               name={input.name}
               options={cities}
               updateInput={onInputChange}
-              addToRefsArray={addToRefsArray}
+              addToRefsArray={(el)=>addToRefsArray(el,refs)}
             />
           </div>
         );
