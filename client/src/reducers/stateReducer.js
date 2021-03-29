@@ -1,4 +1,4 @@
-import {actionTypes} from '../actions/stateAction'
+import {actionTypes} from '../actions/authAction'
 const initialState = {
     error:null,
     loading:false,

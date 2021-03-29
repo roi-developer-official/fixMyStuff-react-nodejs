@@ -1,6 +1,6 @@
 
-import {Axios} from '../../../util/axios';
-import {actionSuccess,actionFailed} from '../state.actions';
+import {Axios} from '../util/axios';
+import {actionSuccess,actionFailed} from './authAction';
 
 /**
  * @function addPost Redux thunk action creator for addPost request

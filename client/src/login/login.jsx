@@ -1,8 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import {validation} from '../validations/Validations';
 import {Input,Button,Logo,FormFeedback} from '../Global_UI';
-import * as actions from '../store/actions/state.actions';
-import {login} from '../store/actions/actionsCreators/auth.actionCreator';
+import {login , actionTypes} from '../actions/authAction';
 import './login.css';
 import { NavLink, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -177,9 +176,9 @@ const mapStateToProps = (state)=>{
 
 const mapDispatchToProps = (dispath)=>{
     return {
-        loginStart: ()=>dispath({type: actions.ACTION_START}),
+        loginStart: ()=>dispath({type: actionTypes.ACTION_START}),
         login: (reqData, callback)=>dispath(login(reqData,callback)),
-        resetState: ()=>dispath({type: actions.RESET_STATE})
+        resetState: ()=>dispath({type: actionTypes.RESET_STATE})
     }
 }
 

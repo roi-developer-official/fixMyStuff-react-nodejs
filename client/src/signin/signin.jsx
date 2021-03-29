@@ -6,8 +6,7 @@ import PageTwo from './pages/pageTwo';
 import PageThree from './pages/pageThree';
 import PageFour from './pages/pageFour';
 import {connect} from 'react-redux';
-import {signIn} from '../store/actions/actionsCreators/auth.actionCreator';
-import * as actions from '../store/actions/state.actions';
+import {actionTypes ,signIn} from '../actions/authAction';
 import { AuthContext } from '../context/authContext';
 class Signin extends React.Component{
 
@@ -98,7 +97,7 @@ class Signin extends React.Component{
 
     render(){
         return (
-        <div className='signup_page_container'>
+        <div className='signup_page_container' data-test="component-signin">
            {this.props.loading && <div className="loader"></div>}
            <Steps steps={this.steps} currnetStep={this.state.currentStep}></Steps>
             {this.returnCustomFeedback()}
@@ -138,9 +137,9 @@ const mapStateToProps = (state)=>{
 
 const mapDispatchToProps = (dispatch)=>{
     return{
-        signupStart: ()=> dispatch({type: actions.ACTION_START}),
+        signupStart: ()=> dispatch({type: actionTypes.ACTION_START}),
         signIn: (reqData,callback)=>dispatch(signIn(reqData,callback)),
-        resetState:()=>dispatch({type:actions.RESET_STATE})
+        resetState:()=>dispatch({type:actionTypes.RESET_STATE})
     }
 }
 

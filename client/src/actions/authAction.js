@@ -1,4 +1,4 @@
-import { Axios } from "../../../util/axios";
+import { Axios } from "../util/axios";
 
 export const actionTypes = {
   ACTION_START: "ACTION_START",

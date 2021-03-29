@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware } from "redux";
-import { middlewares } from "../configureStore";
+import { middleWares } from "../configureStore";
 import rootReducer from '../reducers';
 /**
  * Return node with the given data-test attribute
@@ -22,6 +22,6 @@ export const storeFactory = (initialState) => {
   return createStore(
     rootReducer,
     initialState,
-    applyMiddleware(...middlewares)
+    applyMiddleware(...middleWares)
   );
 };
