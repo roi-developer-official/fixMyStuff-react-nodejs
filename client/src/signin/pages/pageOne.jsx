@@ -44,25 +44,19 @@ function PageOne({ changePage, show }) {
   }
 
   function onButtonClick(action) {
-    let isInvalidPage = false;
-
     if (action === "Cancel") {
       history.push("/");
     } else if (action === "Next") {
-
-      state.inputs.forEach((input,index)=>{
-        if(input.error.length > 0 || input.value.length === 0){
-          refs.current[index].focus();
-          isInvalidPage = true
-        } 
-      })
-      if (isInvalidPage) {
-        return;
-      } else {
-        changePage(action, state.inputs);
+      for(let i = 0 ; i < state.inputs.length; i++){
+        if(state.inputs[i].error.length > 0 || state.inputs[i].value.length === 0) {
+          refs.current[i].focus();
+          return;
+        }
       }
+      changePage(action, state.inputs);
     }
   }
+
   function onInputChange(name, value, error) {
     dispatch({ type: SET_INPUT, name: name, value: value, error: error });
   }

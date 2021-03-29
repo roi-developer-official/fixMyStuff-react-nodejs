@@ -36,29 +36,25 @@ function PageThree({ changePage, show }) {
   const refs = React.useRef([]);
     
   function addToRefsArray(el){
-    if(!refs.current.includes(el))
+    if(el && !refs.current.includes(el))
       refs.current.push(el);
   }
 
   function onButtonClick(action) {
-    let isInvalidPage = false;
     if (action === "Back") {
       history.push("/");
     } else if (action === "Next") {
         if(parseInt(state.inputs[0].value) === 2)
-            state.inputs.forEach((input,index)=>{
-                if(input.error.length > 0 || input.value.length === 0){
-                refs.current[index].focus();
-                isInvalidPage = true
-                } 
-        })
-      if (isInvalidPage) {
-        return;
-      } else {
-        changePage(action, state.inputs);
-      }
+            for(let i = 1 ; i < state.inputs.length; i++){
+                if(state.inputs[i].error.length > 0 || state.inputs[i].value.length === 0) {
+                refs.current[i - 1].focus();
+                return;
+                }
+            }
+      changePage(action, state.inputs);
     }
   }
+  
 
   function onInputChange(name, value,error) {
         dispatch({ type: SET_INPUT, name: name, value: value, error: error });
