@@ -1,6 +1,7 @@
 import { shallow } from "enzyme";
 import { Input } from "../Input";
 import React from "react";
+import { inputs } from "../../signin/pages/elements";
 
 const props = {
   inputType:"text",
@@ -23,7 +24,9 @@ const setup = (props = {}, custom) => {
 };
 
 describe("input", () => {
+  const input  = { error: '', value: ''};
   const mockState = jest.fn();
+
   const mockUpdateInput = jest.fn();
   const mockUpdateError = jest.fn();
   let originalUsState;
@@ -37,7 +40,7 @@ describe("input", () => {
 
   beforeEach(() => {
     originalUsState = React.useState;
-    React.useState = jest.fn(() => [{ error: "", value: "" }, mockState]);
+    React.useState = jest.fn(() => [input, mockState]);
     wrapper = setup(props, { updateInput: mockUpdateInput, updateError: mockUpdateError });
   });
 
@@ -55,34 +58,23 @@ describe("input", () => {
     const input = wrapper.find({ name: "firstName" });
     input.simulate("change", event);
 
-    expect(mockUpdateInput).toBeCalledWith("firstname", "a");
     expect(mockState).toBeCalledWith({"value" : "a", "error": ""});
+    expect(mockUpdateInput).toBeCalledWith("firstname", "a", "");
 
   });
 
 
   test("update error onblur with wrong input and clears on change", () => {
     const inputEl = wrapper.find({ name: "firstName" });
-    inputEl.simulate("focus");
+   
     inputEl.simulate("blur", event);
-    expect(mockState).toBeCalledWith({"error": "this field must be at least 2 chracters", "value": ""});
-    expect(mockUpdateError).toBeCalledWith("firstname", "this field must be at least 2 chracters");
+    expect(mockState).toBeCalledWith({"error": "this field is required", "value": ""});
+    expect(mockUpdateInput).toBeCalledWith("firstname", "", "this field is required");
 
     inputEl.simulate('change', event);
     expect(mockState).toBeCalledWith({"error": "", "value": "a"});
-    expect(mockUpdateError).toBeCalledWith("firstname", "");
+    expect(mockUpdateInput).toBeCalledWith("firstname", "a", "");
 
   });
-
-
-  test("not update error when input is blur with right input", () => {
-    const inputEl = wrapper.find({ name: "firstName" });
-    event.target.value = "aaaa";
-    inputEl.simulate("focus");
-    inputEl.simulate("blur", event);
-    expect(mockState).not.toBeCalled();
-  });
-
-
 
 });

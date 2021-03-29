@@ -9,7 +9,6 @@ import {
 } from "./elements";
 
 const SET_INPUT = "SET_INPUT";
-const SET_INPUT_ERROR = "SET_INPUT_ERROR";
 const initialState = {
   inputs: [
     { name: "firstName", value: "", error: "" },
@@ -24,11 +23,6 @@ function reducer(state = initialState, action) {
   switch (action.type) {
     case SET_INPUT:
       updatedInput[index].value = action.value;
-      return {
-        ...state,
-        inputs: updatedInput,
-      };
-    case SET_INPUT_ERROR:
       updatedInput[index].error = action.error;
       return {
         ...state,
@@ -69,13 +63,11 @@ function PageOne({ changePage, show }) {
       }
     }
   }
-  function onInputChange(name, value) {
-    dispatch({ type: SET_INPUT, name: name, value: value });
+  function onInputChange(name, value, error) {
+    dispatch({ type: SET_INPUT, name: name, value: value, error: error });
   }
 
-  function onErrorChange(name, error) {
-    dispatch({ type: SET_INPUT_ERROR, name: name, error: error });
-  }
+
 
   return (
     <div className={`signup_wrapper_page ${show ? "show" : ""}`}>
@@ -92,7 +84,6 @@ function PageOne({ changePage, show }) {
               type={input.type}
               name={input.name}
               updateInput={onInputChange}
-              updateError={onErrorChange}
               addToRefsArray={addToRefsArray}
               validate={input.validate}
               validations={input.validations}
@@ -111,7 +102,6 @@ function PageOne({ changePage, show }) {
               name={input.name}
               options={cities}
               updateInput={onInputChange}
-              updateError={onErrorChange}
               addToRefsArray={addToRefsArray}
             />
           </div>

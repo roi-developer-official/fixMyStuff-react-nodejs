@@ -5,6 +5,7 @@ import Pageone from "../PageOne";
 import { mount } from "enzyme";
 import React from "react";
 import { Router } from "react-router";
+import { selects } from "../elements";
 
 describe("page one", () => {
   test("number of text inputs is 2", () => {
@@ -67,7 +68,7 @@ describe("page one", () => {
     beforeEach(() => {
       inputEvent = {
         target: {
-          value: "hello",
+          value: "h",
           name: "firstName",
         },
       };
@@ -81,34 +82,35 @@ describe("page one", () => {
     afterEach(() => {
       inputEvent = {
         target: {
-          value: "hello",
+          value: "h",
           name: "firstName",
         },
       };
       React.useReducer = originalUseReducer;
     });
 
-    test("updateInput called when input is change", () => {
+    test("updateInput called when input is change with no error", () => {
 
       expect(input.length).toBe(1);
       input.simulate("change", inputEvent);
-      expect(mockDispatch).toBeCalledWith({"name": "firstName", "type": "SET_INPUT", "value": "hello"});
+      expect(mockDispatch).toBeCalledWith({"name": "firstName", "type": "SET_INPUT", "value": "h", "error" : ""});
 
       inputEvent.target.name = "city";
       select.simulate('change', inputEvent);
-      expect(mockDispatch).toBeCalledWith({"name": "city", "type": "SET_INPUT", "value": "hello"});
+      expect(mockDispatch).toBeCalledWith({"name": "city", "type": "SET_INPUT", "value": "h", "error" : "" });
     });
 
 
-    test('updateError called when error exsists', ()=>{
-      inputEvent.target.value = "a"
-      input.simulate("blur", inputEvent);
-      expect(mockDispatch).toBeCalledWith({"error": "this field must be at least 2 chracters", "name": "firstName", "type": "SET_INPUT_ERROR"})
+    test('updateInput called with error on blur', ()=>{
+      
+      input.simulate("blur");
+      expect(mockDispatch).toBeCalledWith({"value" :"", "error": "this field is required", "name": "firstName", "type": "SET_INPUT"})
       
       inputEvent.target.value = "" 
       inputEvent.target.name = "city"
-      select.simulate('blur', inputEvent);
-      expect(mockDispatch).toBeCalledWith({"error": "this field is required", "name": "city","type": "SET_INPUT_ERROR"});
+      select.simulate("change", inputEvent);
+      select.simulate('blur');
+      expect(mockDispatch).toBeCalledWith({ "value": "", "error": "this field is required", "name": "city","type": "SET_INPUT"});
     });
 
   });
