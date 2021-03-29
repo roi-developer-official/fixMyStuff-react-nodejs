@@ -1,10 +1,10 @@
-import { Axios } from "../util/axios";
+import axios from 'axios';
 
 export const actionTypes = {
   ACTION_START: "ACTION_START",
   ACTION_SUCCESS: "ACTION_SUCCESS",
   ACTION_FAIL: "ACTION_FAIL",
-  RESET_STATE: "RESET_STATE"
+  RESET_STATE: "RESET_STATE",
 };
 
 /**
@@ -12,10 +12,9 @@ export const actionTypes = {
  * @param {object} reqData
  * @param {function} callBack
  */
-export const signIn = (reqData, callBack) => {
-  return (dispatch) => {
-    return Axios.post("auth/signup", reqData)
-      .then((res) => {
+ export const signIn = (reqData,callBack) => {
+  return function (dispatch) {
+    return axios.post("api/auth/signup", reqData).then((res) => {
         dispatch(actionSuccess());
         callBack(res.data);
       })
@@ -33,7 +32,7 @@ export const signIn = (reqData, callBack) => {
  */
 export const login = (reqData, callback) => {
   return (dispatch) => {
-   return Axios.post("auth/login", reqData)
+   return axios.post("api/auth/login", reqData)
       .then((res) => {
         dispatch(actionSuccess());
 
@@ -45,7 +44,6 @@ export const login = (reqData, callback) => {
       });
   };
 };
-
 
 /**
  * @function actionFailed Redux thunk action creator for handeling global failing actions

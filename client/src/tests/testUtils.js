@@ -1,6 +1,8 @@
 import { createStore, applyMiddleware } from "redux";
 import { middleWares } from "../configureStore";
+import thunk from 'redux-thunk'
 import rootReducer from '../reducers';
+
 /**
  * Return node with the given data-test attribute
  * @param {ShallowWrapper} wrapper
@@ -11,6 +13,7 @@ export const findByAttr = (wrapper, val) => {
   return wrapper.find(`[data-test='${val}']`);
 };
 
+
 /**
  * Create a testing store with imported reducers, middleware, and initial state.
  *  globals: rootReducer.
@@ -18,10 +21,12 @@ export const findByAttr = (wrapper, val) => {
  * @function storeFactory
  * @returns {Store} - Redux store.
  */
-export const storeFactory = (initialState) => {
-  return createStore(
+
+
+export const storeFactory = (initialState) =>
+    createStore(
     rootReducer,
     initialState,
-    applyMiddleware(...middleWares)
+    applyMiddleware(thunk)
   );
-};
+

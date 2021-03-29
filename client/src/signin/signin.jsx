@@ -6,10 +6,10 @@ import PageTwo from './pages/pageTwo';
 import PageThree from './pages/pageThree';
 import PageFour from './pages/pageFour';
 import {connect} from 'react-redux';
-import {actionTypes ,signIn} from '../actions/authAction';
+import {actionTypes , signIn } from '../actions/authAction';
 import { AuthContext } from '../context/authContext';
-class Signin extends React.Component{
 
+class Signin extends React.Component{
     static contextType = AuthContext;
     state = {};
     constructor(props){
@@ -69,7 +69,7 @@ class Signin extends React.Component{
         });
 
         this.props.signupStart();
-        this.props.signIn(reqData,this.signupSuccess.bind(this));
+        signIn(reqData,this.signupSuccess.bind(this));
     }
 
 
@@ -138,7 +138,7 @@ const mapStateToProps = (state)=>{
 const mapDispatchToProps = (dispatch)=>{
     return{
         signupStart: ()=> dispatch({type: actionTypes.ACTION_START}),
-        signIn: (reqData,callback)=>dispatch(signIn(reqData,callback)),
+        signIn:(reqData,callback)=>dispatch(signIn(reqData,callback)),
         resetState:()=>dispatch({type:actionTypes.RESET_STATE})
     }
 }

@@ -1,6 +1,7 @@
 import { actionTypes } from "../../actions/authAction";
 import authReducer from "../authReducer";
 
+//strictly testing the reducer
 test("when no action is mentioned return the state", () => {
   const newState = authReducer(undefined, {});
   expect(newState).toMatchObject({
@@ -10,5 +11,8 @@ test("when no action is mentioned return the state", () => {
     user: null,
   });
 });
+
+
+
 
 
