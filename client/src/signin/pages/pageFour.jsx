@@ -1,93 +1,69 @@
-import { useState } from "react";
-import {Input,Button} from '../../Global_UI';
-import {validation} from "../../validations/Validations";
-function PageFour({changePage,show}){
+import React from "react";
+import { Input, Button } from "../../Global_UI";
+import { buttons as pageButtons, inputs as pageInputs } from "./elements";
+import pagesReducer, { SET_INPUT, addToRefsArray } from "./pagesShared";
 
-    // function onInputChange(e, name){
-    //     let index = inputs.findIndex(input=>input.name === name);
-    //     let updatedInputs = inputs.slice();
-    //     updatedInputs[index].value = e.target.value;
-    //     updatedInputs[index].error = '';
-    //     if(name === 'password')
-    //         updatedInputs[index+1].error = '';
-    //     setInputs(updatedInputs);
-    // }
+const initialState = {
+  inputs: [
+    { name: "email", value: "", error: "" },
+    { name: "password", value: "", error: "" },
+    { name: "confirmPassword", value: "", error: "" },
+  ],
+};
+function PageFour({ changePage, show }) {
+  const [state, dispatch] = React.useReducer(pagesReducer, initialState);
+  const refs = React.useRef([]);
 
-    // function validateOnBlur(name){
-    //     let index = inputs.findIndex(input=>input.name === name);
-    //     if(name === 'confirm password'){
-    //         let password = inputs.find(input=>input.name === 'password');
-    //         let errorMsg = validation(inputs[index].validations,inputs[index].value,password.value);
-    //         if(errorMsg){
-    //             let updatedInputs = inputs.slice();
-    //             updatedInputs[index].error = errorMsg;
-    //             setInputs(updatedInputs)
-    //         }
-    //     }
-    //     else {
-    //         let errorMsg = validation(inputs[index].validations,inputs[index].value);
-    //         if(errorMsg){
-    //             let updatedInputs = inputs.slice();
-    //             updatedInputs[index].error = errorMsg;
-    //             setInputs(updatedInputs)
-    //         }
-    //     }
-    // }
+  function onButtonClick(action) {
+    if (action === "Back") {
+      changePage(action);
+    } else if (action === "Done") {
+      for (let i = 0; i < state.inputs.length; i++) {
+        if (
+          state.inputs[i].error.length > 0 ||
+          state.inputs[i].value.length === 0
+        ) {
+          refs.current[i].focus();
+          return;
+        }
+      }
+      changePage(action, state.inputs);
+    }
+  }
 
-    // function changePage(action){
+  function onInputChange(name, value, error) {
+    dispatch({ type: SET_INPUT, name: name, value: value, error: error });
+  }
 
-    //     let isValidPage = true;
-    //     let updatedInputs = inputs.slice();
-    
-    //     if(action === 'Done'){
-    //         for(let index in Object.keys(inputs)){
-    //             let compareTo = null;
-    //             if(inputs[index].name === 'confirm password')
-    //                 compareTo = inputs[index - 1].value;
-    //             let message = validation(inputs[index].validations,inputs[index].value, compareTo);
-    //             if(message){
-    //                 isValidPage = false;
-    //                 updatedInputs[index].error = message;
-    //             }
-    //         }
-    //     } else{
-    //         changePage(action)
-    //     }
-
-    //     if(!isValidPage){
-    //         setInputs(updatedInputs)
-    //     } else {
-    //         let ouput = inputs.slice();
-    //         ouput.pop();
-    //         changePage(action, ouput);
-    //     }
-            
-    // }   
-
-    
-    return (
-            <div className={`signup_wrapper_page ${show? 'show' :''}`}>
-            {/* {inputs.map((input,i)=>{
-            return <div key={i} className="form_input_wrapper">
-                        <Input 
-                        label={input.label} 
-                        name={input.name} 
-                        onChange={onInputChange}
-                        onBlur={validateOnBlur}
-                        error={input.error}
-                        type={input.type}
-                        value={input.value}
-                        validate={input.validate}
-                    ></Input>
-            </div>
-                })} */}
-            {/* <div className="form_buttons_wrapper">
-                {buttons.map((btn,i)=>{
-                    return <Button key={i} label={btn.label} onClick={()=>changePage(btn.label)}
-                    style={btn.style}></Button>
-                })}
-            </div> */}
-            </div>
-    )
+  return (
+    <div className={`signup_wrapper_page ${show ? "show" : ""}`}>
+      {pageInputs.page4.map((input, i) => {
+        return (
+          <div key={i} className="form_input_wrapper">
+            <Input
+              label={input.label}
+              addToRefsArray={(el) => addToRefsArray(el, refs)}
+              name={input.name}
+              updateInput={onInputChange}
+              type={input.type}
+              validations={input.validations}
+            ></Input>
+          </div>
+        );
+      })}
+      <div className="form_buttons_wrapper">
+        {pageButtons.page4.map((btn, i) => {
+          return (
+            <Button
+              key={i}
+              label={btn.label}
+              onClick={() => onButtonClick(btn.label)}
+              style={btn.style}
+            ></Button>
+          );
+        })}
+      </div>
+    </div>
+  );
 }
 export default PageFour;

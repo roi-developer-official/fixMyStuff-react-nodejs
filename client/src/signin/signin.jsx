@@ -4,7 +4,7 @@ import PageOne from './pages/pageOne';
 import './signin.css'
 import PageTwo from './pages/pageTwo';
 import PageThree from './pages/pageThree';
-import PageFour from './pages/PageFour';
+import PageFour from './pages/pageFour';
 import {connect} from 'react-redux';
 import {signIn} from '../store/actions/actionsCreators/auth.actionCreator';
 import * as actions from '../store/actions/state.actions';
@@ -51,7 +51,6 @@ class Signin extends React.Component{
                 break;
             default : return;
        }
-
     }
 
     updateInputOnPageSubmitted(inputs){
@@ -73,6 +72,7 @@ class Signin extends React.Component{
         this.props.signupStart();
         this.props.signIn(reqData,this.signupSuccess.bind(this));
     }
+
 
     signupSuccess(result){
         this.setState({
@@ -128,7 +128,6 @@ class Signin extends React.Component{
         )
     }
 }
-
 
 const mapStateToProps = (state)=>{
     return {

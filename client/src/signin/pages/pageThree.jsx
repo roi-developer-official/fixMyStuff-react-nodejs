@@ -20,7 +20,7 @@ function PageThree({ changePage, show }) {
     
   function onButtonClick(action) {
     if (action === "Back") {
-      history.push("/");
+      changePage(action);
     } else if (action === "Next") {
         if(parseInt(state.inputs[0].value) === 2)
             for(let i = 1 ; i < state.inputs.length; i++){

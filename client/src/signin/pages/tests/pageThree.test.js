@@ -125,7 +125,7 @@ describe("selects", () => {
     expect(mockDispatch).toBeCalledTimes(1);
   });
 
-  test("should set error when blur on empty", () => {
+  test("should set error when blur and input empty", () => {
     professionSelect.simulate("blur");
     expect(mockDispatch).toBeCalledWith({
       name: "profession",
@@ -136,7 +136,7 @@ describe("selects", () => {
   });
 });
 
-describe("move to next page", () => {
+describe("changePage", () => {
   let buttons;
   let wrapper;
 

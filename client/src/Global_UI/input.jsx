@@ -13,7 +13,6 @@ export function Input({
     style,
     min,
     updateInput,
-    updateError,
     validations,
     addToRefsArray
 }){

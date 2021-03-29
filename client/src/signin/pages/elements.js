@@ -62,7 +62,7 @@ export const inputs = {
         {
             label: 'Confirm password', 
             type: 'password',
-            name:'confirm password',
+            name:'confirmPassword',
             validations:{
                 required :true,
                 compareTo:true
