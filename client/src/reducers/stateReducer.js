@@ -1,5 +1,4 @@
-import * as actions from '../actions/state.actions';
-
+import {actionTypes} from '../actions/stateAction'
 const initialState = {
     error:null,
     loading:false,
@@ -10,22 +9,22 @@ const initialState = {
 const stateReducer = (state = initialState, action)=>{
    
     switch(action.type){
-        case actions.ACTION_START:
+        case actionTypes.ACTION_START:
             return{
                 error:null,
                 loading:true,
             }
-        case actions.ACTION_SUCCESS:
+        case actionTypes.ACTION_SUCCESS:
             return {
                 error:null,
                 loading:false
         }
-        case actions.ACTION_FAIL:
+        case actionTypes.ACTION_FAIL:
             return{
                 error: action.payload,
                 loading:false,
         }
-        case actions.RESET_STATE:
+        case actionTypes.RESET_STATE:
             return {
                 error:null,
                 loading:false

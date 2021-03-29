@@ -5,12 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware} from 'redux';
-import stateReducer from './store/reducers/state.reducer';
-import thunk from 'redux-thunk';
 import {AuthProvider} from './context/authContext';
-
-const store = createStore(stateReducer,applyMiddleware(thunk));
+import store from './configureStore';
 
 ReactDOM.render(
   <React.StrictMode>

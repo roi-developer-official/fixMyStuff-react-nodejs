@@ -1,4 +1,3 @@
-import * as actions from '../actions/post.actions';
 
 const initialState = {
     posts: []
