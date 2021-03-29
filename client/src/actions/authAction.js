@@ -14,7 +14,7 @@ export const actionTypes = {
  */
 export const signIn = (reqData, callBack) => {
   return (dispatch) => {
-    Axios.post("auth/signup", reqData)
+    return Axios.post("auth/signup", reqData)
       .then((res) => {
         dispatch(actionSuccess());
         callBack(res.data);
@@ -33,7 +33,7 @@ export const signIn = (reqData, callBack) => {
  */
 export const login = (reqData, callback) => {
   return (dispatch) => {
-    Axios.post("auth/login", reqData)
+   return Axios.post("auth/login", reqData)
       .then((res) => {
         dispatch(actionSuccess());
 

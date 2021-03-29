@@ -1,4 +1,5 @@
-import {actionTypes} from '../actions/authAction'
+import {actionTypes} from '../actions/authAction';
+
 const initialState = {
     error:null,
     loading:false,
@@ -6,8 +7,7 @@ const initialState = {
     token:null
 };
 
-const stateReducer = (state = initialState, action)=>{
-   
+const authReducer = (state = initialState, action)=>{
     switch(action.type){
         case actionTypes.ACTION_START:
             return{
@@ -33,4 +33,4 @@ const stateReducer = (state = initialState, action)=>{
     }
 };
 
-export default stateReducer;
+export default authReducer;
