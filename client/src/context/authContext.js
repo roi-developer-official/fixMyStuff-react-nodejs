@@ -1,5 +1,4 @@
 import { createContext, useEffect, useState } from 'react';
-import {Axios } from '../util/axios';
 import axios from 'axios'
 const AuthContext = createContext();
 const { Provider } = AuthContext;
@@ -14,12 +13,11 @@ const AuthProvider = ({children}) =>{
         axios.get('/api/initv')
         .then(res=>{
             const csrfToken = res.data.csrfToken;
-            Axios.defaults.headers['x-csrf-token'] = csrfToken;
+            axios.defaults.headers['x-csrf-token'] = csrfToken;
         }).catch(err=>{
             //do somthing with the error
         })
-
-        Axios.get('/auth/refresh')
+        axios.get('/auth/refresh')
         .then(res=>{
             if(res.data.user){
                 setAuthInfo(res.data)
@@ -42,7 +40,7 @@ const AuthProvider = ({children}) =>{
 
     const clearUserInfo = ()=>{
         setAuthState({expiresIn :null, user:{}});
-        Axios.get('/auth/logout')
+        axios.get('/auth/logout')
         .then(res=>{
 
         })

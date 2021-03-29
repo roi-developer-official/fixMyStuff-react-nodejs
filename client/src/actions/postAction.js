@@ -1,5 +1,5 @@
 
-import {Axios} from '../util/axios';
+import axios from 'axios';
 import {actionSuccess,actionFailed} from './authAction';
 
 /**
@@ -11,7 +11,7 @@ import {actionSuccess,actionFailed} from './authAction';
 
 export const addPost = (reqData,callBack)=>{
     return dispatch =>{
-        Axios.post('user/create-post', reqData)
+        axios.post('user/create-post', reqData)
         .then(res=>{
             dispatch(actionSuccess())
             callBack();
