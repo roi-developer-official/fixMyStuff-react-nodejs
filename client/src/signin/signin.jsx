@@ -6,7 +6,8 @@ import PageTwo from "./pages/pageTwo";
 import PageThree from "./pages/pageThree";
 import PageFour from "./pages/pageFour";
 import { useDispatch, useSelector } from "react-redux";
-import { actionTypes, signIn } from "../actions/authAction";
+import { actionTypes } from "../reducers/actionReducer";
+import { signIn } from "../actions/authAction";
 import { AuthContext } from "../context/authContext";
 import { useHistory } from "react-router";
 const steps = [1, 2, 3, 4];
@@ -18,7 +19,7 @@ export default function SignIn() {
     inputsValues: new Map(),
     signupSuccess: null,
   });
- 
+
   const { loading, error } = useSelector((state) => state);
   const dispatch = useDispatch();
   const history = useHistory();

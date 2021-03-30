@@ -11,7 +11,7 @@ test("action success return currect value", () => {
   const store = storeFactory();
   store.dispatch(actionSuccess());
   const newState = store.getState();
-  expect(newState.authReducer).toStrictEqual({ error: null, loading: false });
+  expect(newState.actionReducer).toStrictEqual({ error: null, loading: false });
 });
 
 test("actions failed return signup failed object", () => {
@@ -23,7 +23,7 @@ test("action fail should return currect value", () => {
   const store = storeFactory();
   store.dispatch(actionFailed("some error"));
   const newState = store.getState();
-  expect(newState.authReducer).toStrictEqual({
+  expect(newState.actionReducer).toStrictEqual({
     loading: false,
     error: "some error",
   });

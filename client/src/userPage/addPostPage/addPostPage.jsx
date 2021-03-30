@@ -6,7 +6,7 @@ import PageOne from "./pages/pageOne";
 import PageTwo from "./pages/pageTwo";
 import { useDispatch, useSelector } from "react-redux";
 import { addPost } from "../../actions/postAction";
-import { actionTypes } from "../../actions/authAction";
+import { actionTypes } from "../../reducers/actionReducer";
 import { AuthContext } from "../../context/authContext";
 
 function AddPostPage() {

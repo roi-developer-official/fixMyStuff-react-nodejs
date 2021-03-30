@@ -1,12 +1,5 @@
 import axios from 'axios';
 
-export const actionTypes = {
-  ACTION_START: "ACTION_START",
-  ACTION_SUCCESS: "ACTION_SUCCESS",
-  ACTION_FAIL: "ACTION_FAIL",
-  RESET_STATE: "RESET_STATE",
-};
-
 /**
  * @function signIn Redux thunk action creator for signin request
  * @param {object} reqData
