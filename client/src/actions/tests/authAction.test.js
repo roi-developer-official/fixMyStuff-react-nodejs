@@ -1,5 +1,5 @@
 import { storeFactory } from "../../tests/testUtils";
-import { actionSuccess, actionFailed } from "../authAction";
+import { actionSuccess, actionFailed, signIn } from "../authAction";
 
 
 //  testing for dipatching actions
@@ -29,3 +29,5 @@ test("action fail should return currect value", () => {
     error: "some error",
   });
 });
+
+

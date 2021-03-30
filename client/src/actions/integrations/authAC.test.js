@@ -4,6 +4,7 @@ import { signIn } from "../authAction";
 
 //integration test for async function by that mage requests to the server
 const mockCallBack = jest.fn();
+
 describe("signup", () => {
   beforeEach(() => {
     moxios.install();
@@ -42,6 +43,7 @@ describe("signup", () => {
       });
     });
 
+    
     return store.dispatch(signIn({}, undefined)).then(() => {
       expect(store.getState().authReducer).toStrictEqual({
         error: "oops",
@@ -49,7 +51,5 @@ describe("signup", () => {
       });
     });
   });
-
-
-
 });
+
