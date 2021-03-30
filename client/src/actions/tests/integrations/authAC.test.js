@@ -1,6 +1,6 @@
 import moxios from "moxios";
-import { storeFactory } from "../../tests/testUtils";
-import { signIn } from "../authAction";
+import { storeFactory } from "../../../tests/testUtils";
+import { signIn } from "../../authAction";
 
 //integration test for async function by that mage requests to the server
 const mockCallBack = jest.fn();

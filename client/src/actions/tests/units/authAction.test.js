@@ -1,8 +1,7 @@
-import { storeFactory } from "../../tests/testUtils";
-import { actionSuccess, actionFailed, signIn } from "../authAction";
+import { storeFactory } from "../../../tests/testUtils";
+import { actionSuccess, actionFailed, signIn } from "../../authAction";
 
-
-//  testing for dipatching actions
+//testing for dipatching actions
 test("actions success return signup successfuly object", () => {
   const action = actionSuccess();
   expect(action).toStrictEqual({ type: "ACTION_SUCCESS" });

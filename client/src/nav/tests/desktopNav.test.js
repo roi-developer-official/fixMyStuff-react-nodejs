@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { AuthProvider } from "../../context/authContext";
-import DesktopNav from "./desktopNav";
+import DesktopNav from "../desktop/desktopNav";
 import { Router } from "react-router";
 import userEvent from '@testing-library/user-event';
 import { createMemoryHistory } from "history";

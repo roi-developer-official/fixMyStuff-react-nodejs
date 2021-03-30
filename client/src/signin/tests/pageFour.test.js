@@ -1,5 +1,5 @@
 import { mount } from "enzyme";
-import PageFour from "../pageFour";
+import PageFour from "../pages/pageFour";
 import { useReducer, useRef } from "react";
 
 let inputs;

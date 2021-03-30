@@ -1,6 +1,6 @@
 import { render , screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import RenderAuthNavItem from  './RenderAuthNavItem';
+import RenderAuthNavItem from  '../util/renderAuthNavItem';
 import {Router} from 'react-router-dom';
 import {createMemoryHistory} from 'history'
 

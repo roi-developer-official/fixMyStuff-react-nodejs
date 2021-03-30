@@ -1,8 +1,8 @@
 import {  screen, render } from '@testing-library/react'
 import { Router } from 'react-router';
 import { createMemoryHistory } from 'history'
-import Nav ,{ formatPath } from './nav';
-import { AuthProvider } from '../context/authContext';
+import Nav ,{ formatPath } from '../nav';
+import { AuthProvider } from '../../context/authContext';
 
 describe('Nav', ()=>{
 

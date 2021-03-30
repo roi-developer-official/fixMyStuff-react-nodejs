@@ -1,11 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from '@testing-library/user-event';
 import { createMemoryHistory} from 'history';
-import Pageone from "../PageOne";
+import Pageone from "../pages/pageOne";
 import { mount } from "enzyme";
 import React from "react";
 import { Router } from "react-router";
-import { selects } from "../elements";
 
 describe("page one", () => {
   test("number of text inputs is 2", () => {

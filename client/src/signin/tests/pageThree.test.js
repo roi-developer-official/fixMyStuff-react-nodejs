@@ -1,5 +1,5 @@
 import { mount } from "enzyme";
-import PageThree from "../PageThree";
+import PageThree from "../pages/PageThree";
 import React, { useReducer, useRef } from "react";
 
 const setup = (props = {}) => {
