@@ -12,6 +12,7 @@ export const actionTypes = {
  * @param {object} reqData
  * @param {function} callBack
  */
+
  export const signIn = (reqData,callBack) => {
   return function (dispatch) {
     return axios.post("api/auth/signup", reqData).then((res) => {
