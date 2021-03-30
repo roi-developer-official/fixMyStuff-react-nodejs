@@ -35,7 +35,7 @@ export const signIn = (reqData) => (dispatch) =>
  * @param {object} reqData - date to be sent to the server
  * @returns {dispatch} - dispating action in case of success or faliure
  */
-export const Login = (reqData) => (dispatch) =>
+export const login = (reqData) => (dispatch) =>
   axios
     .post("api/auth/login", reqData)
     .then((res) =>
@@ -55,7 +55,7 @@ export const Login = (reqData) => (dispatch) =>
     );
 
 /**
- * @function Logout 
+ * @function logOut 
  * @returns {dispatch} - dispatch in case of user returned from the server
  */
 export const logOut = () => (dispatch) =>

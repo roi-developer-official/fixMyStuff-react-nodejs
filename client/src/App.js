@@ -3,36 +3,37 @@ import axios from "axios";
 import { Route, Switch, withRouter } from "react-router-dom";
 import Home from "./home/home";
 import Nav from "./nav/nav";
-import { Fragment, useContext } from "react";
+import { Fragment } from "react";
 import { Redirect } from "react-router-dom";
 import { useEffect } from "react";
 import Signin from "./signin/signin";
-import { AuthContext } from "./context/authContext";
 import LoginPage from "./login/login";
 import UserPage from "./userPage/userPage";
 import AddPostPage from "./userPage/addPostPage/addPostPage";
+import { useSelector } from "react-redux";
+
 const AuthRoute = ({ children, ...rest }) => {
-  const authContext = useContext(AuthContext);
+  const { user } = useSelector((state) => state);
   return (
     <Route
       {...rest}
-      render={() => (authContext.isAuth() ? children : <Redirect to="/no" />)}
+      render={() => (user? children : <Redirect to="/no" />)}
     ></Route>
   );
 };
 
 const UnAuthRoute = ({ children, ...rest }) => {
-  const authContext = useContext(AuthContext);
+  const { user } = useSelector((state) => state);
   return (
     <Route
       {...rest}
-      render={() => (!authContext.isAuth() ? children : <Redirect to="/" />)}
+      render={() => (!user ? children : <Redirect to="/" />)}
     ></Route>
   );
 };
 
 function App(props) {
-  
+
   useEffect(() => {
     axios
       .get("/api/initv")
@@ -45,7 +46,7 @@ function App(props) {
       });
   }, []);
 
-
+  
   return (
     <Fragment>
       <Nav></Nav>
