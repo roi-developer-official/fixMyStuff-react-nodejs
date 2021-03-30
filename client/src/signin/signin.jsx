@@ -1,19 +1,16 @@
+import "./signin.css";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Steps, FormFeedback } from "../Global_UI";
 import PageOne from "./pages/pageOne";
-import "./signin.css";
 import PageTwo from "./pages/pageTwo";
 import PageThree from "./pages/pageThree";
 import PageFour from "./pages/pageFour";
-import { useDispatch, useSelector } from "react-redux";
-import { actionTypes } from "../reducers/actionReducer";
-import { signIn } from "../actions/authAction";
-import { AuthContext } from "../context/authContext";
-import { useHistory } from "react-router";
+import { signIn, actionTypes } from "../actions/authAction";
 const steps = [1, 2, 3, 4];
 
 export default function SignIn() {
-  const context = React.useContext(AuthContext);
+
   const [state, setState] = useState({
     currentStep: 1,
     inputsValues: new Map(),
@@ -22,7 +19,6 @@ export default function SignIn() {
 
   const { loading, error } = useSelector((state) => state);
   const dispatch = useDispatch();
-  const history = useHistory();
 
   useEffect(() => {
     dispatch({ type: actionTypes.RESET_STATE });
@@ -75,21 +71,10 @@ export default function SignIn() {
     });
 
     dispatch({ type: actionTypes.ACTION_START });
-    dispatch(signIn(reqData, signupSuccess));
+    dispatch(signIn(reqData));
   }
 
-  function signupSuccess(result) {
-    setState({
-      ...state,
-      signupSuccess: true,
-    });
-
-    setTimeout(() => {
-      context.setAuthState(result);
-      history.push("/");
-    }, 700);
-  }
-
+  
   function returnCustomFeedback() {
     if (error) {
       return <FormFeedback error={true} message={error}></FormFeedback>;

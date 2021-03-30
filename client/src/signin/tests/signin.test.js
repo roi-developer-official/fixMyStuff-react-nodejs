@@ -1,8 +1,7 @@
 import { mount } from "enzyme";
 import { Provider, useDispatch } from "react-redux";
 import { findByAttr, storeFactory } from "../../tests/testUtils";
-import { signIn as mockSignin } from "../../actions/authAction";
-import { actionTypes } from "../../reducers/actionReducer";
+import { signIn as mockSignin, actionTypes } from "../../actions/authAction";
 import SignIn from "../signin";
 
 const mockDispatch = jest.fn();

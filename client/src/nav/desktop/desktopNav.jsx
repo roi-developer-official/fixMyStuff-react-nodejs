@@ -6,7 +6,7 @@ import Avatar from '../avatar/avatar';
 import LoginButton from '../loginbutton/loginButton';
 import NavSearch from './nav-search/navSearch';
 
-export default function DesktopNav({navItems,isAuth,userInfo,pathname}){
+export default function DesktopNav({navItems,userInfo,pathname}){
 
     return (
     <nav className='nav'>
@@ -15,7 +15,7 @@ export default function DesktopNav({navItems,isAuth,userInfo,pathname}){
         <ul className='nav_items' >
             {navItems.map((i,idx)=>{
                 if (idx === 1)
-                    return RenderAuthNavItem({path: i.name,isAuth});
+                    return RenderAuthNavItem({path: i.name,userInfo});
                 else 
                     return (
                     <li key={i.name}>
@@ -27,11 +27,10 @@ export default function DesktopNav({navItems,isAuth,userInfo,pathname}){
                     </NavLink></li>
                     )
         })}
-      <li><LoginButton isAuth={isAuth}/></li>
+      <li><LoginButton isAuth={userInfo}/></li>
     </ul>
      <Avatar 
-     userInfo={userInfo} 
-     isAuth={isAuth}
+     user={userInfo}
      pathname={pathname}
      ></Avatar>
     </nav>

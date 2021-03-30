@@ -1,19 +1,15 @@
-
 import userIcon from '../../../assets/user.svg';
 import logoutIcon from '../../../assets/logout.svg';
-import { useContext } from 'react';
-import { AuthContext } from '../../../context/authContext';
-import { useHistory } from 'react-router';
+import { useDispatch } from 'react-redux';
+import {logOut} from '../../../actions/authAction';
+
 export default function AvatarMenu(){
 
-    const authContext = useContext(AuthContext);
-    const history = useHistory();
-
+    const dispatch = useDispatch();
     function logout(){
-        authContext.clearUserInfo();
-        history.push('/Log-in');
+        dispatch(logOut())
     }
-
+    
     return (
     <div className="avatar_menu">
         <ul className='avater_menu_items'>

@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./nav.css";
 import { useHistory, withRouter } from "react-router-dom";
-import { AuthContext } from "../context/authContext";
 import MobileNav from "./mobile/mobileNav";
 import DesktopNav from "./desktop/desktopNav";
+import { useSelector } from "react-redux";
 
 const navItems =  [
     { name: "Find jobs" },
@@ -20,29 +20,29 @@ function Nav(){
     const history = useHistory();
     const formattedpath = useRef();
     const [pathname,setPathName] = useState('');
-    const context = useContext(AuthContext);
-    const userInfo = context.getUserInfo();
-    const isAuth = context.isAuth();
+    const { user } = useSelector(state=>state);
+
 
     useEffect(()=>{
         formattedpath.current = formatPath(history.location.pathname);
         setPathName(formattedpath.current)
     },[history.location.pathname])
 
+
     return (
         <React.Fragment>
         {!(/my-page/i.test(pathname))  && <h2 className="path">{pathname}</h2>}
 
         <DesktopNav
-          userInfo={userInfo}
+          userInfo={user}
           navItems={navItems}
           pathname={pathname}
-          isAuth={isAuth}
         ></DesktopNav>
 
         <MobileNav 
         navItems={navItems} 
-        isAuth={isAuth}></MobileNav>
+        isAuth={user}>
+        </MobileNav>
       </React.Fragment>
 
     )

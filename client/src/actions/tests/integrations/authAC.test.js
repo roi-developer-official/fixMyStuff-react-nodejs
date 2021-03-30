@@ -1,20 +1,8 @@
 import moxios from "moxios";
-import { storeFactory } from "../../../tests/testUtils";
+import { storeFactory, user } from "../../../tests/testUtils";
 import { signIn } from "../../authAction";
 
-//integration test for async function by that mage requests to the server
-const mockCallBack = jest.fn();
-jest.mock("../../authAction", () => {
-  const originalModule = jest.requireActual("../../authAction");
-
-  return {
-    __esModule: true,
-    ...originalModule,
-    actionFailed: jest.fn(),
-    actionSuccess: jest.fn().mockReturnValue(10),
-  };
-});
-
+//integration test for async function by that mage requests to the server;
 describe("signup", () => {
   beforeEach(() => {
     moxios.install();
@@ -22,29 +10,45 @@ describe("signup", () => {
   afterEach(() => {
     moxios.uninstall();
   });
-  test("signup returned with response, and making callback call", () => {
+  test("signup returned with currect response", () => {
     const store = storeFactory({
-      actionReducer: { error: "some error", loading: true },
+      authReducer: {
+        error: "some error",
+        loading: true,
+        user: null,
+        expiry: null,
+      },
     });
+
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
         status: 200,
-        response: "party",
+        response: {
+          user: user,
+          expiry: "2019",
+        },
       });
     });
 
-    return store.dispatch(signIn({}, mockCallBack)).then(() => {
-      expect(mockCallBack).toBeCalledWith("party");
-      expect(store.getState().actionReducer).toStrictEqual({
-        error: null,
-        loading: false,
+    return store
+      .dispatch(signIn({}))
+      .then(() => {
+        expect(store.getState().authReducer).toStrictEqual({
+          error: null,
+          loading: false,
+          user: user,
+          expiry: "2019",
+        });
       });
-    });
   });
 
   test("signup dispatch on error", () => {
-    const store = storeFactory({ actionReducer: { error: null, loading: true } });
+    const store = storeFactory({
+      authReducer: { 
+        error: null, loading: true , user: null, expiry: null
+      },
+    });
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
@@ -55,11 +59,14 @@ describe("signup", () => {
       });
     });
 
-    return store.dispatch(signIn({}, undefined)).then(() => {
-      expect(store.getState().actionReducer).toStrictEqual({
+    return store.dispatch(signIn({})).then(() => {
+      expect(store.getState().authReducer).toStrictEqual({
         error: "oops",
         loading: false,
+        user: null,
+        expiry:null
       });
     });
   });
 });
+
