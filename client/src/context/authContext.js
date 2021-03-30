@@ -17,7 +17,7 @@ const AuthProvider = ({children}) =>{
         }).catch(err=>{
             //do somthing with the error
         })
-        axios.get('/auth/refresh')
+        axios.get('/api/auth/refresh')
         .then(res=>{
             if(res.data.user){
                 setAuthInfo(res.data)
@@ -40,7 +40,7 @@ const AuthProvider = ({children}) =>{
 
     const clearUserInfo = ()=>{
         setAuthState({expiresIn :null, user:{}});
-        axios.get('/auth/logout')
+        axios.get('api/auth/logout')
         .then(res=>{
 
         })

@@ -2,7 +2,7 @@
 import './App.css';
 import {  Route , Switch, withRouter } from 'react-router-dom';
 import Home from './home/home';
-import Nav from './nav/Nav';
+import Nav from './nav/nav';
 import { Fragment, useContext }  from 'react';
 import { Redirect } from 'react-router-dom';
 import Signin from './signin/signin';

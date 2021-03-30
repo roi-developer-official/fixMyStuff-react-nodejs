@@ -11,5 +11,8 @@ export const handlers = [
     }),
     rest.post('http://localhost:3030/order', (req,res,ctx)=>{
      return res(ctx.json({ orderNumber: '123213123'}))
+    }),
+    rest.post('/api/auth/logout', (req,res,ctx)=>{
+        return res(ctx.json([]))
     })
 ];

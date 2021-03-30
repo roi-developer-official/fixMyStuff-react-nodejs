@@ -1,10 +1,10 @@
 
 import {Logo} from '../../Global_UI';
-import RenderAuthNavItem from '../util/RenderAuthNavItem';
+import RenderAuthNavItem from '../util/renderAuthNavItem';
 import { NavLink} from 'react-router-dom';
-import Avatar from '../avatar/Avatar';
-import LoginButton from '../loginbutton/LoginButton';
-import NavSearch from './nav-search/NavSearch';
+import Avatar from '../avatar/avatar';
+import LoginButton from '../loginbutton/loginButton';
+import NavSearch from './nav-search/navSearch';
 
 export default function DesktopNav({navItems,isAuth,userInfo,pathname}){
 

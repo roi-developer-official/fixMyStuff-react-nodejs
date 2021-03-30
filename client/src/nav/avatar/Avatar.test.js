@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { Router } from "react-router";
 import { AuthProvider } from "../../context/authContext";
 import { createMemoryHistory} from 'history';
-import Avatar from "./Avatar";
+import Avatar from "./avatar";
 const userInfo = {
   firstName: "John",
   lastName: "Doe",

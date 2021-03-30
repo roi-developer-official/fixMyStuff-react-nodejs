@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
-import "./Nav.css";
+import "./nav.css";
 import { useHistory, withRouter } from "react-router-dom";
 import { AuthContext } from "../context/authContext";
-import MobileNav from "./mobile/MobileNav";
-import DesktopNav from "./desktop/DesktopNav";
+import MobileNav from "./mobile/mobileNav";
+import DesktopNav from "./desktop/desktopNav";
 
 const navItems =  [
     { name: "Find jobs" },
