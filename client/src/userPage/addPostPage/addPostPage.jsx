@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Steps, FormFeedback } from "../../Global_UI";
 import "./addPostPage.css";
 import { useHistory } from "react-router";
@@ -6,8 +6,6 @@ import PageOne from "./pages/pageOne";
 import PageTwo from "./pages/pageTwo";
 import { useDispatch, useSelector } from "react-redux";
 import { addPost } from "../../actions/postAction";
-import { actionTypes } from "../../reducers/actionReducer";
-import { AuthContext } from "../../context/authContext";
 
 function AddPostPage() {
   const history = useHistory();
@@ -15,7 +13,7 @@ function AddPostPage() {
   const [currentPage, setCurrentPage] = useState(1);
   let [inputsValues, setInputs] = useState(new Map());
   const { loading, error } = useSelector((state) => state);
-  const authContext = useContext(AuthContext);
+  // const authContext = useContext(AuthContext);
   const [creationSuccess, setCreationSuccess] = useState(false);
 
   const dispatch = useDispatch();
@@ -53,9 +51,9 @@ function AddPostPage() {
       reqData.append(key, val);
     });
 
-    reqData.append("email", authContext.getUserInfo().email);
+    // reqData.append("email", authContext.getUserInfo().email);
 
-    dispatch({ type: actionTypes.ACTION_START });
+    // dispatch({ type: actionTypes.ACTION_START });
 
     dispatch(addPost(reqData, postAddedSuccess));
   }

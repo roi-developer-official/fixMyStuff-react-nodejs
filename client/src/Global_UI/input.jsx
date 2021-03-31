@@ -14,7 +14,8 @@ export function Input({
     min,
     updateInput,
     validations,
-    addToRefsArray
+    addToRefsArray,
+    matchWith
 }){
 
     const [state, setState] = React.useState({
@@ -24,7 +25,8 @@ export function Input({
      function validateOnBlur(input){
          if(validations){
              const name = input.name;
-             let errorMsg = validation(validations ,state.value);
+             console.log(matchWith);
+             let errorMsg = validation(validations ,state.value,matchWith);
              if(errorMsg){
                  setState({
                      ...state,

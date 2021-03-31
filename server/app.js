@@ -9,19 +9,20 @@ const cookieParser = require('cookie-parser');
 const csurf = require('csurf');
 const expressJwt = require('express-jwt');
 require('../server/util/database');
+require('config');
 // require('./util/fillDatabase');
 
 
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-const csurfProtection = csurf({
-    cookie: {
-        httpOnly:true,
-        sameSite:true,
-        secure: process.env.NODE_ENV !== "development" ? true : false
-    }
-});
+// const csurfProtection = csurf({
+//     cookie: {
+//         httpOnly:true,
+//         sameSite:true,
+//         secure: process.env.NODE_ENV !== "development" ? true : false
+//     }
+// });
 
 const checkJwt = expressJwt({
     secret: process.env.TOKEN_SECRET,
@@ -30,7 +31,7 @@ const checkJwt = expressJwt({
 });
 
 
-app.use(csurfProtection);
+// app.use(csurfProtection);
 
 app.get('/api/initv',(req,res)=>{
     res.status(200).json({csrfToken: req.csrfToken()}); 

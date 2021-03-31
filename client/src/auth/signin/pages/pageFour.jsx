@@ -47,6 +47,7 @@ function PageFour({ changePage, show }) {
               updateInput={onInputChange}
               type={input.type}
               validations={input.validations}
+              matchWith={state.inputs[1].value}
             ></Input>
           </div>
         );

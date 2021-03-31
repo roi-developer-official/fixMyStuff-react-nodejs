@@ -16,7 +16,6 @@ const LOGIN_FAIL = 'Invalid email or password';
 const TOKEN_EXPIRY = 3600000;
 
 module.exports.signUp = async (req,res,next)=>{
-
     const data = req.body;
     if(req.file){
         data.image = req.file.path;

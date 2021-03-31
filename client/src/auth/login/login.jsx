@@ -1,16 +1,15 @@
-import { useContext, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import { validation } from "../../validations/Validations";
 import { Input, Button, Logo, FormFeedback } from "../../Global_UI";
-import { login } from "../../actions/authAction";
-import { actionTypes } from "../reducers/actionReducer";
+import { login, actionTypes } from "../../actions/authAction";
 import "./login.css";
 import { NavLink, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
-import { AuthContext } from "../context/authContext";
+// import { AuthContext } from "../context/authContext";
 
 function LoginPage(props) {
   const history = useHistory();
-  const authContext = useContext(AuthContext);
+  // const authContext = useContext(AuthContext);
   const [loginSuccess, setLoginSuccess] = useState(false);
   const [inputs, setInputs] = useState([
     {
@@ -104,7 +103,7 @@ function LoginPage(props) {
   function onLoginSuccess(result) {
     setLoginSuccess(true);
     setTimeout(() => {
-      authContext.setAuthState(result);
+      // authContext.setAuthState(result);
       history.push("/");
     }, 700);
   }

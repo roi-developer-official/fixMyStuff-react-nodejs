@@ -1,6 +1,5 @@
 
 import axios from 'axios';
-import {actionSuccess,actionFailed} from './authAction';
 
 /**
  * @function addPost Redux thunk action creator for addPost request
@@ -11,16 +10,16 @@ import {actionSuccess,actionFailed} from './authAction';
 
 export const addPost = (reqData,callBack)=>{
     return dispatch =>{
-        axios.post('user/create-post', reqData)
-        .then(res=>{
-            dispatch(actionSuccess())
-            callBack();
-        })
-        .catch(error=>{
-            console.log(error);
-             const message = error.response.data.error.message;
-            dispatch(actionFailed(message))
-        })
+        // axios.post('user/create-post', reqData)
+        // .then(res=>{
+        //     dispatch(actionSuccess())
+        //     callBack();
+        // })
+        // .catch(error=>{
+        //     console.log(error);
+        //      const message = error.response.data.error.message;
+        //     dispatch(actionFailed(message))
+        // })
     }
 }
 

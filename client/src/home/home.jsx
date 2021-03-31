@@ -1,11 +1,10 @@
 import React, { Fragment } from 'react';
-import { AuthContext } from '../context/authContext';
 import Filter from '../filter/filter';
 import './home.css'
 class Home extends React.Component{
 
   
-    static contextType = AuthContext;
+    // static contextType = AuthContext;
     state={};
     constructor(){
         super();

@@ -2,7 +2,7 @@ import "./signin.css";
 import React, { useEffect, useReducer } from "react";
 import { returnCustomFeedback, returnFormData } from "../shared";
 import { useDispatch, useSelector } from "react-redux";
-import { Steps } from "../../Global_UI";
+import { FormFeedback, Steps } from "../../Global_UI";
 import PageOne from "./pages/pageOne";
 import PageTwo from "./pages/pageTwo";
 import PageThree from "./pages/pageThree";
@@ -14,7 +14,18 @@ const DECREMENT_STEP = "DECREMENT_STEP";
 const SET_INPUTS = "SET_INPUTS";
 const initialState = {
   currentStep: 1,
-  inputs: new Map(),
+  inputs: [
+    { name: "firstName", value: "" },
+    { name: "lastName", value: "" },
+    { name: "city", value: "" },
+    { name: "image", value: "" },
+    { name: "role", value: "" },
+    { name: "profession", value: "" },
+    { name: "experience", value: "" },
+    { name: "email", value: "" },
+    { name: "password", value: "" },
+    { name: "confirmPassword", value: "" },
+  ],
   signupSuccess: null,
 };
 
@@ -31,13 +42,17 @@ export function signInReducer(state, action) {
         currentStep: state.currentStep - 1,
       };
     case SET_INPUTS:
-      let updatedInput = new Map(state.inputs);
-      for (let key in Object.keys(action.payload)) {
-        updatedInput.set(action.payload[key].name, action.payload[key].value);
+      const { inputs } = action.payload;
+      let updatedInputs = state.inputs.slice();
+      for (let input of inputs) {
+        const index = updatedInputs.findIndex(
+          (entry) => entry.name === input.name
+        );
+        updatedInputs[index].value = input.value;
       }
       return {
         ...state,
-        inputs: updatedInput,
+        inputs: updatedInputs,
       };
     default:
       return state;
@@ -45,10 +60,10 @@ export function signInReducer(state, action) {
 }
 
 export default function SignIn() {
-  const { loading, error, success } = useSelector((state) => state);
+  const { loading, error, success } = useSelector((state) => state.authReducer);
   const storeDispatch = useDispatch();
   const [state, dispatch] = useReducer(signInReducer, initialState);
-  
+
   useEffect(() => {
     storeDispatch({ type: actionTypes.RESET_STATE });
   }, [storeDispatch]);
@@ -57,10 +72,10 @@ export default function SignIn() {
     switch (label) {
       case "Next":
         dispatch({ type: INCREMENT_STEP });
-        dispatch({ type: SET_INPUTS, inputs });
+        dispatch({ type: SET_INPUTS, payload: { inputs } });
         break;
       case "Done":
-        dispatch({ type: SET_INPUTS, inputs });
+        dispatch({ type: SET_INPUTS, payload: { inputs } });
         submitPage(state.inputs);
         break;
       case "Back":
@@ -81,11 +96,7 @@ export default function SignIn() {
     <div className="signup_page_container" data-test="component-signin">
       {loading && <div className="loader"></div>}
       <Steps steps={steps} currnetStep={state.currentStep}></Steps>
-      {returnCustomFeedback(
-        error,
-        success ? "Signup Successfuly!" : "Sigup Failed!",
-        success
-      )}
+      <FormFeedback error={error} message={success ? "Signup Successfuly!" : "Signup Failed!"} success={success}/>
       <div className="pages_container">
         <PageOne show={state.currentStep === 1} changePage={moveBetweenPages} />
         <PageTwo show={state.currentStep === 2} changePage={moveBetweenPages} />
