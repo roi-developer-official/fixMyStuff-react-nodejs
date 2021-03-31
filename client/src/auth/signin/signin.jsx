@@ -1,8 +1,8 @@
 import "./signin.css";
 import React, { useEffect, useReducer } from "react";
-import { returnCustomFeedback, returnFormData } from "../shared";
+import { returnFormData } from "../shared";
 import { useDispatch, useSelector } from "react-redux";
-import { FormFeedback, Steps } from "../../Global_UI";
+import { FormFeedback, Steps, LoadingSpinner } from "../../Global_UI";
 import PageOne from "./pages/pageOne";
 import PageTwo from "./pages/pageTwo";
 import PageThree from "./pages/pageThree";
@@ -62,7 +62,7 @@ export function signInReducer(state, action) {
 export default function SignIn() {
   const { loading, error, success } = useSelector((state) => state.authReducer);
   const storeDispatch = useDispatch();
-  const [state, dispatch] = useReducer(signInReducer, initialState);
+  const [state, dispatch] = React.useReducer(signInReducer, initialState);
 
   useEffect(() => {
     storeDispatch({ type: actionTypes.RESET_STATE });
@@ -94,7 +94,7 @@ export default function SignIn() {
 
   return (
     <div className="signup_page_container" data-test="component-signin">
-      {loading && <div className="loader"></div>}
+      <LoadingSpinner show={loading}/>
       <Steps steps={steps} currnetStep={state.currentStep}></Steps>
       <FormFeedback error={error} message={success ? "Signup Successfuly!" : "Signup Failed!"} success={success}/>
       <div className="pages_container">

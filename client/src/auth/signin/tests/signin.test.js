@@ -1,16 +1,10 @@
-import { mount, shallow } from "enzyme";
-import { Provider, useDispatch, useSelector } from "react-redux";
-import { findByAttr, storeFactory, user } from "../../../tests/testUtils";
-import { signIn as mockSignin, actionTypes } from "../../../actions/authAction";
+import { mount } from "enzyme";
+import { Provider, useDispatch} from "react-redux";
+import { findByAttr, storeFactory } from "../../../tests/testUtils";
+import { actionTypes } from "../../../actions/authAction";
 import SignIn, { signInReducer } from "../signin";
-import React, { useReducer } from "react";
+import React from "react";
 import { FormFeedback } from "../../../Global_UI";
-
-// jest.mock("react", () => ({
-//   ...jest.requireActual("react"),
-//   useReducer: jest.fn(),
-// }));
-// jest.mock("../../../actions/authAction");
 
 const setup = (initialState = {}, props = {}) => {
   const store = storeFactory(initialState);
@@ -20,7 +14,6 @@ const setup = (initialState = {}, props = {}) => {
     </Provider>
   );
 };
-
 jest.mock("react-redux", () => ({
   ...jest.requireActual("react-redux"),
   useDispatch: jest.fn(),
@@ -34,13 +27,13 @@ describe("signin page", () => {
     useDispatch.mockReturnValue(mockDispatch);
     wrapper = setup({ authReducer: { loading: false, error: null } });
   });
-  afterEach(() => {});
 
   test("renders without errors", () => {
     const signUpComponent = findByAttr(wrapper, "component-signin");
     expect(signUpComponent).toHaveLength(1);
   });
 
+  //unit
   test("reset store value initialy'", () => {
     expect(mockDispatch).toHaveBeenCalledWith({
       type: actionTypes.RESET_STATE,
@@ -48,6 +41,7 @@ describe("signin page", () => {
     expect(mockDispatch).toHaveBeenCalledTimes(1);
   });
 
+  //unit
   test("should not show feedback by default", () => {
     const wrapper = setup({
       authReducer: { loading: false, error: false, success: false },
@@ -56,7 +50,8 @@ describe("signin page", () => {
     expect(message).toHaveLength(0);
   });
 
-  test("should show a feedback on sohwing error", () => {
+  //integration
+  test("should show a feedback on error", () => {
     const wrapper = setup({
       authReducer: { loading: false, error: true, success: false },
     });
@@ -66,6 +61,7 @@ describe("signin page", () => {
     expect(message.text()).toBe("Signup Failed!");
   });
 
+  //integration
   test("should show a feedback on signing success", () => {
     const wrapper = setup({
       authReducer: { loading: false, error: false, success: true },
@@ -74,6 +70,22 @@ describe("signin page", () => {
     const message = wrapper.find("div.form_feedback_wrapper");
     expect(message).toHaveLength(1);
     expect(message.text()).toBe("Signup Successfuly!");
+  });
+
+  //integration
+  test("should not show loading spinner by default", () => {
+    const wrapper = setup({
+      authReducer: { loading: false, error: false, success: false },
+    });
+    expect(findByAttr(wrapper, "loading-spinner")).toHaveLength(0);
+  });
+
+  //integration
+  test("should show loading spinner when loading", () => {
+    const wrapper = setup({
+      authReducer: { loading: true, error: false, success: false },
+    });
+    expect(findByAttr(wrapper, "loading-spinner")).toHaveLength(1);
   });
 
   //unit tests

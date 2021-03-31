@@ -1,5 +1,4 @@
 import React from "react";
-import { useHistory } from "react-router";
 import { Input, Button } from "../../../Global_UI";
 import { inputs as pageInputs, buttons as pageButtons, selects as pageSelects } from "./elements";
 import pagesReducer, {SET_INPUT, addToRefsArray} from "./pagesShared";
@@ -14,7 +13,6 @@ const initialState = {
 
 function PageThree({ changePage, show }) {
   const [state, dispatch] = React.useReducer(pagesReducer, initialState);
-  const history = useHistory();
   const checkedRef = state.inputs[0].value || 1;
   const refs = React.useRef([]);
     
