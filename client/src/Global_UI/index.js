@@ -6,3 +6,4 @@ export  {AddImage} from './addImage';
 export {Logo} from './logo';
 export { Steps } from './steps';
 export {Textarea} from './textarea';
+export {LoadingSpinner} from './loadingSpinner';

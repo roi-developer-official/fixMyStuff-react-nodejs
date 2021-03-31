@@ -25,7 +25,6 @@ export function Input({
      function validateOnBlur(input){
          if(validations){
              const name = input.name;
-             console.log(matchWith);
              let errorMsg = validation(validations ,state.value,matchWith);
              if(errorMsg){
                  setState({
