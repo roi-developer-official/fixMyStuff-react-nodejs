@@ -1,12 +1,11 @@
-import { mount, shallow } from "enzyme";
-import { Provider, useDispatch , useSelector} from "react-redux";
+import { mount } from "enzyme";
+import { Provider, useDispatch} from "react-redux";
 import { findByAttr, storeFactory } from "../../../tests/testUtils";
 import { actionTypes } from "../../../actions/authAction";
 import SignIn, { signInReducer } from "../signin";
 import React from "react";
 import { FormFeedback } from "../../../Global_UI";
 
-// jest.mock("../../../actions/authAction");
 const setup = (initialState = {}, props = {}) => {
   const store = storeFactory(initialState);
   return mount(
@@ -88,8 +87,6 @@ describe("signin page", () => {
     });
     expect(findByAttr(wrapper, "loading-spinner")).toHaveLength(1);
   });
-
- 
 
   //unit tests
   describe("signin reducer", () => {
