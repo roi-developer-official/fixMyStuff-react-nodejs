@@ -1,5 +1,5 @@
 import React from "react";
-import { Input, Button } from "../../Global_UI";
+import { Input, Button } from "../../../Global_UI";
 import { buttons as pageButtons, inputs as pageInputs } from "./elements";
 import pagesReducer, { SET_INPUT, addToRefsArray } from "./pagesShared";
 

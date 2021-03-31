@@ -17,7 +17,7 @@ export default function AvatarMenu(){
            Edit
                <img className='avatar_menu_icon' src={userIcon} alt=""/>
               </li>
-           <li onClick={logout} className='avatar_menu_item'>
+           <li data-test="logout-button" onClick={logout} className='avatar_menu_item'>
            Logout
            <img className='avatar_menu_icon' src={logoutIcon} alt=""/>
             </li>

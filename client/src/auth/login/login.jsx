@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
-import { validation } from "../validations/Validations";
-import { Input, Button, Logo, FormFeedback } from "../Global_UI";
-import { login } from "../actions/authAction";
+import { validation } from "../../validations/Validations";
+import { Input, Button, Logo, FormFeedback } from "../../Global_UI";
+import { login } from "../../actions/authAction";
 import { actionTypes } from "../reducers/actionReducer";
 import "./login.css";
 import { NavLink, useHistory } from "react-router-dom";

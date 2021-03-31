@@ -14,6 +14,7 @@ test("action success return currect value", () => {
     loading: false,
     user,
     expiry: "2019",
+    success: true
   });
 });
 
@@ -28,6 +29,7 @@ test("action fail return currect value", () => {
     loading: false,
     error: "some error",
     expiry: null,
-    user: null
+    user: null,
+    success: false
   });
 });

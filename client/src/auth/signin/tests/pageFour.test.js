@@ -46,10 +46,7 @@ test("should render 3 inputs", () => {
 test("sould render 2 buttons", () => {
   expect(buttons).toHaveLength(2);
 });
-test("should not move to next page if page is invalid", () => {
-  buttons.at(1).simulate("click");
-  expect(mockChangePage).not.toBeCalled();
-});
+
 
 test("should hanlde change on the inputs", () => {
   email.simulate("change", {
@@ -92,6 +89,14 @@ test("should set errors on blur", () => {
 test("should not change the page when inputs invalid", () => {
   buttons.at(1).simulate("click");
   expect(mockChangePage).not.toBeCalled();
+});
+
+test("should submit the page when inputs valid", ()=>{
+  inputs[0].value = "test@test.com";
+  inputs[1].value = "qwqwqwQ1";
+  inputs[2].value = "qwqwqwQ1";
+  buttons.at(1).simulate("click");
+  expect(mockChangePage).toBeCalled();
 });
 
 test("should not chagne the page with errors", () => {

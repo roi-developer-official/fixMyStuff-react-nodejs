@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, AddImage } from "../../Global_UI";
+import { Button, AddImage } from "../../../Global_UI";
 import { buttons as pageButtons } from "./elements";
 
 function PageTwo({ changePage, show }) {

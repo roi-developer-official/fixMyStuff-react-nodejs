@@ -9,7 +9,7 @@ export function FormFeedback({error, message}){
     };
 
     return (
-        <div style={{...style}} className="form_feedback_wrapper">
+        <div style={{...style}} data-testid="form-feedback-wrapper" className="form_feedback_wrapper">
             <p>{message}</p>
         </div>
     );

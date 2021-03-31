@@ -39,6 +39,7 @@ describe("signup", () => {
           loading: false,
           user: user,
           expiry: "2019",
+          success: true
         });
       });
   });
@@ -64,7 +65,8 @@ describe("signup", () => {
         error: "oops",
         loading: false,
         user: null,
-        expiry:null
+        expiry:null,
+        success: false
       });
     });
   });

@@ -5,6 +5,7 @@ const initialState = {
   error: null,
   user: null,
   expiry: null,
+  success: false,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -20,12 +21,14 @@ const authReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         error: action.payload,
+        success: false
       };
     case actionTypes.RESET_STATE: {
       return {
         ...state,
         error: null,
         loading: false,
+        success: false,
       };
     }
     case actionTypes.ACTION_SUCCESS:
@@ -35,6 +38,7 @@ const authReducer = (state = initialState, action) => {
         loading: false,
         user: action.payload.user,
         expiry: action.payload.expiry,
+        success: true
       };
     default:
       return state;

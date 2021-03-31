@@ -1,7 +1,6 @@
 import { shallow } from "enzyme";
 import { Input } from "../Input";
 import React from "react";
-import { inputs } from "../../signin/pages/elements";
 
 const props = {
   inputType:"text",

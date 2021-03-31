@@ -1,6 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router";
-import { Input, Button } from "../../Global_UI";
+import { Input, Button } from "../../../Global_UI";
 import { inputs as pageInputs, buttons as pageButtons, selects as pageSelects } from "./elements";
 import pagesReducer, {SET_INPUT, addToRefsArray} from "./pagesShared";
 

@@ -1,4 +1,4 @@
-import { Button, Input, Logo } from "../../Global_UI";
+import { Button, Input, Logo } from "../../../Global_UI";
 import React, { useRef } from "react";
 import { useHistory } from "react-router-dom";
 import {
