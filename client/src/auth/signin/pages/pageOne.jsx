@@ -50,14 +50,11 @@ function PageOne({ changePage, show }) {
         return (
           <div key={i} className="form_input_wrapper">
             <Input
-              ref={refs[i]}
               inputType={input.type}
               label={input.label}
-              type={input.type}
               name={input.name}
               updateInput={onInputChange}
               addToRefsArray={(el)=>addToRefsArray(el,refs)}
-              validate={input.validate}
               validations={input.validations}
             ></Input>
           </div>
@@ -69,7 +66,6 @@ function PageOne({ changePage, show }) {
             <Input
               inputType={input.type}
               label={input.label}
-              validate={input.validate}
               validations={input.validations}
               name={input.name}
               options={cities}

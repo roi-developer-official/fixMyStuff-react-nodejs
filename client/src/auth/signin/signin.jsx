@@ -8,6 +8,7 @@ import PageTwo from "./pages/pageTwo";
 import PageThree from "./pages/pageThree";
 import PageFour from "./pages/pageFour";
 import { signIn, actionTypes } from "../../actions/authAction";
+import { useHistory } from "react-router";
 const steps = [1, 2, 3, 4];
 const INCREMENT_STEP = "INCREMENT_STEP";
 const DECREMENT_STEP = "DECREMENT_STEP";
@@ -62,11 +63,20 @@ export function signInReducer(state, action) {
 export default function SignIn() {
   const { loading, error, success } = useSelector((state) => state.authReducer);
   const storeDispatch = useDispatch();
+  const history = useHistory();
   const [state, dispatch] = React.useReducer(signInReducer, initialState);
 
   useEffect(() => {
     storeDispatch({ type: actionTypes.RESET_STATE });
   }, [storeDispatch]);
+
+  useEffect(()=>{
+    if(success){
+      setTimeout(()=>{
+        history.push("/")
+      },700);
+    }
+  },[success, history]);
 
   function moveBetweenPages(label, inputs) {
     switch (label) {
@@ -96,7 +106,7 @@ export default function SignIn() {
     <div className="signup_page_container" data-test="component-signin">
       <LoadingSpinner show={loading}/>
       <Steps steps={steps} currnetStep={state.currentStep}></Steps>
-      <FormFeedback error={error} message={success ? "Signup Successfuly!" : "Signup Failed!"} success={success}/>
+      <FormFeedback error={error} message={success ? "Signup Successfuly!" : error} success={success}/>
       <div className="pages_container">
         <PageOne show={state.currentStep === 1} changePage={moveBetweenPages} />
         <PageTwo show={state.currentStep === 2} changePage={moveBetweenPages} />

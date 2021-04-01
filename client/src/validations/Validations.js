@@ -2,7 +2,6 @@
 
 export const validation = (validationParams,input,compareString = null)=>{
     for(let key of Object.keys(validationParams)){
-      
         if(key === 'required' && validationParams[key]){
             if(input.trim().length === 0){
                 return 'this field is required'

@@ -5,7 +5,6 @@ export const inputs = {
             label: 'First name', 
             type: 'text',
             name: 'firstName',
-            validate:true,
             validations:{
                 required:true,
                 minLength:2,
@@ -16,7 +15,6 @@ export const inputs = {
             label: 'Last name', 
             type: 'text',
             name: 'lastName',
-            validate:true,
             validations:{
                 required:true,
                 minLength:2,
@@ -35,7 +33,6 @@ export const inputs = {
             label: "No, I'm not looking for jobs.",
             type: 'radio',
             name : 'role',
-            validate:true,
             value:1
         }
     ],

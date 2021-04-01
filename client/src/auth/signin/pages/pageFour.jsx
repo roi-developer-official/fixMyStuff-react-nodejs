@@ -45,7 +45,7 @@ function PageFour({ changePage, show }) {
               addToRefsArray={(el) => addToRefsArray(el, refs)}
               name={input.name}
               updateInput={onInputChange}
-              type={input.type}
+              inputType={input.type}
               validations={input.validations}
               matchWith={state.inputs[1].value}
             ></Input>

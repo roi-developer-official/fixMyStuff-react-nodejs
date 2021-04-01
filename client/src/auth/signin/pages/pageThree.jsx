@@ -46,7 +46,7 @@ function PageThree({ changePage, show }) {
           return (
             <Input
               key={i}
-              type={input.type}
+              inputType={input.type}
               name={input.name}
               label={input.label}
               value={input.value}
@@ -65,7 +65,6 @@ function PageThree({ changePage, show }) {
                 addToRefsArray={(el)=>addToRefsArray(el,refs)}
                 name={input.name}
                 label={input.label}
-                validate={input.validate}
                 validations={input.validations}
                 options={input.options}
                 updateInput={onInputChange}

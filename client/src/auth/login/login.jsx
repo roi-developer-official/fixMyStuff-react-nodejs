@@ -1,157 +1,89 @@
-import {  useEffect, useState } from "react";
-import { validation } from "../../validations/Validations";
-import { Input, Button, Logo, FormFeedback } from "../../Global_UI";
+import { useEffect, useReducer, useRef } from "react";
+import { Input, Button, Logo, FormFeedback, LoadingSpinner } from "../../Global_UI";
 import { login, actionTypes } from "../../actions/authAction";
 import "./login.css";
-import { NavLink, useHistory } from "react-router-dom";
-import { connect } from "react-redux";
-// import { AuthContext } from "../context/authContext";
+import { useHistory, NavLink } from "react-router-dom";
+import { buttons as pageButtons , inputs as pageInputs} from './elements';
+import { useDispatch, useSelector } from "react-redux";
+import {returnFormData} from '../shared'
+import pagesReducer, {SET_INPUT, addToRefsArray} from "../signin/pages/pagesShared";
+const initialState = {
+  inputs: [
+    { name: "email", value: "", error: "" },
+    { name: "password", value: "", error: "" },
+  ],
+};
 
-function LoginPage(props) {
+function LoginPage() {
   const history = useHistory();
-  // const authContext = useContext(AuthContext);
-  const [loginSuccess, setLoginSuccess] = useState(false);
-  const [inputs, setInputs] = useState([
-    {
-      label: "Email",
-      name: "email",
-      type: "text",
-      validate: true,
-      validations: {
-        required: true,
-        email: true,
-      },
-      value: "",
-      error: "",
-    },
-    {
-      label: "Password",
-      name: "password",
-      type: "password",
-      validate: true,
-      validations: {
-        required: true,
-        minLength: 8,
-      },
-      value: "",
-      error: "",
-    },
-  ]);
-  const buttons = [
-    {
-      label: "Cancel",
-      style: {
-        backgroundColor: "#ccc",
-      },
-    },
-    {
-      label: "Login",
-      style: {
-        backgroundColor: "#08c982",
-      },
-    },
-  ];
+  const [state, dispatch] = useReducer(pagesReducer, initialState);
+  const { error, loading, success } = useSelector((state) => state.authReducer);
+  const storeDispatch = useDispatch();
+  const refs  =  useRef([]);
 
   useEffect(() => {
-    props.resetState();
-  }, []);
+    storeDispatch({type: actionTypes.RESET_STATE});
+  }, [storeDispatch]);
 
-  function onInputChange(e, name) {
-    // updateInputs(inputs,setInputs, name, e);
-  }
-
-  function validateOnBlur(name) {
-    let index = inputs.findIndex((input) => input.name === name);
-    let errorMsg = validation(inputs[index].validations, inputs[index].value);
-    if (errorMsg) {
-      let updatedInputs = inputs.slice();
-      updatedInputs[index].error = errorMsg;
-      setInputs(updatedInputs);
+  useEffect(()=>{
+    if(success){
+      setTimeout(()=>{
+        history.push("/")
+      },700);
     }
+  },[success, history]);
+
+  function onInputChange(name, value, error) {
+    dispatch({ type: SET_INPUT, name: name, value: value, error: error });
   }
 
   function onButtonClick(label) {
     if (label === "Login") {
-      let isValidPage = true;
-      let updatedInputs = inputs.slice();
-      for (let input of updatedInputs) {
-        let errorMsg = validation(input.validations, input.value);
-        if (errorMsg) {
-          isValidPage = false;
-          input.error = errorMsg;
+      for(let i = 0 ; i < state.inputs.length; i++){
+        if(state.inputs[i].error.length > 0 || state.inputs[i].value.length === 0) {
+          refs.current[i].focus();
+          return;
         }
       }
-      if (!isValidPage) setInputs(updatedInputs);
-      else {
-        submitPage(inputs);
-      }
-    } else {
+      submitPage(state.inputs);
+    }
+    else
       history.push("/");
     }
-  }
 
   function submitPage(inputs) {
-    let reqData = {
-      email: inputs[0].value,
-      password: inputs[1].value,
-    };
-
-    props.loginStart();
-    props.login(reqData, onLoginSuccess);
-  }
-
-  function onLoginSuccess(result) {
-    setLoginSuccess(true);
-    setTimeout(() => {
-      // authContext.setAuthState(result);
-      history.push("/");
-    }, 700);
-  }
-
-  function returnCustomFeedback() {
-    if (props.error) {
-      return <FormFeedback error={true} message={props.error}></FormFeedback>;
-    } else if (loginSuccess) {
-      return (
-        <FormFeedback
-          error={false}
-          message={"Login Succesfully!"}
-        ></FormFeedback>
-      );
-    } else {
-      return null;
-    }
+    const reqData = returnFormData(inputs);
+    storeDispatch({type: actionTypes.ACTION_START});
+    storeDispatch(login(reqData));
   }
 
   return (
     <div className="login_page_container">
-      {returnCustomFeedback()}
+      <FormFeedback error={error} message={success ? "Login Successfuly!" : "Login Failed!"} success={success}/>
       <div className="login_wrapper_page">
         <div className="login_header">
-          {props.loading && <div className="loader"></div>}
+        <LoadingSpinner show={loading}/>
           <Logo></Logo>
           <p>
             not signed in yet? <NavLink to="/Sign-in">signup</NavLink> now!
           </p>
         </div>
-        {inputs.map((input) => {
+        {pageInputs.map((input) => {
           return (
             <div key={input.label} className="form_input_wrapper">
               <Input
+                inputType={input.type}
                 label={input.label}
                 name={input.name}
-                error={input.error}
-                onChange={onInputChange}
-                onBlur={validateOnBlur}
-                type={input.type}
-                value={input.value}
-                validate={input.validate}
+                updateInput={onInputChange}
+                validations={input.validations}
+                addToRefsArray={(el)=>addToRefsArray(el,refs)}
               ></Input>
             </div>
           );
         })}
         <div className="form_buttons_wrapper">
-          {buttons.map((btn) => {
+          {pageButtons.map((btn) => {
             return (
               <Button
                 key={btn.label}
@@ -167,20 +99,7 @@ function LoginPage(props) {
     </div>
   );
 }
+      
 
-const mapStateToProps = (state) => {
-  return {
-    error: state.error,
-    loading: state.loading,
-  };
-};
 
-const mapDispatchToProps = (dispath) => {
-  return {
-    loginStart: () => dispath({ type: actionTypes.ACTION_START }),
-    login: (reqData, callback) => dispath(login(reqData, callback)),
-    resetState: () => dispath({ type: actionTypes.RESET_STATE }),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
+export default LoginPage;

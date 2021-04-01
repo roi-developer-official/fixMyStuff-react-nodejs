@@ -5,7 +5,6 @@ export function Input({
     inputType,
     options,
     label, 
-    type, 
     checked,
     value,
     name,
@@ -55,7 +54,7 @@ if(inputType !== 'select'){
             id={name}
             min={min}
             ref={addToRefsArray} 
-            type={type} 
+            type={inputType} 
             checked={checked}
             name={name}
             onChange={(e)=>{onInputChange(e.target)}}
