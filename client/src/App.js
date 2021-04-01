@@ -1,6 +1,5 @@
 import "./App.css";
-import axios from "axios";
-import { Route, Switch, withRouter } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import Home from "./home/home";
 import Nav from "./nav/nav";
 import { Fragment } from "react";
@@ -11,13 +10,14 @@ import LoginPage from "./auth/login/login";
 import UserPage from "./userPage/userPage";
 import AddPostPage from "./userPage/addPostPage/addPostPage";
 import { useSelector } from "react-redux";
+import { requestCsrfToken } from "./actions/authAction";
 
 const AuthRoute = ({ children, ...rest }) => {
   const { user } = useSelector((state) => state);
   return (
     <Route
       {...rest}
-      render={() => (user? children : <Redirect to="/no" />)}
+      render={() => (user ? children : <Redirect to="/no" />)}
     ></Route>
   );
 };
@@ -33,20 +33,10 @@ const UnAuthRoute = ({ children, ...rest }) => {
 };
 
 function App(props) {
-
   useEffect(() => {
-    axios
-      .get("/api/initv")
-      .then((res) => {
-        const csrfToken = res.data.csrfToken;
-        axios.defaults.headers["x-csrf-token"] = csrfToken;
-      })
-      .catch((err) => {
-        //do somthing with the error
-      });
+    requestCsrfToken();
   }, []);
 
-  
   return (
     <Fragment>
       <Nav></Nav>
@@ -57,7 +47,7 @@ function App(props) {
             <LoginPage></LoginPage>
           </UnAuthRoute>
           <UnAuthRoute path="/Sign-in">
-            <Signin history={props.history}></Signin>
+            <Signin></Signin>
           </UnAuthRoute>
           <Route path="/Create-Post" component={AddPostPage}></Route>
           <Route path="/My-page" component={UserPage}></Route>
@@ -69,4 +59,4 @@ function App(props) {
   );
 }
 
-export default withRouter(App);
+export default App;

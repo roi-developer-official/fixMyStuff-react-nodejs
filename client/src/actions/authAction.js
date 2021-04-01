@@ -3,7 +3,7 @@ export const actionTypes = {
   ACTION_START: "ACTION_START",
   ACTION_FAIL: "ACTION_FAIL",
   ACTION_SUCCESS: "ACTION_SUCCESS",
-  RESET_STATE: "RESET_STATE",
+  RESET_STATE: "RESET_STATE"
 };
 
 /**
@@ -91,4 +91,13 @@ export const AuthOnRefresh = () => (dispatch) =>
         },
       });
     }
+  });
+
+  /**
+   * @function RequestCsrfToken - attaches csrf token to every following request
+   */
+  export const requestCsrfToken = () => 
+    axios.get('/api/initv').then((res)=>{
+      const csrfToken = res.data.csrfToken;
+      axios.defaults.headers["x-csrf-token"] = csrfToken
   });
