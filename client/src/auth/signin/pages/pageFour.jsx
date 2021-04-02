@@ -11,6 +11,7 @@ const initialState = {
     { name: "confirmPassword", value: "", error: "" },
   ],
 };
+
 function PageFour({ changePage, show }) {
   const [state, dispatch] = React.useReducer(pagesReducer, initialState);
   const refs = React.useRef([]);

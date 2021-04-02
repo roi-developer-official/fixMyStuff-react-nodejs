@@ -5,8 +5,7 @@ import "./login.css";
 import { useHistory, NavLink } from "react-router-dom";
 import { buttons as pageButtons , inputs as pageInputs} from './elements';
 import { useDispatch, useSelector } from "react-redux";
-import {returnFormData} from '../../shared/functions';
-import { addToRefsArray} from "../../shared/functions";
+import {returnFormData ,addToRefsArray} from '../../shared/functions';
 import { pagesReducer, actionTypes } from '../../shared/useReducers/pagesReducer';
 const initialState = {
   inputs: [
