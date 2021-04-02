@@ -1,57 +1,34 @@
+import { useState } from "react";
+import { Button, AddImage } from "../../../Global_UI";
+import { buttons as pageButton } from "../elements";
 
-import { useState } from 'react';
-import {Button, AddImage} from '../../../Global_UI';
-export default function PageTwo({show,changePage}){
+export default function PageTwo({ show, changePage }) {
+  let [input, setInput] = useState({ name: "image", value: "" });
 
-    let [input,setInput] = useState({
-        name: 'image',
-        value: null
-    });
-
-    const Buttons = [
-        {
-            label: 'Back',            
-            style:{
-                backgroundColor:'#ccc'
-            }
-        },
-        {
-            label: 'Done',
-            style:{
-                backgroundColor: '#08c982'
-            }
-        }
-    ];
-
-    function onBtnClick(label){
-        switch(label){
-            case 'Back':
-                changePage(label);
-                break;
-            case 'Done':
-                let output = [];
-                output.push(input);
-                changePage(label,output);
-                break;
-        }
+  function onButtonClick(label) {
+    if (label === "Back") changePage(label);
+    else {
+      changePage(label, [input]);
     }
+  }
 
-    function setImageValue(value){
-        setInput({...input,value});
-    }
+  function setImageValue(value) {
+    setInput({ name: "image", value });
+  }
 
-    return (
-        <div className={`add_post_page ${show ? 'show' : ''}`}>
-        <AddImage setInputValue={setImageValue}></AddImage>
-        <div className="form_buttons_wrapper">
-                {Buttons.map(btn=>{
-                    return <Button 
-                    label={btn.label} 
-                    onClick={onBtnClick} 
-                    style={btn.style}
-                    />
-                })}
-            </div>
-        </div>
-    )
+  return (
+    <div className={`add_post_page${show ? " show" : ""}`}>
+      <AddImage setInputValue={setImageValue}></AddImage>
+      <div className="form_buttons_wrapper">
+        {pageButton.page2.map((btn,i) =>  (
+            <Button
+              key={i} 
+              label={btn.label}
+              onClick={onButtonClick}
+              style={btn.style}
+            />
+          ))}
+      </div>
+    </div>
+  );
 }

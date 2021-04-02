@@ -1,5 +1,11 @@
-
 import axios from 'axios';
+
+export const actionTypes = {
+    ACTION_START: "ACTION_START",
+    ACTION_FAIL: "ACTION_FAIL",
+    ACTION_SUCCESS: "ACTION_SUCCESS"
+  };
+
 
 /**
  * @function addPost Redux thunk action creator for addPost request
@@ -7,7 +13,6 @@ import axios from 'axios';
  * @param {function} callBack 
  * @returns 
  */
-
 export const addPost = (reqData,callBack)=>{
     return dispatch =>{
         // axios.post('user/create-post', reqData)

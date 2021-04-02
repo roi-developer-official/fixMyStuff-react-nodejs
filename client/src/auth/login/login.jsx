@@ -1,12 +1,13 @@
 import { useEffect, useReducer, useRef } from "react";
 import { Input, Button, Logo, FormFeedback, LoadingSpinner } from "../../Global_UI";
-import { login, actionTypes } from "../../actions/authAction";
+import { login, actionTypes as authActions } from "../../actions/authAction";
 import "./login.css";
 import { useHistory, NavLink } from "react-router-dom";
 import { buttons as pageButtons , inputs as pageInputs} from './elements';
 import { useDispatch, useSelector } from "react-redux";
-import {returnFormData} from '../shared'
-import pagesReducer, {SET_INPUT, addToRefsArray} from "../signin/pages/pagesShared";
+import {returnFormData} from '../../shared/functions';
+import { addToRefsArray} from "../../shared/functions";
+import { pagesReducer, actionTypes } from '../../shared/useReducers/pagesReducer';
 const initialState = {
   inputs: [
     { name: "email", value: "", error: "" },
@@ -22,7 +23,7 @@ function LoginPage() {
   const refs  =  useRef([]);
 
   useEffect(() => {
-    storeDispatch({type: actionTypes.RESET_STATE});
+    storeDispatch({type: authActions.RESET_STATE});
   }, [storeDispatch]);
 
   useEffect(()=>{
@@ -34,7 +35,7 @@ function LoginPage() {
   },[success, history]);
 
   function onInputChange(name, value, error) {
-    dispatch({ type: SET_INPUT, name: name, value: value, error: error });
+    dispatch({ type: actionTypes.SET_INPUT, name: name, value: value, error: error });
   }
 
   function onButtonClick(label) {
@@ -53,7 +54,7 @@ function LoginPage() {
 
   function submitPage(inputs) {
     const reqData = returnFormData(inputs);
-    storeDispatch({type: actionTypes.ACTION_START});
+    storeDispatch({type: authActions.ACTION_START});
     storeDispatch(login(reqData));
   }
 

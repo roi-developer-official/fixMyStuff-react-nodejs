@@ -53,12 +53,12 @@ describe("signin page", () => {
   //integration
   test("should show a feedback on error", () => {
     const wrapper = setup({
-      authReducer: { loading: false, error: true, success: false },
+      authReducer: { loading: false, error: "Signup failed!", success: false },
     });
     expect(wrapper.find(FormFeedback)).toHaveLength(1);
     const message = wrapper.find("div.form_feedback_wrapper");
     expect(message).toHaveLength(1);
-    expect(message.text()).toBe("Signup Failed!");
+    expect(message.text()).toBe("Signup failed!");
   });
 
   //integration
@@ -88,45 +88,4 @@ describe("signin page", () => {
     expect(findByAttr(wrapper, "loading-spinner")).toHaveLength(1);
   });
 
-  //unit tests
-  describe("signin reducer", () => {
-    const initialState = {
-      currentStep: 1,
-      inputs: [
-        { name: "firstName", value: "" },
-        { name: "lastName", value: "" },
-      ],
-      signupSuccess: null,
-    };
-    const inputs = [
-      { name: "firstName", value: "bob" },
-      { name: "lastName", value: "alice" },
-    ];
-    test("sohuld increment the step by 1", () => {
-      const action = signInReducer(initialState, { type: "INCREMENT_STEP" });
-      expect(action).toMatchObject({
-        ...initialState,
-        currentStep: 2,
-      });
-    });
-
-    test("should decrement the step by 1", () => {
-      const action = signInReducer(initialState, { type: "DECREMENT_STEP" });
-      expect(action).toMatchObject({
-        ...initialState,
-        currentStep: 0,
-      });
-    });
-
-    test("should update inputs", () => {
-      const action = signInReducer(initialState, {
-        type: "SET_INPUTS",
-        payload: { inputs },
-      });
-      expect(action).toMatchObject({
-        ...initialState,
-        inputs: inputs,
-      });
-    });
-  });
 });

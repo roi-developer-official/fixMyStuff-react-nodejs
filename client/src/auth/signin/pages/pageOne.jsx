@@ -7,7 +7,8 @@ import {
   selects as pageSelects,
   citiesString
 } from "./elements";
-import pagesReducer, {SET_INPUT , addToRefsArray} from "./pagesShared";
+import { addToRefsArray} from "../../../shared/functions";
+import {  pagesReducer, actionTypes } from '../../../shared/useReducers/pagesReducer';
 
 const initialState = {
   inputs: [
@@ -38,7 +39,7 @@ function PageOne({ changePage, show }) {
   }
 
   function onInputChange(name, value, error) {
-    dispatch({ type: SET_INPUT, name: name, value: value, error: error });
+    dispatch({ type: actionTypes.SET_INPUT, name: name, value: value, error: error });
   }
 
   return (

@@ -1,14 +1,14 @@
-import { useHistory } from "react-router";
+import { useSelector } from "react-redux";
 import { Button } from "../../Global_UI/";
 import "./userDetails.css";
+
 function UserDetails() {
-  // const authContaxt = useContext(AuthContext);
-  // const user = authContaxt.getUserInfo();/
-  const history = useHistory();
+  
+  const { user } = useSelector((state) => state.authReducer);
   return (
     <div className="userp_details_wrapper">
       <div className="userp_details_img">
-        {/* {user.image !== 'null' ?  <img src={user.image} alt=""/> : <p>No image</p>} */}
+        {user.image !== null ?  <img src={user.image} alt="user"/> : <p>No image</p>}
       </div>
       <div className="userp_details_info">
         <p>Roei azran</p>

@@ -6,7 +6,6 @@ import Login from "../login";
 import { Router } from "react-router";
 import { findByAttr } from "../../../tests/testUtils";
 import { actionTypes , login } from "../../../actions/authAction";
-import { SET_INPUT } from "../../signin/pages/pagesShared";
 
 let mockDispatch = jest.fn();
 let mockReactDispatch = jest.fn();
@@ -62,7 +61,7 @@ test("should dispatch input change with currect values", () => {
   expect(mockReactDispatch).toBeCalledWith({
     error: "",
     name: "email",
-    type: SET_INPUT,
+    type: "SET_INPUT",
     value: "abc",
   });
 });
@@ -111,7 +110,7 @@ test("should set error when email is not an email", () => {
   expect(mockReactDispatch).toBeCalledWith({
     error: "please enter a valid email",
     name: "email",
-    type: SET_INPUT,
+    type: "SET_INPUT",
     value: "abc",
   });
 });

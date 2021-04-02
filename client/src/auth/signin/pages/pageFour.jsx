@@ -1,7 +1,8 @@
 import React from "react";
 import { Input, Button } from "../../../Global_UI";
 import { buttons as pageButtons, inputs as pageInputs } from "./elements";
-import pagesReducer, { SET_INPUT, addToRefsArray } from "./pagesShared";
+import { addToRefsArray} from "../../../shared/functions";
+import { pagesReducer, actionTypes} from '../../../shared/useReducers/pagesReducer';
 
 const initialState = {
   inputs: [
@@ -32,7 +33,7 @@ function PageFour({ changePage, show }) {
   }
 
   function onInputChange(name, value, error) {
-    dispatch({ type: SET_INPUT, name: name, value: value, error: error });
+    dispatch({ type: actionTypes.SET_INPUT, name: name, value: value, error: error });
   }
 
   return (

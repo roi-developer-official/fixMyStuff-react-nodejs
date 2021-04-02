@@ -3,7 +3,6 @@ export default function Post() {
   const desc =
     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium, vel. this is addded words";
  
- 
   function limitSentenceWords(num, sentence) {
     let words = sentence.split(" ");
     words.splice(num);
