@@ -4,13 +4,13 @@ import { returnFormData } from "../../shared/functions";
 import "./addPostPage.css";
 import { useHistory } from "react-router";
 import PageOne from "./pages/pageOne";
-import PageTwo from "./pages/pageTwo";
 import { useDispatch, useSelector } from "react-redux";
 import { addPost , actionTypes as postActions} from "../../actions/postAction";
 import {
   multyPagesReducer,
   actionTypes,
 } from "../../shared/useReducers/multyplePages";
+import AddImagePage from "../../Global_UI/addImagePage";
 
 let initialState = {
   currentPage: 1,
@@ -63,7 +63,7 @@ function AddPostPage() {
       />
       <div className="pages_container">
         <PageOne show={state.currentPage === 1} changePage={moveBetweenPages} />
-        <PageTwo show={state.currentPage === 2} changePage={moveBetweenPages} />
+        <AddImagePage show={state.currentPage === 2} changePage={moveBetweenPages} />
       </div>
     </div>
   );

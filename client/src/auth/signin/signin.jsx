@@ -8,11 +8,11 @@ import {
 } from "../../shared/useReducers/multyplePages";
 import { FormFeedback, Steps, LoadingSpinner } from "../../Global_UI";
 import PageOne from "./pages/pageOne";
-import PageTwo from "./pages/pageTwo";
 import PageThree from "./pages/pageThree";
 import PageFour from "./pages/pageFour";
 import { signIn, actionTypes as authActions } from "../../actions/authAction";
 import { useHistory } from "react-router";
+import AddImagePage from "../../Global_UI/addImagePage";
 const steps = [1, 2, 3, 4];
 
 const initialState = {
@@ -85,7 +85,7 @@ export default function SignIn() {
       />
       <div className="pages_container">
         <PageOne show={state.currentStep === 1} changePage={moveBetweenPages} />
-        <PageTwo show={state.currentStep === 2} changePage={moveBetweenPages} />
+        <AddImagePage show={state.currentStep === 2} changePage={moveBetweenPages}/>
         <PageThree
           show={state.currentStep === 3}
           changePage={moveBetweenPages}

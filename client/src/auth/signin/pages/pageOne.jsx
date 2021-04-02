@@ -5,45 +5,45 @@ import {
   buttons as pageButtons,
   inputs as pageInputs,
   selects as pageSelects,
-  citiesString
+  citiesString,
 } from "./elements";
-import { addToRefsArray} from "../../../shared/functions";
-import {  pagesReducer, actionTypes } from '../../../shared/useReducers/pagesReducer';
-
-const initialState = {
-  inputs: [
-    { name: "firstName", value: "", error: "" },
-    { name: "lastName", value: "", error: "" },
-    { name: "city", value: "", error: "" },
-  ],
-};
+import { addToRefsArray } from "../../../shared/functions";
+import { actionTypes } from "../../../actions/authAction";
+import { useDispatch, useSelector } from "react-redux";
 
 function PageOne({ changePage, show }) {
   const cities = citiesString.split(",");
   const history = useHistory();
-  const [state, dispatch] = React.useReducer(pagesReducer, initialState);
+  const { inputs } = useSelector((state) => state.authReducer);
+  const dispatch = useDispatch();
   const refs = useRef([]);
-    
+
+
   function onButtonClick(action) {
     if (action === "Cancel") {
       history.push("/");
     } else if (action === "Next") {
-      for(let i = 0 ; i < state.inputs.length; i++){
-        if(state.inputs[i].error.length > 0 || state.inputs[i].value.length === 0) {
+      for (let i = 0; i < inputs.length; i++) {
+        if (inputs[i].error.length > 0 || inputs[i].value.length === 0) {
           refs.current[i].focus();
           return;
         }
       }
-      changePage(action, state.inputs);
+      changePage(action, inputs);
     }
   }
 
   function onInputChange(name, value, error) {
-    dispatch({ type: actionTypes.SET_INPUT, name: name, value: value, error: error });
+    dispatch({
+      type: actionTypes.SET_INPUT,
+      name: name,
+      value: value,
+      error: error,
+    });
   }
 
   return (
-    <div className={`signup_wrapper_page ${show ? "show" : ""}`}>
+    <div className={`signup_wrapper_page${show ? " show" : ""}`}>
       <div className="logo_header">
         <Logo></Logo>
       </div>
@@ -55,7 +55,7 @@ function PageOne({ changePage, show }) {
               label={input.label}
               name={input.name}
               updateInput={onInputChange}
-              addToRefsArray={(el)=>addToRefsArray(el,refs)}
+              addToRefsArray={(el) => addToRefsArray(el, refs)}
               validations={input.validations}
             ></Input>
           </div>
@@ -71,7 +71,7 @@ function PageOne({ changePage, show }) {
               name={input.name}
               options={cities}
               updateInput={onInputChange}
-              addToRefsArray={(el)=>addToRefsArray(el,refs)}
+              addToRefsArray={(el) => addToRefsArray(el, refs)}
             />
           </div>
         );
