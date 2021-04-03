@@ -14,7 +14,7 @@ function LoginPage() {
   const refs  =  useRef([]);
 
   useEffect(() => {
-    dispatch({type: actionTypes.RESET_STATE});
+    dispatch({type: actionTypes.AUTH_RESET_STATE});
   }, [dispatch]);
 
   useEffect(()=>{
@@ -26,7 +26,7 @@ function LoginPage() {
   },[success, history]);
 
   function onInputChange(name, value, error) {
-    dispatch({ type: actionTypes.LOGIN_SET_INPUT, name: name, value: value, error: error });
+    dispatch({ type: actionTypes.AUTH_LOGIN_SET_INPUT, name: name, value: value, error: error });
   }
 
   function onButtonClick(label) {
@@ -37,7 +37,7 @@ function LoginPage() {
           return;
         }
       }
-    dispatch({type: actionTypes.ACTION_START});
+    dispatch({type: actionTypes.AUTH_ACTION_START});
     dispatch(login());
     }
     else

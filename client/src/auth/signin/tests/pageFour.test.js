@@ -53,7 +53,7 @@ test("should hanlde change on the inputs", () => {
   const wrapper = setup();
   const emailInput = wrapper.find({ "data-test": "email" });
   emailInput.simulate("change", { target: { name: "email", value: "abc" } });
-  expect(mockDispatch).toBeCalledWith({error: "", name: "email", type: "SIGN_SET_INPUT", value :"abc", page:"page4"});
+  expect(mockDispatch).toBeCalledWith({error: "", name: "email", type: "AUTH_SIGN_SET_INPUT", value :"abc", page:"page4"});
 });
 
 
@@ -64,7 +64,7 @@ test("should set errors on blur", () => {
   expect(mockDispatch).toBeCalledWith({
     error: "this field is required",
     name: "email",
-    type: "SIGN_SET_INPUT",
+    type: "AUTH_SIGN_SET_INPUT",
     value: "",
     page:"page4"
   });

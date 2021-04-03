@@ -28,7 +28,7 @@ function PageFour({ changePage, show }) {
   }
 
   function onInputChange(name, value, error) {
-    dispatch({ type: actionTypes.SIGN_SET_INPUT, name: name, value: value, error: error, page: "page4" });
+    dispatch({ type: actionTypes.AUTH_SIGN_SET_INPUT, name: name, value: value, error: error, page: "page4" });
   }
 
   return (

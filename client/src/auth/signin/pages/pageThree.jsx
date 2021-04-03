@@ -32,7 +32,7 @@ function PageThree({ changePage, show }) {
 
   function onInputChange(name, value, error) {
     dispatch({
-      type: actionTypes.SIGN_SET_INPUT,
+      type: actionTypes.AUTH_SIGN_SET_INPUT,
       name: name,
       value: value,
       error: error,

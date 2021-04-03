@@ -19,7 +19,7 @@ export default function SignIn() {
   const history = useHistory();
 
   useEffect(() => {
-    dispatch({ type: actionTypes.RESET_STATE });
+    dispatch({ type: actionTypes.AUTH_RESET_STATE });
   }, [dispatch]);
 
   useEffect(() => {
@@ -38,11 +38,11 @@ export default function SignIn() {
         dispatch({ type: actionTypes.INCREMENT_STEP });
         break;
       case "Done":
-        dispatch({ type: actionTypes.ACTION_START });
+        dispatch({ type: actionTypes.AUTH_ACTION_START });
         dispatch(signIn());
         break;
       case "Back":
-        dispatch({ type: actionTypes.DECREMENT_STEP });
+        dispatch({ type: actionTypes.AUTH_DECREMENT_STEP });
         break;
       default:
         return;

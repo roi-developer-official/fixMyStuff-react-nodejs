@@ -55,7 +55,7 @@ describe("signin page", () => {
 
   test("should show a feedback on error", async () => {
     const wrapper = setup(initialState);
-    store.dispatch({ type: actionTypes.ACTION_FAIL, payload: "some error" });
+    store.dispatch({ type: actionTypes.AUTH_ACTION_FAIL, payload: "some error" });
     wrapper.update();
     const message = wrapper.find("div.form_feedback_wrapper");
     expect(message).toHaveLength(1);
@@ -65,7 +65,7 @@ describe("signin page", () => {
   test("should show a feedback on signing success", () => {
     const wrapper = setup(initialState);
     store.dispatch({
-      type: actionTypes.ACTION_SUCCESS,
+      type: actionTypes.AUTH_ACTION_SUCCESS,
       payload: { user: "some user", expiry: "today" },
     });
     wrapper.update();
@@ -83,7 +83,7 @@ describe("signin page", () => {
   
   test("should show loading spinner when loading", () => {
     const wrapper = setup(initialState);
-    store.dispatch({ type: actionTypes.ACTION_START });
+    store.dispatch({ type: actionTypes.AUTH_ACTION_START });
     wrapper.update();
     expect(findByAttr(wrapper, "loading-spinner")).toHaveLength(1);
   });

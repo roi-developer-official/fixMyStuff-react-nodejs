@@ -13,6 +13,9 @@ const initialState = {
       { name: "lastName", value: "", error: "" },
       { name: "city", value: "", error: "" },
     ],
+    page2: [
+      { name : "image", value :""}
+    ],
     page3: [
       { name: "role", value: 1, error: "" },
       { name: "profession", value: "", error: "" },
@@ -35,7 +38,7 @@ const initialState = {
 test("action success return currect value", () => {
   const store = storeFactory();
   store.dispatch({
-    type: actionTypes.ACTION_SUCCESS,
+    type: actionTypes.AUTH_ACTION_SUCCESS,
     payload: { user, expiry: "2019" },
   });
   const newState = store.getState();
@@ -54,7 +57,7 @@ test("action success return currect value", () => {
 test("action fail return currect value", () => {
   const store = storeFactory();
   store.dispatch({
-    type: actionTypes.ACTION_FAIL,
+    type: actionTypes.AUTH_ACTION_FAIL,
     payload: "some error",
   });
   const newState = store.getState();
@@ -73,7 +76,7 @@ test("action fail return currect value", () => {
 test("should set signin inputs", () => {
   const store = storeFactory();
   store.dispatch({
-    type: actionTypes.SIGN_SET_INPUT,
+    type: actionTypes.AUTH_SIGN_SET_INPUT,
     name: "firstName",
     value: "abc",
     error: "some error",
@@ -89,7 +92,7 @@ test("should set signin inputs", () => {
 test('should increment the step', ()=>{
   const store = storeFactory();
   store.dispatch({
-    type: actionTypes.INCREMENT_STEP});
+    type: actionTypes.AUTH_INCREMENT_STEP});
   const newState = store.getState();
   expect(newState.authReducer).toEqual({...initialState, currentStep:2})
 });
@@ -97,7 +100,7 @@ test('should increment the step', ()=>{
 test('should decrement the step', ()=>{
   const store = storeFactory();
   store.dispatch({
-   type: actionTypes.DECREMENT_STEP});
+   type: actionTypes.AUTH_DECREMENT_STEP});
   const newState = store.getState();
   expect(newState.authReducer).toEqual({...initialState, currentStep:0})
 });

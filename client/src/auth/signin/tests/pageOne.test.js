@@ -76,7 +76,7 @@ describe("page one", () => {
 
       expect(mockDispatch).toBeCalledWith({
         name: "firstName",
-        type: "SIGN_SET_INPUT",
+        type: "AUTH_SIGN_SET_INPUT",
         value: "h",
         error: "",
         page: "page1"

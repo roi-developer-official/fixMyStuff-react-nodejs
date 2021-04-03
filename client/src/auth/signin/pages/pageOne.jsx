@@ -20,10 +20,6 @@ function PageOne({ changePage, show }) {
   const dispatch = useDispatch();
   const refs = useRef([]);
 
-  useEffect(() => {
-    dispatch({ type: actionTypes.INCREMENT_STEP });
-  }, [dispatch]);
-
   function onButtonClick(action) {
     if (action === "Cancel") {
       history.push("/");
@@ -40,7 +36,7 @@ function PageOne({ changePage, show }) {
 
   function onInputChange(name, value, error) {
     dispatch({
-      type: actionTypes.SIGN_SET_INPUT,
+      type: actionTypes.AUTH_SIGN_SET_INPUT,
       name: name,
       value: value,
       error: error,

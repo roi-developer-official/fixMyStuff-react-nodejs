@@ -44,7 +44,7 @@ test("should render without errors", () => {
 
 test("should dispatch reset on page load", () => {
   const wrapper = setup();
-  expect(mockDispatch).toHaveBeenCalledWith({ type: actionTypes.RESET_STATE });
+  expect(mockDispatch).toHaveBeenCalledWith({ type: actionTypes.AUTH_RESET_STATE });
 });
 
 test('number of inputs 2', ()=>{
@@ -66,7 +66,7 @@ test("should dispatch input change with currect values", () => {
   expect(mockDispatch).toBeCalledWith({
     error: "",
     name: "email",
-    type: "LOGIN_SET_INPUT",
+    type: "AUTH_LOGIN_SET_INPUT",
     value: "abc",
   });
 });
@@ -119,7 +119,7 @@ test("should submit the page with the right values", () => {
   const doneButton = findByAttr(wrapper, "button-login");
   mockDispatch.mockClear();
   doneButton.simulate("click");
-  expect(mockDispatch).toHaveBeenCalledWith({ type: actionTypes.ACTION_START });
+  expect(mockDispatch).toHaveBeenCalledWith({ type: actionTypes.AUTH_ACTION_START });
   expect(login).toBeCalled();
 });
 

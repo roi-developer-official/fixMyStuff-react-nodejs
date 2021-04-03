@@ -37,8 +37,7 @@ const authReducer = (state = initialState, action) => {
   let updatedInput;
   let index;
   switch (action.type) {
-    case actionTypes.SIGN_SET_INPUT:
-      console.log(state.signInInputs);
+    case actionTypes.AUTH_SIGN_SET_INPUT:
       updatedInput = [...state.signInInputs[action.page]];
       index = updatedInput.findIndex((input) => input.name === action.name);
       updatedInput[index].value = action.value;
@@ -47,7 +46,7 @@ const authReducer = (state = initialState, action) => {
         ...state,
         signInInputs: { ...state.signInInputs, [action.page]: updatedInput },
       };
-    case actionTypes.LOGIN_SET_INPUT:
+    case actionTypes.AUTH_LOGIN_SET_INPUT:
       updatedInput = state.loginInputs.slice();
       index = updatedInput.findIndex((input) => input.name === action.name);
       updatedInput[index].value = action.value;
@@ -56,23 +55,23 @@ const authReducer = (state = initialState, action) => {
         ...state,
         loginInputs: updatedInput,
       };
-    case actionTypes.ACTION_START:
+    case actionTypes.AUTH_ACTION_START:
       return {
         ...state,
         loading: true,
         error: null,
       };
-    case actionTypes.ACTION_FAIL:
+    case actionTypes.AUTH_ACTION_FAIL:
       return {
         ...state,
         loading: false,
         error: action.payload,
         success: false,
       };
-    case actionTypes.RESET_STATE: {
+    case actionTypes.AUTH_RESET_STATE: {
       return initialState;
     }
-    case actionTypes.ACTION_SUCCESS:
+    case actionTypes.AUTH_ACTION_SUCCESS:
       return {
         ...state,
         error: null,
@@ -81,12 +80,12 @@ const authReducer = (state = initialState, action) => {
         expiry: action.payload.expiry,
         success: true,
       };
-    case actionTypes.INCREMENT_STEP:
+    case actionTypes.AUTH_INCREMENT_STEP:
       return {
         ...state,
         currentStep: state.currentStep + 1,
       };
-    case actionTypes.DECREMENT_STEP:
+    case actionTypes.AUTH_DECREMENT_STEP:
       return {
         ...state,
         currentStep: state.currentStep - 1,

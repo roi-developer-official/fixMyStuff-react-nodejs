@@ -2,14 +2,14 @@ import axios from "axios";
 import { returnFormDataSignIn, returnFormDataLogin } from "./helpers";
 
 export const actionTypes = {
-  ACTION_START: "ACTION_START",
-  ACTION_FAIL: "ACTION_FAIL",
-  ACTION_SUCCESS: "ACTION_SUCCESS",
-  RESET_STATE: "RESET_STATE",
-  SIGN_SET_INPUT : "SIGN_SET_INPUT",
-  INCREMENT_STEP: "INCREMENT_STEP",
-  DECREMENT_STEP: "DECREMENT_STEP",
-  LOGIN_SET_INPUT : "LOGIN_SET_INPUT"
+  AUTH_ACTION_START: "AUTH_ACTION_START",
+  AUTH_ACTION_FAIL: "AUTH_ACTION_FAIL",
+  AUTH_ACTION_SUCCESS: "AUTH_ACTION_SUCCESS",
+  AUTH_RESET_STATE: "AUTH_RESET_STATE",
+  AUTH_SIGN_SET_INPUT : "AUTH_SIGN_SET_INPUT",
+  AUTH_INCREMENT_STEP: "AUTH_INCREMENT_STEP",
+  AUTH_DECREMENT_STEP: "AUTH_DECREMENT_STEP",
+  AUTH_LOGIN_SET_INPUT : "AUTH_LOGIN_SET_INPUT"
 };
 
 /**
@@ -24,7 +24,7 @@ export const signIn = () => (dispatch,getState) =>{
   .post("api/auth/signup", reqData)
   .then((res) =>
     dispatch({
-      type: actionTypes.ACTION_SUCCESS,
+      type: actionTypes.AUTH_ACTION_SUCCESS,
       payload: {
         user: res.data.user,
         expiry: res.data.expiry,
@@ -33,7 +33,7 @@ export const signIn = () => (dispatch,getState) =>{
   )
   .catch((error) =>
     dispatch({
-      type: actionTypes.ACTION_FAIL,
+      type: actionTypes.AUTH_ACTION_FAIL,
       payload: error.response.data.error.message,
     })
   );
@@ -50,7 +50,7 @@ export const login = () => (dispatch,getState) =>{
   .post("api/auth/login", reqData)
   .then((res) =>
     dispatch({
-      type: actionTypes.ACTION_SUCCESS,
+      type: actionTypes.AUTH_ACTION_SUCCESS,
       payload: {
         user: res.data.user,
         expiry: res.data.expiry,
@@ -59,7 +59,7 @@ export const login = () => (dispatch,getState) =>{
   )
   .catch((error) =>
     dispatch({
-      type: actionTypes.ACTION_FAIL,
+      type: actionTypes.AUTH_ACTION_FAIL,
       payload: error.response.data.error.message,
     })
   );
@@ -75,7 +75,7 @@ export const logOut = () => (dispatch) =>
     .post("/api/auth/logout")
     .then(() =>
       dispatch({
-        type: actionTypes.ACTION_SUCCESS,
+        type: actionTypes.AUTH_ACTION_SUCCESS,
         payload: {
           user:null,
           expiry: null
@@ -84,7 +84,7 @@ export const logOut = () => (dispatch) =>
     )
     .catch((error) =>
       dispatch({
-        type: actionTypes.ACTION_FAIL,
+        type: actionTypes.AUTH_ACTION_FAIL,
         payload: error.response.data.error.message,
       })
     );
@@ -96,7 +96,7 @@ export const AuthOnRefresh = () => (dispatch) =>
   axios.get("/api/auth/refresh").then((res) => {
     if (res.data.user) {
       dispatch({
-        type: actionTypes.ACTION_SUCCESS,
+        type: actionTypes.AUTH_ACTION_SUCCESS,
         payload: {
           user: res.data.user,
           expiry: res.data.expiry,

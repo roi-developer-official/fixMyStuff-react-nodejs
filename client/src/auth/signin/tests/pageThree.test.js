@@ -98,7 +98,7 @@ describe("page Three", () => {
     inputs.at(0).simulate("change", { target: { value: 1, name: "role" } });
     expect(mockDispatch).toBeCalledWith({
       name: "role",
-      type: "SIGN_SET_INPUT",
+      type: "AUTH_SIGN_SET_INPUT",
       value: 1,
       error: "",
       page: "page3"
@@ -112,7 +112,7 @@ describe("page Three", () => {
     select.simulate("change", { target: { name: "profession", value: "abc" } });
     expect(mockDispatch).toBeCalledWith({
       name: "profession",
-      type: "SIGN_SET_INPUT",
+      type: "AUTH_SIGN_SET_INPUT",
       value: "abc",
       error: "",
       page: "page3"
