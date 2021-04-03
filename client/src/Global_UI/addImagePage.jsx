@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button, AddImage } from "./";
 
 export default function AddImagePage({ show, changePage , buttons}) {
-  let [input, setInput] = useState({ name: "image", value: "" });
+  let [input, setInput] = useState({ name: "image", value: null });
 
   function setImageValue(value) {
     setInput({ name: "image", value });

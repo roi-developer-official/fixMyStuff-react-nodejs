@@ -9,6 +9,7 @@ export function AddImage({ setInputValue }) {
   function onDragOver(e) {
     e.preventDefault();
     e.stopPropagation();
+    
     setDraggedOver(true);
   }
 
@@ -27,7 +28,7 @@ export function AddImage({ setInputValue }) {
       return setImageInput(null);
     }
     if (!file.type.startsWith("image/")) return;
-
+    e.target.value = null;
     setImageInput(file);
   }
 
@@ -35,7 +36,7 @@ export function AddImage({ setInputValue }) {
     if (!file) {
       setImage(null);
       setInputValue(null);
-    } else if (!file.type.startsWith("image/")) return;
+    } 
     else {
       if (!image) {
         setImage(file);

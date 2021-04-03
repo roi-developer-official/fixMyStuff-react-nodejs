@@ -34,8 +34,8 @@ export default function SignIn() {
     switch (label) {
       case "Next":
         if(input)
-          dispatch({type: actionTypes.SIGN_SET_INPUT, page: "page2",  name : input.name, value: input.value })
-        dispatch({ type: actionTypes.INCREMENT_STEP });
+          dispatch({type: actionTypes.AUTH_SIGN_SET_INPUT, page: "page2",  name : input.name, value: input.value })
+        dispatch({ type: actionTypes.AUTH_INCREMENT_STEP });
         break;
       case "Done":
         dispatch({ type: actionTypes.AUTH_ACTION_START });
