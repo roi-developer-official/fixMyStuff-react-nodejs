@@ -1,91 +1,90 @@
-import { mount } from "enzyme";
-import { Provider, useDispatch} from "react-redux";
+import { mount, shallow } from "enzyme";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import { findByAttr, storeFactory } from "../../../tests/testUtils";
 import { actionTypes } from "../../../actions/authAction";
-import SignIn, { signInReducer } from "../signin";
+import SignIn from "../signin";
 import React from "react";
 import { FormFeedback } from "../../../Global_UI";
 
-const setup = (initialState = {}, props = {}) => {
-  const store = storeFactory(initialState);
+const initialState = {
+  loading: false,
+  error: null,
+  success: false,
+  signInInputs: {
+    page1: [
+      { name: "firstName", value: "", error: "" },
+      { name: "lastName", value: "", error: "" },
+      { name: "city", value: "", error: "" },
+    ],
+    page3: [
+      { name: "role", value: 1, error: "" },
+      { name: "profession", value: "", error: "" },
+      { name: "experience", value: "", error: "" },
+    ],
+    page4: [
+      { name: "email", value: "", error: "" },
+      { name: "password", value: "", error: "" },
+      { name: "confirmPassword", value: "", error: "" },
+    ],
+  },
+  currentStep: 1,
+};
+let store;
+const setup = (state = {}, props = {}) => {
+  store = storeFactory({ authReducer: { ...state } });
   return mount(
     <Provider store={store}>
       <SignIn {...props} />
     </Provider>
   );
 };
-jest.mock("react-redux", () => ({
-  ...jest.requireActual("react-redux"),
-  useDispatch: jest.fn(),
-}));
 
 describe("signin page", () => {
-  let wrapper;
-  const mockDispatch = jest.fn();
-
-  beforeEach(() => {
-    useDispatch.mockReturnValue(mockDispatch);
-    wrapper = setup({ authReducer: { loading: false, error: null } });
-  });
-
   test("renders without errors", () => {
+    const wrapper = setup(initialState);
     const signUpComponent = findByAttr(wrapper, "component-signin");
     expect(signUpComponent).toHaveLength(1);
   });
 
-  //unit
-  test("reset store value initialy'", () => {
-    expect(mockDispatch).toHaveBeenCalledWith({
-      type: actionTypes.RESET_STATE,
-    });
-    expect(mockDispatch).toHaveBeenCalledTimes(1);
-  });
-
-  //unit
   test("should not show feedback by default", () => {
-    const wrapper = setup({
-      authReducer: { loading: false, error: false, success: false },
-    });
+    const wrapper = setup(initialState);
+    expect(wrapper.find(FormFeedback)).toHaveLength(1);
     const message = wrapper.find("div.form_feedback_wrapper");
     expect(message).toHaveLength(0);
   });
 
-  //integration
-  test("should show a feedback on error", () => {
-    const wrapper = setup({
-      authReducer: { loading: false, error: "Signup failed!", success: false },
-    });
-    expect(wrapper.find(FormFeedback)).toHaveLength(1);
+  test("should show a feedback on error", async () => {
+    const wrapper = setup(initialState);
+    store.dispatch({ type: actionTypes.ACTION_FAIL, payload: "some error" });
+    wrapper.update();
     const message = wrapper.find("div.form_feedback_wrapper");
     expect(message).toHaveLength(1);
-    expect(message.text()).toBe("Signup failed!");
+    expect(message.text()).toBe("some error");
   });
 
-  //integration
   test("should show a feedback on signing success", () => {
-    const wrapper = setup({
-      authReducer: { loading: false, error: false, success: true },
+    const wrapper = setup(initialState);
+    store.dispatch({
+      type: actionTypes.ACTION_SUCCESS,
+      payload: { user: "some user", expiry: "today" },
     });
-    expect(wrapper.find(FormFeedback)).toHaveLength(1);
+    wrapper.update();
     const message = wrapper.find("div.form_feedback_wrapper");
     expect(message).toHaveLength(1);
     expect(message.text()).toBe("Signup Successfuly!");
   });
 
-  //integration
+  
   test("should not show loading spinner by default", () => {
-    const wrapper = setup({
-      authReducer: { loading: false, error: false, success: false },
-    });
+    const wrapper = setup(initialState);
     expect(findByAttr(wrapper, "loading-spinner")).toHaveLength(0);
   });
 
-  //integration
+  
   test("should show loading spinner when loading", () => {
-    const wrapper = setup({
-      authReducer: { loading: true, error: false, success: false },
-    });
+    const wrapper = setup(initialState);
+    store.dispatch({ type: actionTypes.ACTION_START });
+    wrapper.update();
     expect(findByAttr(wrapper, "loading-spinner")).toHaveLength(1);
   });
-
 });

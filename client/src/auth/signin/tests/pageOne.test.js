@@ -8,11 +8,13 @@ import { Router } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 
 const mockDispatch = jest.fn();
-const inputs = [
-  { name: "firstName", value: "", error: "" },
-  { name: "lastName", value: "", error: "" },
-  { name: "city", value: "", error: "" },
-];
+const inputs = {
+  page1: [
+    { name: "firstName", value: "", error: "" },
+    { name: "lastName", value: "", error: "" },
+    { name: "city", value: "", error: "" },
+  ],
+};
 
 jest.mock("react-redux", () => ({
   ...jest.requireActual("react-redux"),
@@ -26,7 +28,7 @@ const setup = (props = {}) => {
 
 describe("page one", () => {
   beforeEach(() => {
-    useSelector.mockReturnValue({ inputs });
+    useSelector.mockReturnValue(inputs);
     useDispatch.mockReturnValue(mockDispatch);
   });
 
@@ -74,9 +76,10 @@ describe("page one", () => {
 
       expect(mockDispatch).toBeCalledWith({
         name: "firstName",
-        type: "SET_INPUT",
+        type: "SIGN_SET_INPUT",
         value: "h",
         error: "",
+        page: "page1"
       });
     });
   });

@@ -1,46 +1,25 @@
 import "./signin.css";
 import React, { useEffect } from "react";
-import { returnFormData } from "../../shared/functions";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  multyPagesReducer,
-  actionTypes,
-} from "../../shared/useReducers/multyplePages";
 import { FormFeedback, Steps, LoadingSpinner } from "../../Global_UI";
 import PageOne from "./pages/pageOne";
 import PageThree from "./pages/pageThree";
 import PageFour from "./pages/pageFour";
-import { signIn, actionTypes as authActions } from "../../actions/authAction";
+import { signIn, actionTypes } from "../../actions/authAction";
 import { useHistory } from "react-router";
 import AddImagePage from "../../Global_UI/addImagePage";
 const steps = [1, 2, 3, 4];
 
-const initialState = {
-  currentStep: 1,
-  inputs: [
-    { name: "firstName", value: "" },
-    { name: "lastName", value: "" },
-    { name: "city", value: "" },
-    { name: "image", value: "" },
-    { name: "role", value: "" },
-    { name: "profession", value: "" },
-    { name: "experience", value: "" },
-    { name: "email", value: "" },
-    { name: "password", value: "" },
-    { name: "confirmPassword", value: "" },
-  ],
-  signupSuccess: null,
-};
-
 export default function SignIn() {
-  const { loading, error, success } = useSelector((state) => state.authReducer);
-  const storeDispatch = useDispatch();
+  const { loading, error, success, currentStep } = useSelector(
+    (state) => state.authReducer
+  );
+  const dispatch = useDispatch();
   const history = useHistory();
-  const [state, dispatch] = React.useReducer(multyPagesReducer, initialState);
 
   useEffect(() => {
-    storeDispatch({ type: authActions.RESET_STATE });
-  }, [storeDispatch]);
+    dispatch({ type: actionTypes.RESET_STATE });
+  }, [dispatch]);
 
   useEffect(() => {
     if (success) {
@@ -50,15 +29,14 @@ export default function SignIn() {
     }
   }, [success, history]);
 
-  function moveBetweenPages(label, inputs) {
+  function moveBetweenPages(label) {
     switch (label) {
       case "Next":
         dispatch({ type: actionTypes.INCREMENT_STEP });
-        dispatch({ type: actionTypes.SET_INPUTS, payload: { inputs } });
         break;
       case "Done":
-        dispatch({ type: actionTypes.SET_INPUTS, payload: { inputs } });
-        submitPage(state.inputs);
+        dispatch({ type: actionTypes.ACTION_START });
+        dispatch(signIn());
         break;
       case "Back":
         dispatch({ type: actionTypes.DECREMENT_STEP });
@@ -68,30 +46,24 @@ export default function SignIn() {
     }
   }
 
-  function submitPage(inputs) {
-    let reqData = returnFormData(inputs);
-    storeDispatch({ type: authActions.ACTION_START });
-    storeDispatch(signIn(reqData));
-  }
-
   return (
     <div className="signup_page_container" data-test="component-signin">
       <LoadingSpinner show={loading} />
-      <Steps steps={steps} currnetStep={state.currentStep}></Steps>
+      <Steps steps={steps} currnetStep={currentStep}></Steps>
       <FormFeedback
         error={error}
         message={success ? "Signup Successfuly!" : error}
         success={success}
       />
       <div className="pages_container">
-        <PageOne show={state.currentStep === 1} changePage={moveBetweenPages} />
-        <AddImagePage show={state.currentStep === 2} changePage={moveBetweenPages}/>
+        <PageOne show={currentStep === 1} changePage={moveBetweenPages} />
+        <AddImagePage show={currentStep === 2} changePage={moveBetweenPages} />
         <PageThree
-          show={state.currentStep === 3}
+          show={currentStep === 3}
           changePage={moveBetweenPages}
         ></PageThree>
         <PageFour
-          show={state.currentStep === 4}
+          show={currentStep === 4}
           changePage={moveBetweenPages}
         ></PageFour>
       </div>

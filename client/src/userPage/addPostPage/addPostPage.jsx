@@ -1,6 +1,6 @@
 import { useReducer } from "react";
 import { Steps, FormFeedback, LoadingSpinner } from "../../Global_UI";
-import { returnFormData } from "../../shared/functions";
+import { returnFormData } from "../../shared";
 import "./addPostPage.css";
 import { useHistory } from "react-router";
 import PageOne from "./pages/pageOne";

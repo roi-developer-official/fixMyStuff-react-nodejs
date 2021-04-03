@@ -5,12 +5,12 @@ import {
   buttons as pageButtons,
   selects as pageSelects,
 } from "./elements";
-import { addToRefsArray } from "../../../shared/functions";
+import { addToRefsArray } from "../../../shared";
 import { actionTypes } from "../../../actions/authAction";
 import { useDispatch, useSelector } from "react-redux";
 
 function PageThree({ changePage, show }) {
-  const { inputs } = useSelector((state) => state.authReducer);
+  const { page3 : inputs } = useSelector((state) => state.authReducer.signInInputs);
   const dispatch = useDispatch();
   const checkedRef = inputs[0].value || 1;
   const refs = React.useRef([]);
@@ -26,16 +26,17 @@ function PageThree({ changePage, show }) {
             return;
           }
         }
-      changePage(action, inputs);
+      changePage(action);
     }
   }
 
   function onInputChange(name, value, error) {
     dispatch({
-      type: actionTypes.SET_INPUT,
+      type: actionTypes.SIGN_SET_INPUT,
       name: name,
       value: value,
       error: error,
+      page: "page3"
     });
   }
 

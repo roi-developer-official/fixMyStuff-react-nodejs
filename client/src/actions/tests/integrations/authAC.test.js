@@ -2,8 +2,25 @@ import moxios from "moxios";
 import { storeFactory, user } from "../../../tests/testUtils";
 import { signIn } from "../../authAction";
 
-//integration test for async function by that mage requests to the server;
-describe("signup", () => {
+let signInInputs = {
+    page1: [
+      { name: "firstName", value: "", error: "" },
+      { name: "lastName", value: "", error: "" },
+      { name: "city", value: "", error: "" },
+    ],
+    page3: [
+      { name: "role", value: 1, error: "" },
+      { name: "profession", value: "", error: "" },
+      { name: "experience", value: "", error: "" },
+    ],
+    page4: [
+      { name: "email", value: "", error: "" },
+      { name: "password", value: "", error: "" },
+      { name: "confirmPassword", value: "", error: "" },
+    ],
+};
+
+describe("signup authAC", () => {
   beforeEach(() => {
     moxios.install();
   });
@@ -17,6 +34,7 @@ describe("signup", () => {
         loading: true,
         user: null,
         expiry: null,
+        signInInputs: signInInputs
       },
     });
 
@@ -32,14 +50,15 @@ describe("signup", () => {
     });
 
     return store
-      .dispatch(signIn({}))
+      .dispatch(signIn())
       .then(() => {
         expect(store.getState().authReducer).toStrictEqual({
           error: null,
           loading: false,
           user: user,
           expiry: "2019",
-          success: true
+          success: true,
+          signInInputs: signInInputs
         });
       });
   });
@@ -47,7 +66,7 @@ describe("signup", () => {
   test("signup dispatch on error", () => {
     const store = storeFactory({
       authReducer: { 
-        error: null, loading: true , user: null, expiry: null
+        error: null, loading: true , user: null, expiry: null, signInInputs : signInInputs
       },
     });
     moxios.wait(() => {
@@ -60,13 +79,14 @@ describe("signup", () => {
       });
     });
 
-    return store.dispatch(signIn({})).then(() => {
+    return store.dispatch(signIn()).then(() => {
       expect(store.getState().authReducer).toStrictEqual({
         error: "oops",
         loading: false,
         user: null,
         expiry:null,
-        success: false
+        success: false,
+        signInInputs: signInInputs
       });
     });
   });
