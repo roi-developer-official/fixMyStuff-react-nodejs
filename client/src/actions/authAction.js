@@ -1,11 +1,14 @@
 import axios from "axios";
+import { returnFormData } from "./helpers";
 
 export const actionTypes = {
   ACTION_START: "ACTION_START",
   ACTION_FAIL: "ACTION_FAIL",
   ACTION_SUCCESS: "ACTION_SUCCESS",
   RESET_STATE: "RESET_STATE",
-  SET_INPUT : "SET_INPUT"
+  SIGN_SET_INPUT : "SIGN_SET_INPUT",
+  INCREMENT_STEP: "INCREMENT_STEP",
+  DECREMENT_STEP: "DECREMENT_STEP",
 };
 
 /**
@@ -13,24 +16,28 @@ export const actionTypes = {
  * @param {object} reqData
  * @returns {dispatch} - dispating action in case of success or faliure
  */
-export const signIn = (reqData) => (dispatch) =>
-  axios
-    .post("api/auth/signup", reqData)
-    .then((res) =>
-      dispatch({
-        type: actionTypes.ACTION_SUCCESS,
-        payload: {
-          user: res.data.user,
-          expiry: res.data.expiry,
-        },
-      })
-    )
-    .catch((error) =>
-      dispatch({
-        type: actionTypes.ACTION_FAIL,
-        payload: error.response.data.error.message,
-      })
-    );
+export const signIn = () => (dispatch,getState) =>{
+  const inputs = getState().authReducer.signInInputs;
+  const reqData = returnFormData(inputs);
+  return axios
+  .post("api/auth/signup", reqData)
+  .then((res) =>
+    dispatch({
+      type: actionTypes.ACTION_SUCCESS,
+      payload: {
+        user: res.data.user,
+        expiry: res.data.expiry,
+      },
+    })
+  )
+  .catch((error) =>
+    dispatch({
+      type: actionTypes.ACTION_FAIL,
+      payload: error.response.data.error.message,
+    })
+  );
+}
+  
 
 /**
  * @function login Redux thunk action creator for login request

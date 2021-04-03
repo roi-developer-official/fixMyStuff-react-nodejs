@@ -9,6 +9,7 @@ export function FormFeedback({ error, message , success}) {
       error ? "rgba(226, 33, 33, 0.61)" : "rgba(0, 112, 0, 0.671)"
     }`,
   };
+  
   if (error || success)
     return (
       <div
@@ -19,5 +20,5 @@ export function FormFeedback({ error, message , success}) {
         <p>{message}</p>
       </div>
     );
-  return null;
+    else return null;
 }

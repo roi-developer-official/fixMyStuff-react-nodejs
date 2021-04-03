@@ -1,40 +1,34 @@
-import React from "react";
+import React, {useRef} from "react";
 import { Input, Button } from "../../../Global_UI";
 import { buttons as pageButtons, inputs as pageInputs } from "./elements";
-import { addToRefsArray} from "../../../shared/functions";
-import { pagesReducer, actionTypes} from '../../../shared/useReducers/pagesReducer';
-
-const initialState = {
-  inputs: [
-    { name: "email", value: "", error: "" },
-    { name: "password", value: "", error: "" },
-    { name: "confirmPassword", value: "", error: "" },
-  ],
-};
+import { addToRefsArray} from "../../../shared/";
+import { actionTypes } from '../../../actions/authAction';
+import { useDispatch, useSelector} from 'react-redux';
 
 function PageFour({ changePage, show }) {
-  const [state, dispatch] = React.useReducer(pagesReducer, initialState);
-  const refs = React.useRef([]);
+  const { page4 : inputs } = useSelector((state) => state.authReducer.signInInputs);
+  const dispatch = useDispatch();
+  const refs = useRef([]);
 
   function onButtonClick(action) {
     if (action === "Back") {
       changePage(action);
     } else if (action === "Done") {
-      for (let i = 0; i < state.inputs.length; i++) {
+      for (let i = 0; i < inputs.length; i++) {
         if (
-          state.inputs[i].error.length > 0 ||
-          state.inputs[i].value.length === 0
+          inputs[i].error.length > 0 ||
+          inputs[i].value.length === 0
         ) {
           refs.current[i].focus();
           return;
         }
       }
-      changePage(action, state.inputs);
+      changePage(action);
     }
   }
 
   function onInputChange(name, value, error) {
-    dispatch({ type: actionTypes.SET_INPUT, name: name, value: value, error: error });
+    dispatch({ type: actionTypes.SIGN_SET_INPUT, name: name, value: value, error: error, page: "page4" });
   }
 
   return (
@@ -49,7 +43,7 @@ function PageFour({ changePage, show }) {
               updateInput={onInputChange}
               inputType={input.type}
               validations={input.validations}
-              matchWith={state.inputs[1].value}
+              matchWith={inputs[1].value}
             ></Input>
           </div>
         );

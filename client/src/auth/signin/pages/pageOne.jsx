@@ -1,5 +1,5 @@
 import { Button, Input, Logo } from "../../../Global_UI";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import {
   buttons as pageButtons,
@@ -7,17 +7,22 @@ import {
   selects as pageSelects,
   citiesString,
 } from "./elements";
-import { addToRefsArray } from "../../../shared/functions";
+import { addToRefsArray } from "../../../shared";
 import { actionTypes } from "../../../actions/authAction";
 import { useDispatch, useSelector } from "react-redux";
 
 function PageOne({ changePage, show }) {
   const cities = citiesString.split(",");
   const history = useHistory();
-  const { inputs } = useSelector((state) => state.authReducer);
+  const { page1: inputs } = useSelector(
+    (state) => state.authReducer.signInInputs
+  );
   const dispatch = useDispatch();
   const refs = useRef([]);
 
+  useEffect(() => {
+    dispatch({ type: actionTypes.INCREMENT_STEP });
+  }, [dispatch]);
 
   function onButtonClick(action) {
     if (action === "Cancel") {
@@ -29,16 +34,17 @@ function PageOne({ changePage, show }) {
           return;
         }
       }
-      changePage(action, inputs);
+      changePage(action);
     }
   }
 
   function onInputChange(name, value, error) {
     dispatch({
-      type: actionTypes.SET_INPUT,
+      type: actionTypes.SIGN_SET_INPUT,
       name: name,
       value: value,
       error: error,
+      page: "page1",
     });
   }
 

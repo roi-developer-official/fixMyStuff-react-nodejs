@@ -1,33 +1,44 @@
 import { actionTypes } from "../actions/authAction";
 
 const initialState = {
-  loading: false,
-  error: null,
   user: null,
   expiry: null,
+  loading: false,
+  error: null,
   success: false,
-   inputs: [
-    { name: "firstName", value: "", error: "" },
-    { name: "lastName", value: "", error: "" },
-    { name: "city", value: "", error: "" },
-    { name: "role", value: 1, error : "" },
-    { name: "profession", value: "", error: "" },
-    { name: "experience", value: "", error: "" },
-  ],
+  signInInputs: {
+    page1: [
+      { name: "firstName", value: "", error: "" },
+      { name: "lastName", value: "", error: "" },
+      { name: "city", value: "", error: "" },
+    ],
+    page3: [
+      { name: "role", value: 1, error: "" },
+      { name: "profession", value: "", error: "" },
+      { name: "experience", value: "", error: "" },
+    ],
+    page4: [
+      { name: "email", value: "", error: "" },
+      { name: "password", value: "", error: "" },
+      { name: "confirmPassword", value: "", error: "" },
+    ],
+  },
+  currentStep: 1
 };
 
 const authReducer = (state = initialState, action) => {
-  
-  switch(action.type){
-    case actionTypes.SET_INPUT:
-          const updatedInput = state.inputs.slice();
-          const index = updatedInput.findIndex((input) => input.name === action.name);
-         updatedInput[index].value = action.value;
-         updatedInput[index].error = action.error;
-         return {
-           ...state,
-           inputs: updatedInput,
-         };
+  switch (action.type) {
+    case actionTypes.SIGN_SET_INPUT:
+      const updatedInput = [...state.signInInputs[action.page]];
+      const index = updatedInput.findIndex(
+        (input) => input.name === action.name
+      );
+      updatedInput[index].value = action.value;
+      updatedInput[index].error = action.error;
+      return {
+        ...state,
+        signInInputs: { ...state.signInInputs, [action.page] : updatedInput },
+      };
     case actionTypes.ACTION_START:
       return {
         ...state,
@@ -39,7 +50,7 @@ const authReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         error: action.payload,
-        success: false
+        success: false,
       };
     case actionTypes.RESET_STATE: {
       return {
@@ -47,6 +58,24 @@ const authReducer = (state = initialState, action) => {
         error: null,
         loading: false,
         success: false,
+        currentStep:1,
+        signInInputs:{
+          page1: [
+            { name: "firstName", value: "", error: "" },
+            { name: "lastName", value: "", error: "" },
+            { name: "city", value: "", error: "" },
+          ],
+          page3: [
+            { name: "role", value: 1, error: "" },
+            { name: "profession", value: "", error: "" },
+            { name: "experience", value: "", error: "" },
+          ],
+          page4: [
+            { name: "email", value: "", error: "" },
+            { name: "password", value: "", error: "" },
+            { name: "confirmPassword", value: "", error: "" },
+          ],
+        },
       };
     }
     case actionTypes.ACTION_SUCCESS:
@@ -56,9 +85,18 @@ const authReducer = (state = initialState, action) => {
         loading: false,
         user: action.payload.user,
         expiry: action.payload.expiry,
-        success: true
+        success: true,
       };
-
+      case actionTypes.INCREMENT_STEP:
+        return {
+          ...state,
+          currentStep: state.currentStep + 1,
+        };
+      case actionTypes.DECREMENT_STEP:
+        return {
+          ...state,
+          currentStep: state.currentStep - 1,
+        };
     default:
       return state;
   }

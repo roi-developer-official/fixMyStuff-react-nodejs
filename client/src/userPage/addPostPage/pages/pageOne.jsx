@@ -3,7 +3,7 @@ import {
   inputs as pageInputs,
   textAreas as pageTextAreas,
 } from "../elements";
-import { addToRefsArray} from '../../../shared/functions';
+import { addToRefsArray} from '../../../shared';
 import { pagesReducer ,actionTypes} from '../../../shared/useReducers/pagesReducer'
 import { Input, Button, Textarea, Logo } from "../../../Global_UI";
 import { useHistory } from "react-router-dom";

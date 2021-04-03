@@ -8,11 +8,13 @@ const setup = (props = {}) => {
 
 const mockDispatch = jest.fn();
 const mockChangePage = jest.fn();
-let inputs = [
-  { name: "role", value: 1, error: "" },
-  { name: "profession", value: "", error: "" },
-  { name: "experience", value: "", error: "" },
-];
+let inputs = {
+  page3: [
+    { name: "role", value: 1, error: "" },
+    { name: "profession", value: "", error: "" },
+    { name: "experience", value: "", error: "" },
+  ],
+};
 
 jest.mock("react-redux", () => ({
   ...jest.requireActual("react-redux"),
@@ -22,15 +24,17 @@ jest.mock("react-redux", () => ({
 
 describe("page Three", () => {
   beforeEach(() => {
-    useSelector.mockReturnValue({ inputs });
+    useSelector.mockReturnValue(inputs);
     useDispatch.mockReturnValue(mockDispatch);
   });
   afterEach(() => {
-    inputs = [
-      { name: "role", value: 1, error: "" },
-      { name: "profession", value: "", error: "" },
-      { name: "experience", value: "", error: "" },
-    ];
+    inputs = {
+      page3: [
+        { name: "role", value: 1, error: "" },
+        { name: "profession", value: "", error: "" },
+        { name: "experience", value: "", error: "" },
+      ],
+    };
     mockDispatch.mockClear();
   });
 
@@ -52,17 +56,19 @@ describe("page Three", () => {
     expect(inputs).toHaveLength(2);
   });
 
-  test('select not show by default', ()=>{
+  test("select not show by default", () => {
     const wrapper = setup();
-    const wrappingDiv = wrapper.find({ className : "form_select_wrapper"});
+    const wrappingDiv = wrapper.find({ className: "form_select_wrapper" });
     expect(wrappingDiv).toHaveLength(2);
   });
 
-  test('select is showen when `yes` selected', ()=>{
-    inputs[0].value = 2;
-    useSelector.mockReturnValueOnce({ inputs });
+  test("select is showen when `yes` selected", () => {
+    inputs.page3[0].value = 2;
+    useSelector.mockReturnValueOnce(inputs);
     let wrapper = setup();
-    expect(wrapper.find({className : "form_select_wrapper show"})).toHaveLength(2);
+    expect(
+      wrapper.find({ className: "form_select_wrapper show" })
+    ).toHaveLength(2);
   });
 
   test("should not be visible when show is false", () => {
@@ -89,12 +95,13 @@ describe("page Three", () => {
   test("should dispatch with right values with input 1", () => {
     let wrapper = setup();
     let inputs = wrapper.find({ "data-test": "role" });
-    inputs.at(0).simulate("change" , { target : { value : 1, name : "role"}});
+    inputs.at(0).simulate("change", { target: { value: 1, name: "role" } });
     expect(mockDispatch).toBeCalledWith({
       name: "role",
-      type: "SET_INPUT",
+      type: "SIGN_SET_INPUT",
       value: 1,
       error: "",
+      page: "page3"
     });
     expect(mockDispatch).toBeCalledTimes(1);
   });
@@ -102,51 +109,52 @@ describe("page Three", () => {
   test("should dispatch the right on select change", () => {
     const wrapper = setup();
     const select = wrapper.find({ "data-test": "profession" });
-    select.simulate("change", { target: { name : "profession", value: "abc" }});
+    select.simulate("change", { target: { name: "profession", value: "abc" } });
     expect(mockDispatch).toBeCalledWith({
       name: "profession",
-      type: "SET_INPUT",
+      type: "SIGN_SET_INPUT",
       value: "abc",
       error: "",
+      page: "page3"
     });
     expect(mockDispatch).toBeCalledTimes(1);
   });
 
   test("should move to next page when selected with role 1", () => {
-    const wrapper = setup({changePage : mockChangePage});
-    const nextButton = wrapper.find({"data-test":"button-next"});
+    const wrapper = setup({ changePage: mockChangePage });
+    const nextButton = wrapper.find({ "data-test": "button-next" });
     nextButton.simulate("click");
     expect(mockChangePage).toBeCalled();
   });
 
   test("should move to next page when selected 1 even with errors", () => {
-    inputs[1].error = "some error";
-    useSelector.mockReturnValueOnce({inputs});
-    const wrapper = setup({changePage : mockChangePage});
-    const nextButton = wrapper.find({"data-test":"button-next"});
+    inputs.page3[1].error = "some error";
+    useSelector.mockReturnValueOnce(inputs);
+    const wrapper = setup({ changePage: mockChangePage });
+    const nextButton = wrapper.find({ "data-test": "button-next" });
     nextButton.simulate("click");
     expect(mockChangePage).toBeCalled();
   });
 
   test("should not move page when role is 2 and the values empty", () => {
-    inputs[1].value = "";
-    inputs[2].value = "";
-    inputs[0].value = 2;
-    useSelector.mockReturnValueOnce({inputs});
-    const wrapper = setup({changePage :mockChangePage});
-    const nextButton = wrapper.find({"data-test":"button-next"});
+    inputs.page3[1].value = "";
+    inputs.page3[2].value = "";
+    inputs.page3[0].value = 2;
+    useSelector.mockReturnValueOnce(inputs);
+    const wrapper = setup({ changePage: mockChangePage });
+    const nextButton = wrapper.find({ "data-test": "button-next" });
     nextButton.simulate("click");
     expect(mockChangePage).not.toBeCalled();
   });
 
 
   test("should not move page when role is 2 with errors", () => {
-    inputs[1].error = "some error";
-    inputs[2].value = "";
-    inputs[0].value = 2;
-    useSelector.mockReturnValueOnce({inputs});
-    const wrapper = setup({changePage :mockChangePage});
-    const nextButton = wrapper.find({"data-test":"button-next"});
+    inputs.page3[1].error = "some error";
+    inputs.page3[2].value = "";
+    inputs.page3[0].value = 2;
+    useSelector.mockReturnValueOnce(inputs);
+    const wrapper = setup({ changePage: mockChangePage });
+    const nextButton = wrapper.find({ "data-test": "button-next" });
     nextButton.simulate("click");
     expect(mockChangePage).not.toBeCalled();
   });
