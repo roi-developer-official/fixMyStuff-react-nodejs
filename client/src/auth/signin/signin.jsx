@@ -1,5 +1,6 @@
 import "./signin.css";
 import React, { useEffect } from "react";
+import { buttons as page2Buttons} from './pages/elements';
 import { useDispatch, useSelector } from "react-redux";
 import { FormFeedback, Steps, LoadingSpinner } from "../../Global_UI";
 import PageOne from "./pages/pageOne";
@@ -29,9 +30,11 @@ export default function SignIn() {
     }
   }, [success, history]);
 
-  function moveBetweenPages(label) {
+  function moveBetweenPages(label, input) {
     switch (label) {
       case "Next":
+        if(input)
+          dispatch({type: actionTypes.SIGN_SET_INPUT, page: "page2",  name : input.name, value: input.value })
         dispatch({ type: actionTypes.INCREMENT_STEP });
         break;
       case "Done":
@@ -57,7 +60,7 @@ export default function SignIn() {
       />
       <div className="pages_container">
         <PageOne show={currentStep === 1} changePage={moveBetweenPages} />
-        <AddImagePage show={currentStep === 2} changePage={moveBetweenPages} />
+        <AddImagePage show={currentStep === 2} changePage={moveBetweenPages} buttons ={page2Buttons.page3} />
         <PageThree
           show={currentStep === 3}
           changePage={moveBetweenPages}

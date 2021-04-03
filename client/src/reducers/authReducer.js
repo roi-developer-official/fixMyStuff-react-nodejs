@@ -12,6 +12,9 @@ const initialState = {
       { name: "lastName", value: "", error: "" },
       { name: "city", value: "", error: "" },
     ],
+    page2: [
+      {name : "image", value : ""}
+    ],
     page3: [
       { name: "role", value: 1, error: "" },
       { name: "profession", value: "", error: "" },
@@ -35,6 +38,7 @@ const authReducer = (state = initialState, action) => {
   let index;
   switch (action.type) {
     case actionTypes.SIGN_SET_INPUT:
+      console.log(state.signInInputs);
       updatedInput = [...state.signInInputs[action.page]];
       index = updatedInput.findIndex((input) => input.name === action.name);
       updatedInput[index].value = action.value;
@@ -66,34 +70,7 @@ const authReducer = (state = initialState, action) => {
         success: false,
       };
     case actionTypes.RESET_STATE: {
-      return {
-        ...state,
-        error: null,
-        loading: false,
-        success: false,
-        currentStep: 1,
-        signInInputs: {
-          page1: [
-            { name: "firstName", value: "", error: "" },
-            { name: "lastName", value: "", error: "" },
-            { name: "city", value: "", error: "" },
-          ],
-          page3: [
-            { name: "role", value: 1, error: "" },
-            { name: "profession", value: "", error: "" },
-            { name: "experience", value: "", error: "" },
-          ],
-          page4: [
-            { name: "email", value: "", error: "" },
-            { name: "password", value: "", error: "" },
-            { name: "confirmPassword", value: "", error: "" },
-          ],
-        },
-        loginInputs: [
-          { name: "email", value: "", error: "" },
-          { name: "password", value: "", error: "" },
-        ],
-      };
+      return initialState;
     }
     case actionTypes.ACTION_SUCCESS:
       return {

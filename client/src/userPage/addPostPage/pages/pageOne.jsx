@@ -3,41 +3,35 @@ import {
   inputs as pageInputs,
   textAreas as pageTextAreas,
 } from "../elements";
-import { addToRefsArray} from '../../../shared';
-import { pagesReducer ,actionTypes} from '../../../shared/useReducers/pagesReducer'
+import { actionTypes } from "../../../actions/postAction";
+import { addToRefsArray } from "../../../shared";
 import { Input, Button, Textarea, Logo } from "../../../Global_UI";
 import { useHistory } from "react-router-dom";
-import { useReducer, useRef } from "react";
-
-const initialState = {
-  inputs: [
-    { name: "title", value: "", error: "" },
-    { name: "maxPayment", value: "", error: "" },
-  ],
-};
+import { useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function PageOne({ show, changePage }) {
   const history = useHistory();
   const refs = useRef([]);
-  const [state, dispatch] = useReducer(pagesReducer, initialState);
-
+  const { page1: inputs } = useSelector(
+    (state) => state.postReducer.addPostInputs
+  );
+  const dispatch = useDispatch();
+  
   function onInputChange(name, value, error) {
-    dispatch({ type: actionTypes.SET_INPUT, name, value, error });
+    dispatch({ type: actionTypes.ADD_POST_SET_INPUT, name, value, error });
   }
 
   function onButtonClicked(label) {
     if (label === "Cancel") history.push("/My-page");
     else {
-      for (let i = 0; i < state.inputs.length; i++) {
-        if (
-          state.inputs[i].error.length > 0 ||
-          state.inputs[i].value.length === 0
-        ) {
+      for (let i = 0; i < inputs.length; i++) {
+        if (inputs[i].error.length > 0 || inputs[i].value.length === 0) {
           refs.current[i].focus();
           return;
         }
-    }
-    changePage(label, state.inputs);
+      }
+      changePage(label);
     }
   }
 

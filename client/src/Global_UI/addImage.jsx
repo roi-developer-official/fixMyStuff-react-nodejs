@@ -82,7 +82,7 @@ export function AddImage({ setInputValue }) {
       <div className="file_input_wrapper">
         <button
           data-test="browse-button"
-          className={`browse_btn${image ? "show" : ""}`}
+          className={`browse_btn${!image ? " show" : ""}`}
           onClick={() => inputRef.current.click()}
           onDrop={onFileChange}
           onDragOver={onDragOver}
