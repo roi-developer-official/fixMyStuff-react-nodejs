@@ -1,3 +1,4 @@
+import authReducer from "../../../reducers/authReducer";
 import { storeFactory, user } from "../../../tests/testUtils";
 import { actionTypes } from "../../authAction";
 
@@ -34,7 +35,11 @@ const initialState = {
   ],
 };
 
-//testing for dipatching actions
+afterEach(()=>{
+  const store = storeFactory();
+  store.dispatch({type : actionTypes.AUTH_RESET_STATE})
+})
+
 test("action success return currect value", () => {
   const store = storeFactory();
   store.dispatch({
@@ -82,25 +87,26 @@ test("should set signin inputs", () => {
     error: "some error",
     page: "page1"
   });
-  const newState = store.getState();
-  let expectedState = { ...initialState };
-  expectedState.signInInputs.page1[0].value = "abc";
-  expectedState.signInInputs.page1[0].error = "some error";
-  expect(newState.authReducer).toEqual(expectedState);
+  const newState = store.getState().authReducer;
+  const expectedState = { name : "firstName", value : "abc", error : "some error"};
+  expect(newState.signInInputs.page1[0]).toEqual(expectedState);
 });
 
-test('should increment the step', ()=>{
+test('should set login inputs', ()=>{
   const store = storeFactory();
-  store.dispatch({
-    type: actionTypes.AUTH_INCREMENT_STEP});
-  const newState = store.getState();
-  expect(newState.authReducer).toEqual({...initialState, currentStep:2})
+  store.dispatch({type: actionTypes.AUTH_LOGIN_SET_INPUT, name : "email", value: "abc", error: "some error"});
+  const newState = store.getState().authReducer;
+  const expectedState = { name : "email", value : "abc", error : "some error"};
+  expect(newState.loginInputs[0]).toEqual(expectedState);
+})
+
+test('should increment the step', ()=>{
+  const action = authReducer(initialState, { type: actionTypes.AUTH_INCREMENT_STEP});
+  expect(action).toEqual({...initialState, currentStep:2})
 });
 
 test('should decrement the step', ()=>{
-  const store = storeFactory();
-  store.dispatch({
-   type: actionTypes.AUTH_DECREMENT_STEP});
-  const newState = store.getState();
-  expect(newState.authReducer).toEqual({...initialState, currentStep:0})
+  const action = authReducer(initialState, { type: actionTypes.AUTH_DECREMENT_STEP});
+  expect(action).toEqual({...initialState, currentStep:0})
 });
+

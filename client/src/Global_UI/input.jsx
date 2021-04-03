@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import {validation} from '../validations/Validations';
+import {validation} from '../shared/';
 
 export function Input({
     inputType,

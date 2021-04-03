@@ -1,5 +1,4 @@
 import { Steps, FormFeedback, LoadingSpinner } from "../../Global_UI";
-import { returnFormData } from "../../shared";
 import { buttons as page2Buttons } from "./elements";
 import "./addPostPage.css";
 import { useHistory } from "react-router";

@@ -1,5 +1,5 @@
 import React from 'react';
-import {validation} from '../validations/Validations';
+import {validation} from '../shared';
 export function Textarea ({
     cols,
     rows,
