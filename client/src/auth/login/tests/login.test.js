@@ -1,37 +1,30 @@
 import { mount } from "enzyme";
-import { useReducer } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { createMemoryHistory } from "history";
 import Login from "../login";
 import { Router } from "react-router";
 import { findByAttr } from "../../../tests/testUtils";
-import { actionTypes , login } from "../../../actions/authAction";
+import { actionTypes, login } from "../../../actions/authAction";
 
 let mockDispatch = jest.fn();
-let mockReactDispatch = jest.fn();
-jest.mock("../../../actions/authAction")
+jest.mock("../../../actions/authAction");
+const loginInputs = [
+  { name: "email", value: "", error: "" },
+  { name: "password", value: "", error: "" },
+];
 jest.mock("react-redux", () => ({
   ...jest.requireActual("react-redux"),
   useDispatch: jest.fn(),
   useSelector: jest.fn(),
 }));
 
-jest.mock("react", () => ({
-  ...jest.requireActual("react"),
-  useReducer: jest.fn(),
-}));
-
 beforeEach(() => {
-  useReducer.mockReturnValue([
-    {
-      inputs: [
-        { name: "email", value: "", error: "" },
-        { name: "password", value: "", error: "" },
-      ],
-    },
-    mockReactDispatch,
-  ]);
-  useSelector.mockReturnValue({ loading: false, error: null, success: false });
+  useSelector.mockReturnValue({
+    loading: false,
+    error: null,
+    success: false,
+    loginInputs: loginInputs,
+  });
   useDispatch.mockReturnValue(mockDispatch);
 });
 
@@ -54,14 +47,26 @@ test("should dispatch reset on page load", () => {
   expect(mockDispatch).toHaveBeenCalledWith({ type: actionTypes.RESET_STATE });
 });
 
+test('number of inputs 2', ()=>{
+  const wrapper = setup();
+  const inputs = wrapper.find("input");
+  expect(inputs).toHaveLength(2);
+});
+
+test('number of buttons 2', ()=>{
+  const wrapper = setup();
+  const inputs = wrapper.find("button");
+  expect(inputs).toHaveLength(2);
+})
+
 test("should dispatch input change with currect values", () => {
   const wrapper = setup();
   const input = findByAttr(wrapper, "email");
   input.simulate("change", { target: { value: "abc", name: "email" } });
-  expect(mockReactDispatch).toBeCalledWith({
+  expect(mockDispatch).toBeCalledWith({
     error: "",
     name: "email",
-    type: "SET_INPUT",
+    type: "LOGIN_SET_INPUT",
     value: "abc",
   });
 });
@@ -85,15 +90,14 @@ test("should not submit the page with values empty", () => {
 });
 
 test("should not submit the page with errors", () => {
-  useReducer.mockReturnValue([
-    {
-      inputs: [
-        { name: "email", value: "hello", error: "some error" },
-        { name: "password", value: "in here", error: "" },
-      ],
-    },
-    mockReactDispatch,
-  ]);
+  const mockInputs = JSON.parse(JSON.stringify(loginInputs));
+  mockInputs[0].error = "some error";
+  useSelector.mockReturnValueOnce({
+    loading: false,
+    error: null,
+    success: false,
+    loginInputs: mockInputs,
+  });
   const wrapper = setup();
   const doneButton = findByAttr(wrapper, "button-login");
   mockDispatch.mockClear();
@@ -101,35 +105,70 @@ test("should not submit the page with errors", () => {
   expect(mockDispatch).not.toHaveBeenCalled();
 });
 
-test("should set error when email is not an email", () => {
-  const wrapper = setup();
-  const input = findByAttr(wrapper, "email");
-  input.simulate("change", { target: { value: "abc", name: "email" } });
-  mockReactDispatch.mockClear();
-  input.simulate("blur", { target: { value: "abc", name: "email" } });
-  expect(mockReactDispatch).toBeCalledWith({
-    error: "please enter a valid email",
-    name: "email",
-    type: "SET_INPUT",
-    value: "abc",
-  });
-});
-
 test("should submit the page with the right values", () => {
-  useReducer.mockReturnValue([
-    {
-      inputs: [
-        { name: "email", value: "test@test.com", error: "" },
-        { name: "password", value: "in here", error: "" },
-      ],
-    },
-    mockReactDispatch,
-  ]);
+  const mockInputs = JSON.parse(JSON.stringify(loginInputs));
+  mockInputs[0].value = "abc";
+  mockInputs[1].value = "def";
+  useSelector.mockReturnValueOnce({
+    loading: false,
+    error: null,
+    success: false,
+    loginInputs: mockInputs,
+  });
   const wrapper = setup();
   const doneButton = findByAttr(wrapper, "button-login");
   mockDispatch.mockClear();
   doneButton.simulate("click");
-  expect(mockDispatch).toHaveBeenCalledWith({type: actionTypes.ACTION_START});
+  expect(mockDispatch).toHaveBeenCalledWith({ type: actionTypes.ACTION_START });
   expect(login).toBeCalled();
 });
 
+test("should not show loader by default", () => {
+  const wrapper = setup();
+  const loader = wrapper.find({ "data-test": "loading-spinner" });
+  expect(loader).toHaveLength(0);
+});
+
+test("should show loaded while loading", () => {
+  useSelector.mockReturnValueOnce({
+    loading: true,
+    error: null,
+    success: false,
+    loginInputs: loginInputs,
+  });
+  const wrapper = setup();
+  const loader = wrapper.find({ "data-test": "loading-spinner" });
+  expect(loader).toHaveLength(1);
+});
+
+test("should not show feedback by default", () => {
+  const wrapper = setup();
+  const feedback = wrapper.find({ className: "form_feedback_wrapper" });
+  expect(feedback).toHaveLength(0);
+});
+
+test("should show feedback with error message", () => {
+  useSelector.mockReturnValueOnce({
+    loading: false,
+    error: "some error",
+    success: false,
+    loginInputs: loginInputs,
+  });
+  const wrapper = setup();
+  const feedback = wrapper.find({ className: "form_feedback_wrapper" });
+  expect(feedback).toHaveLength(1);
+  expect(feedback.text()).toBe("some error");
+});
+
+test("should show feedback with success message", () => {
+  useSelector.mockReturnValueOnce({
+    loading: false,
+    error: null,
+    success: true,
+    loginInputs: loginInputs,
+  });
+  const wrapper = setup();
+  const feedback = wrapper.find({ className: "form_feedback_wrapper" });
+  expect(feedback).toHaveLength(1);
+  expect(feedback.text()).toBe("Login Successfuly!");
+});

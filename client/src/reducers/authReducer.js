@@ -23,21 +23,34 @@ const initialState = {
       { name: "confirmPassword", value: "", error: "" },
     ],
   },
-  currentStep: 1
+  loginInputs: [
+    { name: "email", value: "", error: "" },
+    { name: "password", value: "", error: "" },
+  ],
+  currentStep: 1,
 };
 
 const authReducer = (state = initialState, action) => {
+  let updatedInput;
+  let index;
   switch (action.type) {
     case actionTypes.SIGN_SET_INPUT:
-      const updatedInput = [...state.signInInputs[action.page]];
-      const index = updatedInput.findIndex(
-        (input) => input.name === action.name
-      );
+      updatedInput = [...state.signInInputs[action.page]];
+      index = updatedInput.findIndex((input) => input.name === action.name);
       updatedInput[index].value = action.value;
       updatedInput[index].error = action.error;
       return {
         ...state,
-        signInInputs: { ...state.signInInputs, [action.page] : updatedInput },
+        signInInputs: { ...state.signInInputs, [action.page]: updatedInput },
+      };
+    case actionTypes.LOGIN_SET_INPUT:
+      updatedInput = state.loginInputs.slice();
+      index = updatedInput.findIndex((input) => input.name === action.name);
+      updatedInput[index].value = action.value;
+      updatedInput[index].error = action.error;
+      return {
+        ...state,
+        loginInputs: updatedInput,
       };
     case actionTypes.ACTION_START:
       return {
@@ -58,8 +71,8 @@ const authReducer = (state = initialState, action) => {
         error: null,
         loading: false,
         success: false,
-        currentStep:1,
-        signInInputs:{
+        currentStep: 1,
+        signInInputs: {
           page1: [
             { name: "firstName", value: "", error: "" },
             { name: "lastName", value: "", error: "" },
@@ -76,6 +89,10 @@ const authReducer = (state = initialState, action) => {
             { name: "confirmPassword", value: "", error: "" },
           ],
         },
+        loginInputs: [
+          { name: "email", value: "", error: "" },
+          { name: "password", value: "", error: "" },
+        ],
       };
     }
     case actionTypes.ACTION_SUCCESS:
@@ -87,16 +104,16 @@ const authReducer = (state = initialState, action) => {
         expiry: action.payload.expiry,
         success: true,
       };
-      case actionTypes.INCREMENT_STEP:
-        return {
-          ...state,
-          currentStep: state.currentStep + 1,
-        };
-      case actionTypes.DECREMENT_STEP:
-        return {
-          ...state,
-          currentStep: state.currentStep - 1,
-        };
+    case actionTypes.INCREMENT_STEP:
+      return {
+        ...state,
+        currentStep: state.currentStep + 1,
+      };
+    case actionTypes.DECREMENT_STEP:
+      return {
+        ...state,
+        currentStep: state.currentStep - 1,
+      };
     default:
       return state;
   }

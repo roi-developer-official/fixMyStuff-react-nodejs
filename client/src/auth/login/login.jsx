@@ -1,29 +1,21 @@
-import { useEffect, useReducer, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Input, Button, Logo, FormFeedback, LoadingSpinner } from "../../Global_UI";
-import { login, actionTypes as authActions } from "../../actions/authAction";
+import { login , actionTypes} from "../../actions/authAction";
 import "./login.css";
 import { useHistory, NavLink } from "react-router-dom";
 import { buttons as pageButtons , inputs as pageInputs} from './elements';
 import { useDispatch, useSelector } from "react-redux";
-import {returnFormData ,addToRefsArray} from '../../shared/functions';
-import { pagesReducer, actionTypes } from '../../shared/useReducers/pagesReducer';
-const initialState = {
-  inputs: [
-    { name: "email", value: "", error: "" },
-    { name: "password", value: "", error: "" },
-  ],
-};
+import { addToRefsArray} from '../../shared';
 
 function LoginPage() {
   const history = useHistory();
-  const [state, dispatch] = useReducer(pagesReducer, initialState);
-  const { error, loading, success } = useSelector((state) => state.authReducer);
-  const storeDispatch = useDispatch();
+  const { error, loading, success, loginInputs: inputs } = useSelector((state) => state.authReducer);
+  const dispatch = useDispatch();
   const refs  =  useRef([]);
 
   useEffect(() => {
-    storeDispatch({type: authActions.RESET_STATE});
-  }, [storeDispatch]);
+    dispatch({type: actionTypes.RESET_STATE});
+  }, [dispatch]);
 
   useEffect(()=>{
     if(success){
@@ -34,32 +26,27 @@ function LoginPage() {
   },[success, history]);
 
   function onInputChange(name, value, error) {
-    dispatch({ type: actionTypes.SET_INPUT, name: name, value: value, error: error });
+    dispatch({ type: actionTypes.LOGIN_SET_INPUT, name: name, value: value, error: error });
   }
 
   function onButtonClick(label) {
     if (label === "Login") {
-      for(let i = 0 ; i < state.inputs.length; i++){
-        if(state.inputs[i].error.length > 0 || state.inputs[i].value.length === 0) {
+      for(let i = 0 ; i < inputs.length; i++){
+        if(inputs[i].error.length > 0 || inputs[i].value.length === 0) {
           refs.current[i].focus();
           return;
         }
       }
-      submitPage(state.inputs);
+    dispatch({type: actionTypes.ACTION_START});
+    dispatch(login());
     }
     else
       history.push("/");
     }
 
-  function submitPage(inputs) {
-    const reqData = returnFormData(inputs);
-    storeDispatch({type: authActions.ACTION_START});
-    storeDispatch(login(reqData));
-  }
-
   return (
     <div className="login_page_container">
-      <FormFeedback error={error} message={success ? "Login Successfuly!" : "Login Failed!"} success={success}/>
+      <FormFeedback error={error} message={success ? "Login Successfuly!" : error} success={success}/>
       <div className="login_wrapper_page">
         <div className="login_header">
         <LoadingSpinner show={loading}/>

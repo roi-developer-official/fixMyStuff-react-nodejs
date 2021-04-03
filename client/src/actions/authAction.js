@@ -1,5 +1,5 @@
 import axios from "axios";
-import { returnFormData } from "./helpers";
+import { returnFormDataSignIn, returnFormDataLogin } from "./helpers";
 
 export const actionTypes = {
   ACTION_START: "ACTION_START",
@@ -9,6 +9,7 @@ export const actionTypes = {
   SIGN_SET_INPUT : "SIGN_SET_INPUT",
   INCREMENT_STEP: "INCREMENT_STEP",
   DECREMENT_STEP: "DECREMENT_STEP",
+  LOGIN_SET_INPUT : "LOGIN_SET_INPUT"
 };
 
 /**
@@ -18,7 +19,7 @@ export const actionTypes = {
  */
 export const signIn = () => (dispatch,getState) =>{
   const inputs = getState().authReducer.signInInputs;
-  const reqData = returnFormData(inputs);
+  const reqData = returnFormDataSignIn(inputs);
   return axios
   .post("api/auth/signup", reqData)
   .then((res) =>
@@ -37,31 +38,33 @@ export const signIn = () => (dispatch,getState) =>{
     })
   );
 }
-  
-
 /**
  * @function login Redux thunk action creator for login request
  * @param {object} reqData - date to be sent to the server
  * @returns {dispatch} - dispating action in case of success or faliure
  */
-export const login = (reqData) => (dispatch) =>
-  axios
-    .post("api/auth/login", reqData)
-    .then((res) =>
-      dispatch({
-        type: actionTypes.ACTION_SUCCESS,
-        payload: {
-          user: res.data.user,
-          expiry: res.data.expiry,
-        },
-      })
-    )
-    .catch((error) =>
-      dispatch({
-        type: actionTypes.ACTION_FAIL,
-        payload: error.response.data.error.message,
-      })
-    );
+export const login = () => (dispatch,getState) =>{
+  const inputs = getState().authReducer.loginInputs;
+  let reqData = returnFormDataLogin(inputs)
+  return axios
+  .post("api/auth/login", reqData)
+  .then((res) =>
+    dispatch({
+      type: actionTypes.ACTION_SUCCESS,
+      payload: {
+        user: res.data.user,
+        expiry: res.data.expiry,
+      },
+    })
+  )
+  .catch((error) =>
+    dispatch({
+      type: actionTypes.ACTION_FAIL,
+      payload: error.response.data.error.message,
+    })
+  );
+}
+  
 
 /**
  * @function logOut 

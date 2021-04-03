@@ -24,7 +24,11 @@ const initialState = {
       { name: "confirmPassword", value: "", error: "" },
     ],
   },
-  currentStep: 1
+  currentStep: 1,
+  loginInputs: [
+    { name: "email", value: "", error: "" },
+    { name: "password", value: "", error: "" },
+  ],
 };
 
 //testing for dipatching actions
@@ -42,7 +46,8 @@ test("action success return currect value", () => {
     expiry: "2019",
     success: true,
     signInInputs: initialState.signInInputs,
-    currentStep:1
+    currentStep:1,
+    loginInputs : initialState.loginInputs
   });
 });
 
@@ -60,6 +65,7 @@ test("action fail return currect value", () => {
     user: null,
     success: false,
     signInInputs: initialState.signInInputs,
+    loginInputs : initialState.loginInputs,
     currentStep:1
   });
 });
