@@ -1,5 +1,5 @@
 import React from "react";
-import { Input, Button } from "../../../Global_UI";
+import { Input, Buttons } from "../../../Global_UI";
 import {
   inputs as pageInputs,
   buttons as pageButtons,
@@ -83,18 +83,7 @@ function PageThree({ changePage, show }) {
           </div>
         );
       })}
-      <div className="form_buttons_wrapper">
-        {pageButtons.page3.map((btn, i) => {
-          return (
-            <Button
-              key={i}
-              label={btn.label}
-              onClick={() => onButtonClick(btn.label)}
-              style={btn.style}
-            ></Button>
-          );
-        })}
-      </div>
+        <Buttons buttons={pageButtons.page3} onClick={onButtonClick} className="form_buttons_wrapper"/>
     </div>
   );
 }

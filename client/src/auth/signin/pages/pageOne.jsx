@@ -1,18 +1,15 @@
-import { Button, Input, Logo } from "../../../Global_UI";
+import { Logo, Buttons, Inputs } from "../../../Global_UI";
 import React, { useRef } from "react";
 import { useHistory } from "react-router-dom";
 import {
   buttons as pageButtons,
   inputs as pageInputs,
   selects as pageSelects,
-  citiesString,
 } from "./elements";
-import { addToRefsArray } from "../../../shared";
 import { actionTypes } from "../../../actions/authAction";
 import { useDispatch, useSelector } from "react-redux";
 
 function PageOne({ changePage, show }) {
-  const cities = citiesString.split(",");
   const history = useHistory();
   const { page1: inputs } = useSelector(
     (state) => state.authReducer.signInInputs
@@ -49,47 +46,19 @@ function PageOne({ changePage, show }) {
       <div className="logo_header">
         <Logo></Logo>
       </div>
-      {pageInputs.page1.map((input, i) => {
-        return (
-          <div key={i} className="form_input_wrapper">
-            <Input
-              inputType={input.type}
-              label={input.label}
-              name={input.name}
-              updateInput={onInputChange}
-              addToRefsArray={(el) => addToRefsArray(el, refs)}
-              validations={input.validations}
-            ></Input>
-          </div>
-        );
-      })}
-      {pageSelects.page1.map((input) => {
-        return (
-          <div key={input.name} className="form_select_wrapper show">
-            <Input
-              inputType={input.type}
-              label={input.label}
-              validations={input.validations}
-              name={input.name}
-              options={cities}
-              updateInput={onInputChange}
-              addToRefsArray={(el) => addToRefsArray(el, refs)}
-            />
-          </div>
-        );
-      })}
-      <div className="form_buttons_wrapper">
-        {pageButtons.page1.map((btn, i) => {
-          return (
-            <Button
-              key={i}
-              label={btn.label}
-              onClick={onButtonClick}
-              style={btn.style}
-            ></Button>
-          );
-        })}
-      </div>
+      <Inputs
+        inputs={pageInputs.page1}
+        onChange={onInputChange}
+        refs={refs}
+        className="form_input_wrapper"
+      />
+      <Inputs
+        inputs={pageSelects.page1}
+        onChange={onInputChange}
+        refs={refs}
+        className="form_select_wrapper show"
+      />
+      <Buttons className="form_buttons_wrapper" buttons={pageButtons.page1} onClick={onButtonClick} />
     </div>
   );
 }

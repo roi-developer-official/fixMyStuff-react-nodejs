@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Input, Button, Logo, FormFeedback, LoadingSpinner } from "../../Global_UI";
+import { Input, Button, Logo, FormFeedback, LoadingSpinner, Inputs, Buttons } from "../../Global_UI";
 import { login , actionTypes} from "../../actions/authAction";
 import "./login.css";
 import { useHistory, NavLink } from "react-router-dom";
@@ -55,33 +55,8 @@ function LoginPage() {
             not signed in yet? <NavLink to="/Sign-in">signup</NavLink> now!
           </p>
         </div>
-        {pageInputs.map((input) => {
-          return (
-            <div key={input.label} className="form_input_wrapper">
-              <Input
-                inputType={input.type}
-                label={input.label}
-                name={input.name}
-                updateInput={onInputChange}
-                validations={input.validations}
-                addToRefsArray={(el)=>addToRefsArray(el,refs)}
-              ></Input>
-            </div>
-          );
-        })}
-        <div className="form_buttons_wrapper">
-          {pageButtons.map((btn) => {
-            return (
-              <Button
-                key={btn.label}
-                label={btn.label}
-                style={btn.style}
-                type={"button"}
-                onClick={() => onButtonClick(btn.label)}
-              ></Button>
-            );
-          })}
-        </div>
+        <Inputs inputs={pageInputs} className="form_input_wrapper" onChange={onInputChange} refs={refs}/>
+        <Buttons buttons={pageButtons} onClick={onButtonClick} className="form_buttons_wrapper"/>
       </div>
     </div>
   );

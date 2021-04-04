@@ -1,5 +1,5 @@
 import axios from "axios";
-import { returnFormDataSignIn, returnFormDataLogin } from "./helpers";
+import { returnFormDataSignIn, returnFormDataLogin, extractErrorMessage } from "./helpers";
 
 export const actionTypes = {
   AUTH_ACTION_START: "AUTH_ACTION_START",
@@ -34,7 +34,7 @@ export const signIn = () => (dispatch,getState) =>{
   .catch((error) =>
     dispatch({
       type: actionTypes.AUTH_ACTION_FAIL,
-      payload: error.response.data.error.message,
+      payload: extractErrorMessage(error),
     })
   );
 }
@@ -60,7 +60,7 @@ export const login = () => (dispatch,getState) =>{
   .catch((error) =>
     dispatch({
       type: actionTypes.AUTH_ACTION_FAIL,
-      payload: error.response.data.error.message,
+      payload: extractErrorMessage(error),
     })
   );
 }

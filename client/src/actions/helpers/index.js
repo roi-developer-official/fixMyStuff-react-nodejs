@@ -26,3 +26,15 @@ export function returnFormDataLogin(inputs) {
     }
     return reqData;
 }
+
+/**
+ * @function extractErrorMessage - return error message from the server or default when server is off
+ * @param {Error} error - error from http request
+ * @returns {string} - error message 
+ */
+export function extractErrorMessage(error){
+    if (error.response && error.response.data && error.response.data.error){
+        return error.response.data.error.message;
+    }
+    else return "500 Connection Refuse"
+}
