@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./avatar.css";
 import AvatarMenu from "./menu/avatarMenu";
 
-export  function returnImageIfExists(userInfo) {
+export function ReturnImageIfExists({userInfo}) {
     if (userInfo.image !== null) {
       return (
         <div className="avatar_image">
@@ -12,9 +12,9 @@ export  function returnImageIfExists(userInfo) {
     } else {
       return <div className="avatar_image_alt"></div>;
     }
-  }
+}
 
-function Avatar({ user, pathname}) {
+function Avatar({ user}) {
   const [showMenu, setShowMenu] = useState(false);
   const [showAvatar, setShowAvatar] = useState(false);
 
@@ -23,6 +23,7 @@ function Avatar({ user, pathname}) {
     let timer = setTimeout(() => {
       setShowAvatar(true);
     }, 100);
+
     return () => {
         window.document.removeEventListener("click", hideAvatarMenu);
         clearTimeout(timer)
@@ -37,21 +38,22 @@ function Avatar({ user, pathname}) {
     setShowMenu(!showMenu);
   }
 
-  if (user && showAvatar && !(/[/]my-page/i.test(pathname)))
+  if (user && showAvatar)
     return (
       <div className={`avatar_wrapper`}>
         {showMenu && <AvatarMenu></AvatarMenu>}
         <div
-          onClick={(e) => toggleAvatarMenu(e)}
+          onClick={toggleAvatarMenu}
           className="avatar_menu_wrapper"
         >
         <p>&#9660;</p>
           <p className="avatar_name">{user.firstName}</p>
         </div>
-        {returnImageIfExists(user)}
+        <ReturnImageIfExists userInfo={user}/>
       </div>
     );
   else return null;
 }
+
 export default Avatar;
 

@@ -1,7 +1,7 @@
 import { actionTypes } from "../actions/authAction";
 
 const initialState = {
-  user: null,
+  user: {},
   expiry: null,
   loading: false,
   error: null,
