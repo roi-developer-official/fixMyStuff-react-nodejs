@@ -29,6 +29,9 @@ beforeEach(() => {
     },
     preventDefault: () => {},
     stopPropagation: () => {},
+    target: {
+      value: ""
+    }
   };
   wrapper = setup();
   warppingDiv = wrapper.find({ "data-test": "image-drop" });

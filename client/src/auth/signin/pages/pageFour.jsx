@@ -12,8 +12,7 @@ function PageFour({ changePage, show }) {
   const dispatch = useDispatch();
   const [isConfirmPassTouched, setIsConfirmPassTouched] = useState(false);
   const refs = useRef([]);
-
-  
+ 
   function onButtonClick(action) {
     if (action === "Back") {
       changePage(action);
@@ -55,7 +54,6 @@ function PageFour({ changePage, show }) {
       error: error,
       page: "page4",
     });
-
     if (name === "password") {
       updateComfirmPswdOnPswdChange(value);
     }

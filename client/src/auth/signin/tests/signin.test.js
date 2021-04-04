@@ -6,6 +6,7 @@ import SignIn from "../signin";
 import React from "react";
 import { FormFeedback } from "../../../Global_UI";
 
+
 const initialState = {
   loading: false,
   error: null,
@@ -25,6 +26,7 @@ const initialState = {
       { name: "email", value: "", error: "" },
       { name: "password", value: "", error: "" },
       { name: "confirmPassword", value: "", error: "" },
+      { name: "terms", value: "", error: "" },
     ],
   },
   currentStep: 1,

@@ -57,21 +57,7 @@ describe("input", () => {
     const input = wrapper.find({ name: "firstName" });
     input.simulate("change", event);
 
-    expect(mockState).toBeCalledWith({"value" : "a", "error": ""});
-    expect(mockUpdateInput).toBeCalledWith("firstname", "a", "");
-
-  });
-
-
-  test("update error onblur with wrong input and clears on change", () => {
-    const inputEl = wrapper.find({ name: "firstName" });
-   
-    inputEl.simulate("blur", event);
-    expect(mockState).toBeCalledWith({"error": "this field is required", "value": ""});
-    expect(mockUpdateInput).toBeCalledWith("firstname", "", "this field is required");
-
-    inputEl.simulate('change', event);
-    expect(mockState).toBeCalledWith({"error": "", "value": "a"});
+    expect(mockState).toBeCalledWith({"value" : "a"});
     expect(mockUpdateInput).toBeCalledWith("firstname", "a", "");
 
   });

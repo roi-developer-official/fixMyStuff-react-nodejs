@@ -42,11 +42,6 @@ test("should render without errors", () => {
   expect(wrapper).toHaveLength(1);
 });
 
-test("should dispatch reset on page load", () => {
-  const wrapper = setup();
-  expect(mockDispatch).toHaveBeenCalledWith({ type: actionTypes.AUTH_RESET_STATE });
-});
-
 test('number of inputs 2', ()=>{
   const wrapper = setup();
   const inputs = wrapper.find("input");
