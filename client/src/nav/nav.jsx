@@ -20,7 +20,7 @@ function Nav(){
     const history = useHistory();
     const formattedpath = useRef();
     const [pathname,setPathName] = useState('');
-    const { user } = useSelector(state=>state);
+    const { user } = useSelector(state=>state.authReducer);
 
 
     useEffect(()=>{

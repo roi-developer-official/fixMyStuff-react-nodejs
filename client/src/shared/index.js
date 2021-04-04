@@ -1,13 +1,12 @@
 /**
  * @function addToRefsArray - gets an array and adds html element to the current array
  * @param {HTMLElement} el - the element to be addded the the reference array.
- * @param {*} refs - reference array 
+ * @param {*} refs - reference array
  */
-export function addToRefsArray(el,refs){
-    if(el && !refs.current.includes(el))
-      refs.current.push(el);
-  }
-  
+export function addToRefsArray(el, refs) {
+  if (el && !refs.current.includes(el)) refs.current.push(el);
+}
+
 /**
  * @function validation
  * @param {object} validationParams - contains the validation properties to check
@@ -15,47 +14,52 @@ export function addToRefsArray(el,refs){
  * @param {string} compareString - in case of comparing values this is the compareWith value
  * @returns {string|null} - the error message or null
  */
-export const validation = (validationParams,input,compareString = null)=>{
-  for(let key of Object.keys(validationParams)){
-      if(key === 'required' && validationParams[key]){
-          if(input.trim().length === 0){
-              return 'this field is required'
-          };
+export const validation = (validationParams, input, compareString = null) => {
+  for (let key of Object.keys(validationParams)) {
+    if (key === "checked" && !input) {
+      return "this field is must be checked";
+    }
+    if (key === "required" && validationParams[key]) {
+      if (input.trim().length === 0) {
+        return "this field is required";
       }
-      if(key === 'minLength'){
-          if(input.length < validationParams[key]){
-              return `this field must be at least ${validationParams[key]} chracters`
-          }
+    }
+    if (key === "minLength") {
+      if (input.length < validationParams[key]) {
+        return `this field must be at least ${validationParams[key]} chracters`;
       }
-      if(key === 'password'){
-          if(!(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm.test(input))){
-              return 'password must contain upper and lower case character and numbers'
-          }
+    }
+    if (key === "password") {
+      if (
+        !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm.test(input)
+      ) {
+        return "password must contain upper and lower case character and numbers";
       }
-      if(key === 'alphaNumeric'){
-         if(!(/^[a-zA-Z0-9_]*$/.test(input))){
-              return 'this field cannot contain symbolic characters'
-         }
+    }
+    if (key === "alphaNumeric") {
+      if (!/^[a-zA-Z0-9_]*$/.test(input)) {
+        return "this field cannot contain symbolic characters";
       }
-      if(key === 'numeric'){
-          if(!(/^[0-9]*$/.test(input))){
-              return 'this field cannot contain characters'
-         }
+    }
+    if (key === "numeric") {
+      if (!/^[0-9]*$/.test(input)) {
+        return "this field cannot contain characters";
       }
-      if(key === 'compareTo'){
-          if(input !== compareString){
-              return "passwords do not match";
-          }
+    }
+    if (key === "compareTo") {
+      if (input !== compareString) {
+        return "passwords do not match";
       }
-      if(key === 'email'){
-          if(!(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(input.trim()))){
-              return 'please enter a valid email'
-          }
+    }
+    if (key === "email") {
+      if (
+        !/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+          input.trim()
+        )
+      ) {
+        return "please enter a valid email";
       }
+    }
   }
   return null;
-}
-
-
-
-
+};

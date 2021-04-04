@@ -35,8 +35,7 @@ export const inputs = {
   ],
 };
 
-export const textAreas = {
-  page1: [
+export const textAreas = 
     {
       label: "Description",
       name: "description",
@@ -45,8 +44,6 @@ export const textAreas = {
       validations: {
         required: true,
       },
-    },
-  ],
 };
 
 export const buttons = {

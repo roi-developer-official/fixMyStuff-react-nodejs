@@ -1,4 +1,3 @@
-import axios from 'axios';
 
 export const actionTypes = {
     POST_ACTION_START: "POST_ACTION_START",
@@ -9,7 +8,6 @@ export const actionTypes = {
     POST_INCREMENT_STEP : "POST_INCREMENT_STEP",
     POST_DECREMENT_STEP : "POST_DECREMENT_STEP",
   };
-
 
 /**
  * @function addPost Redux thunk action creator for addPost request

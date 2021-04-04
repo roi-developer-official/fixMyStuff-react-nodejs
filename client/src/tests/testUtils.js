@@ -1,5 +1,4 @@
 import { createStore, applyMiddleware } from "redux";
-import { middleWares } from "../configureStore";
 import thunk from "redux-thunk";
 import rootReducer from "../reducers";
 
@@ -20,11 +19,5 @@ export const findByAttr = (wrapper, val) => {
  * @function storeFactory
  * @returns {Store} - Redux store.
  */
-
 export const storeFactory = (initialState) =>
   createStore(rootReducer, initialState, applyMiddleware(thunk));
-
-export const user = {
-  name: "bob",
-  age: 22,
-};

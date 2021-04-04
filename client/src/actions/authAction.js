@@ -88,6 +88,7 @@ export const logOut = () => (dispatch) =>
         payload: error.response.data.error.message,
       })
     );
+  
 /**
  * @function AuthOnRefresh - called on page refresh
  * @returns {dispatch} - dispatch in case of user returned from the server

@@ -1,4 +1,4 @@
-import React, {useRef} from "react";
+import React, {useEffect, useRef} from "react";
 import { Input, Buttons } from "../../../Global_UI";
 import { buttons as pageButtons, inputs as pageInputs } from "./elements";
 import { addToRefsArray} from "../../../shared/";
@@ -31,6 +31,9 @@ function PageFour({ changePage, show }) {
     dispatch({ type: actionTypes.AUTH_SIGN_SET_INPUT, name: name, value: value, error: error, page: "page4" });
   }
 
+  function termsLabelHoverdAndClicked(e){
+    console.log("this is a fake site");
+  }
   return (
     <div className={`signup_wrapper_page ${show ? "show" : ""}`}>
       {pageInputs.page4.map((input, i) => {
@@ -44,6 +47,8 @@ function PageFour({ changePage, show }) {
               inputType={input.type}
               validations={input.validations}
               matchWith={inputs[1].value}
+              popover={input.popover}
+              popOverMessage={input.popoverMessage}
             ></Input>
           </div>
         );

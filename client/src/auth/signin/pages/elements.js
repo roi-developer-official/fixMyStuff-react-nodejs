@@ -67,6 +67,16 @@ export const inputs = {
                 required :true,
                 compareTo:true
             }
+        },
+        {
+            label: 'Terms and conditions', 
+            type: 'checkbox',
+            name:'terms',
+            validations:{
+                checked : true,
+            },
+            popover: true,
+            popoverMessage : "This is a fake website, Please do not enter any real personal information"
         }
     ]
 

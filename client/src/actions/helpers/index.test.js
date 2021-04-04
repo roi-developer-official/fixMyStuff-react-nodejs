@@ -1,7 +1,5 @@
 import { returnFormDataLogin, returnFormDataSignIn } from "./";
 
-
-
 describe("returnFormDataSignIn", () => {
   const signInInputs = {
     page1: [
@@ -42,4 +40,5 @@ describe("returnFormDataLogin", ()=>{
     expect(form.get("firstName")).toEqual(formData.get("firstName"));
     expect(form.get("lastName")).toEqual(formData.get("lastName"));
   })
-})
+});
+
