@@ -15,6 +15,7 @@ export function addToRefsArray(el, refs) {
  * @returns {string|null} - the error message or null
  */
 export const validation = (validationParams, input, compareString = null) => {
+  
   for (let key of Object.keys(validationParams)) {
     if (key === "checked" && !input) {
       return "this field is must be checked";

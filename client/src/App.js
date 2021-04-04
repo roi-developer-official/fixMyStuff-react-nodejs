@@ -9,8 +9,8 @@ import Signin from "./auth/signin/signin";
 import LoginPage from "./auth/login/login";
 import UserPage from "./userPage/userPage";
 import AddPostPage from "./userPage/addPostPage/addPostPage";
-import { useSelector } from "react-redux";
-import { requestCsrfToken } from "./actions/authAction";
+import { useDispatch, useSelector } from "react-redux";
+import { requestCsrfToken, authOnRefresh } from "./actions/authAction";
 
 const AuthRoute = ({ children, ...rest }) => {
   const { user } = useSelector((state) => state);
@@ -32,10 +32,13 @@ const UnAuthRoute = ({ children, ...rest }) => {
   );
 };
 
-function App(props) {
+function App() {
+  const dispatch = useDispatch();
+  
   useEffect(() => {
     requestCsrfToken();
-  }, []);
+    dispatch(authOnRefresh());
+  }, [dispatch]);
 
   return (
     <Fragment>

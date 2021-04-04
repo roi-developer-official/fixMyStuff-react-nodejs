@@ -1,5 +1,5 @@
 import "./signin.css";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { buttons as page2Buttons} from './pages/elements';
 import { useDispatch, useSelector } from "react-redux";
 import { FormFeedback, Steps, LoadingSpinner } from "../../Global_UI";
@@ -15,20 +15,25 @@ export default function SignIn() {
   const { loading, error, success, currentStep } = useSelector(
     (state) => state.authReducer
   );
+  const timerId = useRef();
   const dispatch = useDispatch();
   const history = useHistory();
 
-  useEffect(() => {
-    dispatch({ type: actionTypes.AUTH_RESET_STATE });
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (success) {
-      setTimeout(() => {
-        history.push("/");
-      }, 700);
+  useEffect(()=>{
+    dispatch({type: actionTypes.AUTH_RESET_STATE});
+  },[dispatch])
+ 
+  useEffect(()=>{
+    if(success){
+      timerId.current = setTimeout(()=>{
+        dispatch({type: actionTypes.AUTH_RESET_STATE});
+        history.push("/")
+      },700);
+    } else {
+      clearTimeout(timerId.current);
     }
-  }, [success, history]);
+  },[success, history,dispatch]);
+
 
   function moveBetweenPages(label, input) {
     switch (label) {

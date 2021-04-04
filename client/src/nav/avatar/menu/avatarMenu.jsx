@@ -7,7 +7,7 @@ export default function AvatarMenu(){
 
     const dispatch = useDispatch();
     function logout(){
-        dispatch(logOut())
+        dispatch(logOut());
     }
     
     return (

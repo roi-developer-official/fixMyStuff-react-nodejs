@@ -1,29 +1,28 @@
 import { useEffect, useRef } from "react";
-import { Input, Button, Logo, FormFeedback, LoadingSpinner, Inputs, Buttons } from "../../Global_UI";
+import { Logo, FormFeedback, LoadingSpinner, Inputs, Buttons } from "../../Global_UI";
 import { login , actionTypes} from "../../actions/authAction";
 import "./login.css";
 import { useHistory, NavLink } from "react-router-dom";
 import { buttons as pageButtons , inputs as pageInputs} from './elements';
 import { useDispatch, useSelector } from "react-redux";
-import { addToRefsArray} from '../../shared';
 
 function LoginPage() {
   const history = useHistory();
   const { error, loading, success, loginInputs: inputs } = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
+  let timerId  = useRef();
   const refs  =  useRef([]);
-
-  useEffect(() => {
-    dispatch({type: actionTypes.AUTH_RESET_STATE});
-  }, [dispatch]);
 
   useEffect(()=>{
     if(success){
-      setTimeout(()=>{
+      timerId.current = setTimeout(()=>{
+        dispatch({type: actionTypes.AUTH_RESET_STATE});
         history.push("/")
       },700);
+    } else {
+      clearTimeout(timerId.current);
     }
-  },[success, history]);
+  },[success, history,dispatch]);
 
   function onInputChange(name, value, error) {
     dispatch({ type: actionTypes.AUTH_LOGIN_SET_INPUT, name: name, value: value, error: error });

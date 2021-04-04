@@ -6,7 +6,7 @@ import PageOne from "./pages/pageOne";
 import { useDispatch, useSelector } from "react-redux";
 import { addPost, actionTypes } from "../../actions/postAction";
 import AddImagePage from "../../Global_UI/addImagePage";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 function AddPostPage() {
   const history = useHistory();
@@ -14,14 +14,18 @@ function AddPostPage() {
     (state) => state.postReducer
   );
   const dispatch = useDispatch();
+  const timerId = useRef();
 
-  useEffect(() => {
-    if (success) {
-      setTimeout(() => {
-        history.push("/My-page");
-      }, 700);
+  useEffect(()=>{
+    if(success){
+      timerId.current = setTimeout(()=>{
+        dispatch({type: actionTypes.POST_RESET_STATE});
+        history.push("/My-page")
+      },700);
+    } else {
+      clearTimeout(timerId.current);
     }
-  }, [success,history]);
+  },[success, history,dispatch]);
 
   function moveBetweenPages(label, input) {
     switch (label) {

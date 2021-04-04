@@ -9,7 +9,8 @@ export const actionTypes = {
   AUTH_SIGN_SET_INPUT : "AUTH_SIGN_SET_INPUT",
   AUTH_INCREMENT_STEP: "AUTH_INCREMENT_STEP",
   AUTH_DECREMENT_STEP: "AUTH_DECREMENT_STEP",
-  AUTH_LOGIN_SET_INPUT : "AUTH_LOGIN_SET_INPUT"
+  AUTH_LOGIN_SET_INPUT : "AUTH_LOGIN_SET_INPUT",
+  AUTH_LOGOUT : "AUTH_LOGOUT"
 };
 
 /**
@@ -64,7 +65,6 @@ export const login = () => (dispatch,getState) =>{
     })
   );
 }
-  
 
 /**
  * @function logOut 
@@ -72,28 +72,24 @@ export const login = () => (dispatch,getState) =>{
  */
 export const logOut = () => (dispatch) =>
   axios
-    .post("/api/auth/logout")
+    .get("/api/auth/logout")
     .then(() =>
       dispatch({
-        type: actionTypes.AUTH_ACTION_SUCCESS,
-        payload: {
-          user:null,
-          expiry: null
-        },
+        type: actionTypes.AUTH_LOGOUT
       })
     )
     .catch((error) =>
       dispatch({
         type: actionTypes.AUTH_ACTION_FAIL,
-        payload: error.response.data.error.message,
+        payload: extractErrorMessage(error),
       })
     );
   
 /**
- * @function AuthOnRefresh - called on page refresh
+ * @function authOnRefresh - called on page refresh
  * @returns {dispatch} - dispatch in case of user returned from the server
  */
-export const AuthOnRefresh = () => (dispatch) =>
+export const authOnRefresh = () => (dispatch) =>
   axios.get("/api/auth/refresh").then((res) => {
     if (res.data.user) {
       dispatch({

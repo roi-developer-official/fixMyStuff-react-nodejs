@@ -17,10 +17,10 @@ export function Input({
   addToRefsArray,
   matchWith,
   popover,
+  error,
   popOverMessage,
 }) {
   const [state, setState] = React.useState({
-    error: "",
     value: "",
   });
   let timerId;
@@ -45,13 +45,11 @@ export function Input({
     const name = input.name;
     setState({
       value: value,
-      error: "",
     });
     updateInput(name, value, "");
   };
 
   const togglePopOver = (e) => {
-      console.log(e.type);
     if (e.type === "mouseleave") {
       clearTimeout(timerId);
       setShowPopover(false);
@@ -69,6 +67,7 @@ export function Input({
           style={{ cursor: popover ? "pointer" : "" }}
           onMouseOver={popover && togglePopOver}
           onMouseLeave={popover && togglePopOver}
+          onClick={popover && togglePopOver}
           htmlFor={name}
         >
           {label}
@@ -89,7 +88,7 @@ export function Input({
           style={{ ...style }}
           value={value ? value : state.value}
         />
-        {state.error && <span className="validation_text">{state.error}</span>}
+        {(error || state.error) && <span className="validation_text">{error || state.error}</span>}
         {popover && showPopover && <PopOver message={popOverMessage} />}
       </Fragment>
     );

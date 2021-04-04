@@ -1,24 +1,25 @@
-import React, {useEffect, useRef} from "react";
+import React, { useRef ,useState} from "react";
 import { Input, Buttons } from "../../../Global_UI";
 import { buttons as pageButtons, inputs as pageInputs } from "./elements";
-import { addToRefsArray} from "../../../shared/";
-import { actionTypes } from '../../../actions/authAction';
-import { useDispatch, useSelector} from 'react-redux';
+import { addToRefsArray, validation } from "../../../shared/";
+import { actionTypes } from "../../../actions/authAction";
+import { useDispatch, useSelector } from "react-redux";
 
 function PageFour({ changePage, show }) {
-  const { page4 : inputs } = useSelector((state) => state.authReducer.signInInputs);
+  const { page4: inputs } = useSelector(
+    (state) => state.authReducer.signInInputs
+  );
   const dispatch = useDispatch();
+  const [isConfirmPassTouched, setIsConfirmPassTouched] = useState(false);
   const refs = useRef([]);
 
+  
   function onButtonClick(action) {
     if (action === "Back") {
       changePage(action);
     } else if (action === "Done") {
       for (let i = 0; i < inputs.length; i++) {
-        if (
-          inputs[i].error.length > 0 ||
-          inputs[i].value.length === 0
-        ) {
+        if (inputs[i].error.length > 0 || inputs[i].value.length === 0) {
           refs.current[i].focus();
           return;
         }
@@ -27,13 +28,43 @@ function PageFour({ changePage, show }) {
     }
   }
 
-  function onInputChange(name, value, error) {
-    dispatch({ type: actionTypes.AUTH_SIGN_SET_INPUT, name: name, value: value, error: error, page: "page4" });
+  function updateComfirmPswdOnPswdChange(value) {
+    if (!isConfirmPassTouched) return;
+    const conPswd = inputs.find((input) => input.name === "confirmPassword");
+    let errorMsg = validation(
+      {
+        compareTo: true,
+      },
+      conPswd.value,
+      value
+    );
+    dispatch({
+      type: actionTypes.AUTH_SIGN_SET_INPUT,
+      name: conPswd.name,
+      value: conPswd.value,
+      error: errorMsg,
+      page: "page4",
+    });
   }
 
-  function termsLabelHoverdAndClicked(e){
-    console.log("this is a fake site");
+  function onInputChange(name, value, error) {
+    dispatch({
+      type: actionTypes.AUTH_SIGN_SET_INPUT,
+      name: name,
+      value: value,
+      error: error,
+      page: "page4",
+    });
+
+    if (name === "password") {
+      updateComfirmPswdOnPswdChange(value);
+    }
+    else if (name === "confirmPassword" && !isConfirmPassTouched) {
+      setIsConfirmPassTouched(true);
+    } 
+
   }
+
   return (
     <div className={`signup_wrapper_page ${show ? "show" : ""}`}>
       {pageInputs.page4.map((input, i) => {
@@ -49,11 +80,16 @@ function PageFour({ changePage, show }) {
               matchWith={inputs[1].value}
               popover={input.popover}
               popOverMessage={input.popoverMessage}
+              error={inputs[i].error}
             ></Input>
           </div>
         );
       })}
-      <Buttons buttons={pageButtons.page4} className="form_buttons_wrapper" onClick={onButtonClick}/>
+      <Buttons
+        buttons={pageButtons.page4}
+        className="form_buttons_wrapper"
+        onClick={onButtonClick}
+      />
     </div>
   );
 }

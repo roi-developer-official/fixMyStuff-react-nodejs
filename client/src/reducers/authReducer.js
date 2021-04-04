@@ -56,11 +56,24 @@ const authReducer = (state = initialState, action) => {
         ...state,
         loginInputs: updatedInput,
       };
+    case actionTypes.AUTH_LOGOUT:
+      return initialState;
     case actionTypes.AUTH_ACTION_START:
       return {
         ...state,
         loading: true,
         error: null,
+        success:false
+      };
+    case actionTypes.AUTH_RESET_STATE:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        success:false,
+        currentStep:1,
+        signInInputs: initialState.signInInputs,
+        loginInputs: initialState.loginInputs
       };
     case actionTypes.AUTH_ACTION_FAIL:
       return {
@@ -69,9 +82,6 @@ const authReducer = (state = initialState, action) => {
         error: action.payload,
         success: false,
       };
-    case actionTypes.AUTH_RESET_STATE: {
-      return initialState;
-    }
     case actionTypes.AUTH_ACTION_SUCCESS:
       return {
         ...state,
