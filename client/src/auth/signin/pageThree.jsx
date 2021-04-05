@@ -1,12 +1,12 @@
 import React from "react";
-import { Input, Buttons, FormPage } from "../../../Global_UI";
+import { Input, Buttons, FormPage } from "../../Global_UI";
 import {
   inputs as pageInputs,
   buttons as pageButtons,
   selects as pageSelects,
 } from "./elements";
-import { addToRefsArray } from "../../../shared";
-import { actionTypes } from "../../../actions/authAction";
+import { addToRefsArray } from "../../shared";
+import { actionTypes } from "../../actions/authAction";
 import { useDispatch, useSelector } from "react-redux";
 
 function PageThree({ changePage, show }) {

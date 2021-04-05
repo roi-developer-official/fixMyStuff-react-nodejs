@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import Signin from "./auth/signin/signin";
 import LoginPage from "./auth/login/login";
 import UserPage from "./userPage/userPage";
-import AddPostPage from "./userPage/addPostPage/addPostPage";
+import AddPostPage from "./userPage/addPostPage";
 import { useDispatch, useSelector } from "react-redux";
 import { requestCsrfToken, authOnRefresh } from "./actions/authAction";
 

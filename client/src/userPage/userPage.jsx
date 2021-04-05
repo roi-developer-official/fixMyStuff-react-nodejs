@@ -1,7 +1,7 @@
-import UserDetails from "./userDetails/userDetails";
+import UserDetails from "./userDetails";
 import './userPage.css'
-import UserPosts from "./userPosts/userPosts";
-import UserPostsHeader from './header/userPostsHeader';
+import UserPosts from "./userPosts";
+import UserPostsHeader from './userPostsHeader';
 function UserPage(){
 
     return (

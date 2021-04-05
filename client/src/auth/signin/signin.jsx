@@ -1,14 +1,13 @@
 
 import React, { useEffect, useRef } from "react";
-import { buttons as page2Buttons} from './pages/elements';
+import { buttons as page2Buttons} from './elements';
 import { useDispatch, useSelector } from "react-redux";
-import { FormFeedback, Steps, LoadingSpinner } from "../../Global_UI";
-import PageOne from "./pages/pageOne";
-import PageThree from "./pages/pageThree";
-import PageFour from "./pages/pageFour";
+import { FormFeedback, Steps, LoadingSpinner, AddImagePage } from "../../Global_UI";
+import PageOne from "./pageOne";
+import PageThree from "./pageThree";
+import PageFour from "./pageFour";
 import { signIn, actionTypes } from "../../actions/authAction";
 import { useHistory } from "react-router";
-import AddImagePage from "../../Global_UI/addImagePage";
 const steps = [1, 2, 3, 4];
 
 export default function SignIn() {

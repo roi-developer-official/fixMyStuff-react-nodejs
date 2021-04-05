@@ -1,8 +1,8 @@
 import React, { useRef ,useState} from "react";
-import { Input, Buttons, FormPage } from "../../../Global_UI";
+import { Input, Buttons, FormPage } from "../../Global_UI";
 import { buttons as pageButtons, inputs as pageInputs } from "./elements";
-import { addToRefsArray, validation } from "../../../shared/";
-import { actionTypes } from "../../../actions/authAction";
+import { addToRefsArray, validation } from "../../shared/";
+import { actionTypes } from "../../actions/authAction";
 import { useDispatch, useSelector } from "react-redux";
 
 function PageFour({ changePage, show }) {

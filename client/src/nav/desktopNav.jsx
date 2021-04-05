@@ -1,9 +1,9 @@
-import { Logo } from "../../Global_UI";
-import RenderAuthNavItem from "../util/renderAuthNavItem";
+import { Logo } from "../Global_UI";
+import RenderAuthNavItem from "./renderAuthNavItem";
 import { NavLink } from "react-router-dom";
-import Avatar from "../avatar/avatar";
-import LoginButton from "../loginbutton/loginButton";
-import NavSearch from "./nav-search/navSearch";
+import Avatar from "./avatar";
+import LoginButton from "./loginButton";
+import NavSearch from "./navSearch";
 
 export function NavItems({ items, isAuth }) {
 

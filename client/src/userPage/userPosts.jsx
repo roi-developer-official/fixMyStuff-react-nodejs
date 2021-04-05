@@ -1,7 +1,7 @@
-import PostsHead from "./hedear/PostsHead";
-import Post from "./post/post";
+import PostsHead from "./PostsHead";
+import Post from "./post";
 import "./userPosts.css";
-import { Button } from "../../Global_UI";
+import { Button } from "../Global_UI";
 
 export default function UserPosts() {
   return (

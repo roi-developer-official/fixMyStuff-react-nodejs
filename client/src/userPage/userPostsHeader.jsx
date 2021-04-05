@@ -1,4 +1,4 @@
-import {Button,Input} from '../../Global_UI';
+import {Button,Input} from '../Global_UI';
 
 import './userPostsHeader.css';
 import { useHistory } from 'react-router';

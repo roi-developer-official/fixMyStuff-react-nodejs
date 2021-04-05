@@ -1,11 +1,10 @@
-import { Steps, FormFeedback, LoadingSpinner } from "../../Global_UI";
+import { Steps, FormFeedback, LoadingSpinner, AddImagePage } from "../Global_UI";
 import { buttons as page2Buttons } from "./elements";
 import "./addPostPage.css";
 import { useHistory } from "react-router";
-import PageOne from "./pages/pageOne";
+import PageOne from "./pageOne";
 import { useDispatch, useSelector } from "react-redux";
-import { addPost, actionTypes } from "../../actions/postAction";
-import AddImagePage from "../../Global_UI/addImagePage";
+import { addPost, actionTypes } from "../actions/postAction";
 import { useEffect, useRef } from "react";
 
 function AddPostPage() {

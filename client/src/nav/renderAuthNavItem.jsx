@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { NavLink, useHistory } from "react-router-dom";
-import AuthDialog from "../authdialog/authDialog";
+import AuthDialog from "./authDialog";
 
 function UnAuthNavLink({ path }) {
   const [showDialog, setShowDialog] = useState(false);

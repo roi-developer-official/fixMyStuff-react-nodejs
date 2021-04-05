@@ -1,4 +1,4 @@
-import searchIcon from '../../../assets/search.png';
+import searchIcon from '../assets/search.png';
 export default function NavSearch(){
 
     return (

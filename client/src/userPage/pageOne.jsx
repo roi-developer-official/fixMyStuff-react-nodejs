@@ -2,10 +2,10 @@ import {
   buttons as pageButtons,
   inputs as pageInputs,
   textAreas as ta,
-} from "../elements";
-import { actionTypes } from "../../../actions/postAction";
-import { addToRefsArray } from "../../../shared";
-import { Textarea, Logo, Inputs, Buttons } from "../../../Global_UI";
+} from "./elements";
+import { actionTypes } from "../actions/postAction";
+import { addToRefsArray } from "../shared";
+import { Textarea, Logo, Inputs, Buttons } from "../Global_UI";
 import { useHistory } from "react-router-dom";
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";

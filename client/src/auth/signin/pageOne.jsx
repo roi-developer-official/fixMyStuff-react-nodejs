@@ -1,4 +1,4 @@
-import { Logo, Buttons, Inputs, FormPage } from "../../../Global_UI";
+import { Logo, Buttons, Inputs, FormPage } from "../../Global_UI";
 import React, { useRef } from "react";
 import { useHistory } from "react-router-dom";
 import {
@@ -6,7 +6,7 @@ import {
   inputs as pageInputs,
   selects as pageSelects,
 } from "./elements";
-import { actionTypes } from "../../../actions/authAction";
+import { actionTypes } from "../../actions/authAction";
 import { useDispatch, useSelector } from "react-redux";
 
 function PageOne({ changePage, show }) {

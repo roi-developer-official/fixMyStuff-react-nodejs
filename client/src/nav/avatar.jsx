@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./avatar.css";
-import AvatarMenu from "./menu/avatarMenu";
+import AvatarMenu from "./avatarMenu";
 
 export function ReturnImageIfExists({userInfo}) {
     if (userInfo.image !== null) {

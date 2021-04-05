@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./nav.css";
 import { useHistory, withRouter } from "react-router-dom";
-import MobileNav from "./mobile/mobileNav";
-import DesktopNav from "./desktop/desktopNav";
+import MobileNav from "./mobileNav";
+import DesktopNav from "./desktopNav";
 import { useAuth } from "../hooks/useAuth";
 
 export function NavPathName() {

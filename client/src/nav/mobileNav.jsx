@@ -1,6 +1,6 @@
 import {NavLink} from 'react-router-dom';
-import LoginButton from '../loginbutton/loginButton';
-import RenderAuthNavItem from '../util/renderAuthNavItem';
+import LoginButton from './loginButton';
+import RenderAuthNavItem from './renderAuthNavItem';
 
 function MobileNav({navItems, isAuth}){
     return (

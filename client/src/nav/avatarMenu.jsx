@@ -1,7 +1,7 @@
-import userIcon from '../../../assets/user.svg';
-import logoutIcon from '../../../assets/logout.svg';
+import userIcon from '../assets/user.svg';
+import logoutIcon from '../assets/logout.svg';
 import { useDispatch } from 'react-redux';
-import {logOut} from '../../../actions/authAction';
+import {logOut} from '../actions/authAction';
 
 export default function AvatarMenu(){
 

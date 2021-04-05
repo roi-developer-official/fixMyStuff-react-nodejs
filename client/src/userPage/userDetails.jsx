@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { Button } from "../../Global_UI/";
+import { Button } from "../Global_UI/";
 import "./userDetails.css";
 
 function UserDetails() {

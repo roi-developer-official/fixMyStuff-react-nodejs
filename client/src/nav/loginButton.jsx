@@ -1,5 +1,5 @@
 import { useHistory } from "react-router";
-import { Button } from "../../Global_UI";
+import { Button } from "../Global_UI";
 
 export default function LoginButton({ isAuth, className }) {
   const history = useHistory();
