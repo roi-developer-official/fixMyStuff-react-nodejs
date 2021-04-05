@@ -64,3 +64,12 @@ export const validation = (validationParams, input, compareString = null) => {
   }
   return null;
 };
+
+/**
+ * @function isUserAuthenticated 
+ * @param {object} user - the current user in the redux store
+ * @returns {boolean} - true if auth and false if not
+ */
+export function isUserAuthenticated(user){
+  return Object.keys(user).length > 0;
+}

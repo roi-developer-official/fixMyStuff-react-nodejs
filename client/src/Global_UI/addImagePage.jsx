@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button, AddImage } from "./";
+import { FormPage } from "./formPage";
 
 export default function AddImagePage({ show, changePage , buttons}) {
   let [input, setInput] = useState({ name: "image", value: null });
@@ -9,7 +10,7 @@ export default function AddImagePage({ show, changePage , buttons}) {
   }
 
   return (
-    <div className={`add_image_page${show ? " show" : ""}`}>
+    <FormPage show={show}>
       <AddImage setInputValue={setImageValue}></AddImage>
       <div className="form_buttons_wrapper">
         {buttons.map((btn, i) => (
@@ -21,6 +22,6 @@ export default function AddImagePage({ show, changePage , buttons}) {
           />
         ))}
       </div>
-    </div>
+    </FormPage>
   );
 }

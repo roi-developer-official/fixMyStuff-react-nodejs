@@ -1,13 +1,15 @@
 import { useHistory } from "react-router";
 import { Button } from "../../Global_UI";
 
-export default function LoginButton({ isAuth }) {
+export default function LoginButton({ isAuth, className }) {
   const history = useHistory();
-  if (isAuth) {
+
+
+  if (!isAuth) {
     return (
-      <li>
+      <li style={{listStyle:"none"}}>
         <Button
-          className="mobile_login_btn"
+          className={`${className}_login_button`}
           onClick={() => history.push("/Log-in")}
           label="Login"
         ></Button>

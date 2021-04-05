@@ -1,5 +1,5 @@
 import React, { useRef ,useState} from "react";
-import { Input, Buttons } from "../../../Global_UI";
+import { Input, Buttons, FormPage } from "../../../Global_UI";
 import { buttons as pageButtons, inputs as pageInputs } from "./elements";
 import { addToRefsArray, validation } from "../../../shared/";
 import { actionTypes } from "../../../actions/authAction";
@@ -64,7 +64,7 @@ function PageFour({ changePage, show }) {
   }
 
   return (
-    <div className={`signup_wrapper_page ${show ? "show" : ""}`}>
+    <FormPage show={show}>
       {pageInputs.page4.map((input, i) => {
         return (
           <div key={i} className="form_input_wrapper">
@@ -88,7 +88,7 @@ function PageFour({ changePage, show }) {
         className="form_buttons_wrapper"
         onClick={onButtonClick}
       />
-    </div>
+    </FormPage>
   );
 }
 export default PageFour;

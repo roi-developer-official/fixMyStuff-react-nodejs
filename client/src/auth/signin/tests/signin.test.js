@@ -44,7 +44,7 @@ const setup = (state = {}, props = {}) => {
 describe("signin page", () => {
   test("renders without errors", () => {
     const wrapper = setup(initialState);
-    const signUpComponent = findByAttr(wrapper, "component-signin");
+    const signUpComponent = wrapper.find({className : "pages_container"});
     expect(signUpComponent).toHaveLength(1);
   });
 

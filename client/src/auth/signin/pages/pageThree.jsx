@@ -1,5 +1,5 @@
 import React from "react";
-import { Input, Buttons } from "../../../Global_UI";
+import { Input, Buttons, FormPage } from "../../../Global_UI";
 import {
   inputs as pageInputs,
   buttons as pageButtons,
@@ -41,7 +41,7 @@ function PageThree({ changePage, show }) {
   }
 
   return (
-    <div className={`signup_wrapper_page${show ? " show" : ""}`}>
+    <FormPage show={show}>
       <p style={{ marginTop: "10px", fontSize: "19px" }}>
         Are you looking for Jobs?
       </p>
@@ -84,7 +84,8 @@ function PageThree({ changePage, show }) {
         );
       })}
         <Buttons buttons={pageButtons.page3} onClick={onButtonClick} className="form_buttons_wrapper"/>
-    </div>
+    </FormPage>
+
   );
 }
 export default PageThree;

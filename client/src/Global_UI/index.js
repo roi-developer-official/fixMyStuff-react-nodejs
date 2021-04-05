@@ -9,3 +9,4 @@ export { LoadingSpinner } from "./loadingSpinner";
 export { Buttons } from "./buttons";
 export { Inputs } from "./inputs";
 export {PopOver} from './popover'
+export {FormPage} from './formPage';

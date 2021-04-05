@@ -1,4 +1,4 @@
-import { Logo, Buttons, Inputs } from "../../../Global_UI";
+import { Logo, Buttons, Inputs, FormPage } from "../../../Global_UI";
 import React, { useRef } from "react";
 import { useHistory } from "react-router-dom";
 import {
@@ -42,7 +42,7 @@ function PageOne({ changePage, show }) {
   }
 
   return (
-    <div className={`signup_wrapper_page${show ? " show" : ""}`}>
+    <FormPage show={show}>
       <div className="logo_header">
         <Logo></Logo>
       </div>
@@ -58,8 +58,12 @@ function PageOne({ changePage, show }) {
         refs={refs}
         className="form_select_wrapper show"
       />
-      <Buttons className="form_buttons_wrapper" buttons={pageButtons.page1} onClick={onButtonClick} />
-    </div>
+      <Buttons
+        className="form_buttons_wrapper"
+        buttons={pageButtons.page1}
+        onClick={onButtonClick}
+      />
+    </FormPage>
   );
 }
 export default PageOne;

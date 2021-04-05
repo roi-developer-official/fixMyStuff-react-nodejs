@@ -6,6 +6,7 @@ import LoginButton from "../loginbutton/loginButton";
 import NavSearch from "./nav-search/navSearch";
 
 export function NavItems({ items, isAuth, pathname }) {
+
   return (
     <ul className="nav_items">
       {items.map((i, idx) => {
@@ -23,12 +24,13 @@ export function NavItems({ items, isAuth, pathname }) {
             </li>
           );
       })}
-      <LoginButton isAuth={isAuth} />
+      <LoginButton isAuth={isAuth} className="desktop" />
     </ul>
   );
 }
 
 export default function DesktopNav({ navItems, userInfo, pathname, isAuth }) {
+
   return (
     <nav className="nav">
       <Logo></Logo>

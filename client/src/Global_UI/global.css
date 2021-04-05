@@ -149,7 +149,7 @@
 
 /* addImagePage */
 
-.add_image_page
+.add_image_page, .form_page
 {
     width: 100%;
     height:fit-content;
@@ -166,7 +166,7 @@
     flex-direction: column;
 }
 
-.add_image_page.show{
+.add_image_page.show, .form_page.show{
     opacity: 1;
     z-index: 1;
 }

@@ -18,7 +18,7 @@ beforeEach(() => {
 });
 test("should render without errors", () => {
   const wrapper = setup({ buttons: buttons });
-  const wrappingDiv = wrapper.find({ className: "add_image_page" });
+  const wrappingDiv = wrapper.find({ className: "form_page" });
   expect(wrappingDiv).toHaveLength(1);
 });
 

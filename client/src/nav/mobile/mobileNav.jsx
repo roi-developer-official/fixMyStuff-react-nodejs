@@ -17,7 +17,7 @@ function MobileNav({navItems, isAuth}){
                 })}
             </ul>
      </nav>
-    <LoginButton isAuth={isAuth}/>
+        <LoginButton isAuth={isAuth} className="mobile"/>
      </>
     )
 }

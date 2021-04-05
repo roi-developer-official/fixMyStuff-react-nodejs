@@ -71,7 +71,7 @@ test("action fail return currect value", () => {
     loading: false,
     error: "some error",
     expiry: null,
-    user: null,
+    user: {},
     success: false,
     signInInputs: initialState.signInInputs,
     loginInputs : initialState.loginInputs,

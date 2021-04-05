@@ -1,4 +1,4 @@
-import "./signin.css";
+
 import React, { useEffect, useRef } from "react";
 import { buttons as page2Buttons} from './pages/elements';
 import { useDispatch, useSelector } from "react-redux";
@@ -55,7 +55,7 @@ export default function SignIn() {
   }
 
   return (
-    <div className="signup_page_container" data-test="component-signin">
+      <>
       <LoadingSpinner show={loading} />
       <Steps steps={steps} currnetStep={currentStep}></Steps>
       <FormFeedback
@@ -75,6 +75,6 @@ export default function SignIn() {
           changePage={moveBetweenPages}
         ></PageFour>
       </div>
-    </div>
+      </>
   );
 }

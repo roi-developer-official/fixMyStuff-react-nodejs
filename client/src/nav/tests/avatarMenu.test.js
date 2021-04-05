@@ -18,5 +18,3 @@ test("should dipatch on logout", () => {
   logoutButton.simulate("click");
   expect(mockDispatch).toBeCalled();
 });
-
-

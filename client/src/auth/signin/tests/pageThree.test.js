@@ -73,13 +73,13 @@ describe("page Three", () => {
 
   test("should not be visible when show is false", () => {
     const wrapper = setup({ show: false });
-    const wrappingDiv = wrapper.find({ className: "signup_wrapper_page" });
+    const wrappingDiv = wrapper.find({ className: "form_page" });
     expect(wrappingDiv).toHaveLength(1);
   });
 
   test("should be visible when show is true", () => {
     const wrapper = setup({ show: true });
-    const wrappingDiv = wrapper.find({ className: "signup_wrapper_page show" });
+    const wrappingDiv = wrapper.find({ className: "form_page show" });
     expect(wrappingDiv).toHaveLength(1);
   });
 

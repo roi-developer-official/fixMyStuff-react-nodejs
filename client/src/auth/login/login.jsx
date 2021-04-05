@@ -44,7 +44,7 @@ function LoginPage() {
     }
 
   return (
-    <div className="login_page_container">
+    <div className="pages_container">
       <FormFeedback error={error} message={success ? "Login Successfuly!" : error} success={success}/>
       <div className="login_wrapper_page">
         <div className="login_header">
@@ -58,6 +58,7 @@ function LoginPage() {
         <Buttons buttons={pageButtons} onClick={onButtonClick} className="form_buttons_wrapper"/>
       </div>
     </div>
+
   );
 }
       

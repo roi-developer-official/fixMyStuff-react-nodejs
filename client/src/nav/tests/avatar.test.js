@@ -1,15 +1,11 @@
 import { screen, render } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { Router } from "react-router";
-import { createMemoryHistory } from "history";
 import Avatar from "../avatar/avatar";
-import { storeFactory } from "../../tests/testUtils";
-import { Provider } from "react-redux";
 const userInfo = {
   firstName: "John",
   lastName: "Doe",
   image: null,
 };
+
 test("avatar menu not visible by default", () => {
   render(<Avatar user={false} />);
   const firstName = screen.queryByText("John");
@@ -32,21 +28,4 @@ test("avatar rendered with image tag", async () => {
 });
 
 
-test.skip("avatar menu redirect to login when user logged out", async () => {
-  const history = createMemoryHistory();
-  const store = storeFactory();
-  render(
-    <Provider store={store}>
-      <Router history={history}>
-        <Avatar user={userInfo} pathname={"/Find-jobs"} />
-      </Router>
-    </Provider>
-  );
-
-  const firstName = await screen.findByText("John");
-  userEvent.click(firstName);
-  const logoutButton = screen.getByText("Logout");
-  userEvent.click(logoutButton);
-  expect(history.location.pathname).toBe("/Log-in");
-});
 

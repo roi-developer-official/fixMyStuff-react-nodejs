@@ -16,7 +16,7 @@ describe("Desktop nav", () => {
     const history = createMemoryHistory();
     render(
       <Router history={history}>
-        <DesktopNav navItems={[]} hideAndShowAuthDialog={jest.fn()} />
+        <DesktopNav userInfo={{}} navItems={[]} hideAndShowAuthDialog={jest.fn()} />
       </Router>
     );
     const logo = screen.getByRole("heading", {
@@ -37,6 +37,8 @@ describe("Desktop nav", () => {
     render(
         <Router history={history}>
           <DesktopNav
+            pathname="/"
+            userInfo={{}}
             isAuth={false}
             navItems={navItems}
             hideAndShowAuthDialog={jest.fn()}
@@ -55,7 +57,9 @@ describe("Desktop nav", () => {
     render(
         <Router history={history}>
           <DesktopNav
-            userInfo={{name : "bob"}}
+            isAuth={true}
+            pathname="/"
+            userInfo={{}}
             navItems={navItems}
             hideAndShowAuthDialog={jest.fn()}
           />
