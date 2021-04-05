@@ -3,7 +3,6 @@ import LoginButton from '../loginbutton/loginButton';
 import RenderAuthNavItem from '../util/renderAuthNavItem';
 
 function MobileNav({navItems, isAuth}){
-    
     return (
         <>
         <nav className='mobile_nav'>

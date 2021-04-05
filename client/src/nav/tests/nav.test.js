@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 
 describe("Nav", () => {
   const history = createMemoryHistory();
+  
   test("formatted path replcale all space with -", () => {
     let string = "/-";
     string = formatPath(string);

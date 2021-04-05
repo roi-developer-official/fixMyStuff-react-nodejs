@@ -1,12 +1,20 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./nav.css";
-import { isUserAuthenticated} from '../shared/';
 import { useHistory, withRouter } from "react-router-dom";
 import MobileNav from "./mobile/mobileNav";
 import DesktopNav from "./desktop/desktopNav";
-import { useSelector } from "react-redux";
+import { useAuth } from "../hooks/useAuth";
 
-export function NavPathName({ path }) {
+export function NavPathName() {
+  const history = useHistory();
+  const formattedpath = useRef();
+  const [path, setPath] = useState("");
+
+  useEffect(() => {
+    formattedpath.current = formatPath(history.location.pathname);
+    setPath(formattedpath.current);
+  }, [history.location.pathname]);
+
   const element = /Find jobs/i.test(path) ? (
     <h2 className="path">{path}</h2>
   ) : null;
@@ -20,35 +28,18 @@ const navItems = [
   { name: "Contact us" },
 ];
 
-export function formatPath(path) {
-  return path.substring(1).replace("-", " ");
-}
-
 function Nav() {
-  const history = useHistory();
-  const formattedpath = useRef();
-  const [pathname, setPathName] = useState("");
-  const { user } = useSelector((state) => state.authReducer);
-  const isAuth = isUserAuthenticated(user);
-
-
-  useEffect(() => {
-    formattedpath.current = formatPath(history.location.pathname);
-    setPathName(formattedpath.current);
-  }, [history.location.pathname]);
-
+  const [user, isAuth] = useAuth();
   return (
     <React.Fragment>
-      <NavPathName path={pathname} />
-      <DesktopNav
-        userInfo={user}
-        isAuth={isAuth}
-        navItems={navItems}
-        pathname={pathname}
-      ></DesktopNav>
-      <MobileNav navItems={navItems} isAuth={isAuth}></MobileNav>
+      <NavPathName />
+      <DesktopNav user={user} isAuth={isAuth} navItems={navItems}></DesktopNav>
+      <MobileNav isAuth={isAuth} navItems={navItems}></MobileNav>
     </React.Fragment>
   );
 }
-
 export default withRouter(Nav);
+
+export function formatPath(path) {
+  return path.substring(1).replace("-", " ");
+}

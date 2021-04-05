@@ -28,6 +28,7 @@ function UnAuthNavLink({ path }) {
 }
 
 export default function RenderAuthNavItem({ path, isAuth }) {
+
   if (isAuth) {
     return (
       <li key={path}>

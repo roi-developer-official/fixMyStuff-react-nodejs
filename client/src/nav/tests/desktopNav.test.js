@@ -4,28 +4,24 @@ import { Router } from "react-router";
 import userEvent from "@testing-library/user-event";
 import { createMemoryHistory } from "history";
 
-const navItems = [
-  { name: "Find jobs" },
-  { name: "My page" },
-  { name: "FAQ" },
-  { name: "Contact us" },
-];
+let history = createMemoryHistory();
+const setup = (navItems = [], user = {}, isAuth = false) => {
+  return render(
+    <Router history={history}>
+      <DesktopNav navItems={navItems} isAuth={isAuth} user={user} />
+    </Router>
+  );
+};
 
 describe("Desktop nav", () => {
   test("displays a logo, input search and login button", async () => {
-    const history = createMemoryHistory();
-    render(
-      <Router history={history}>
-        <DesktopNav userInfo={{}} navItems={[]} hideAndShowAuthDialog={jest.fn()} />
-      </Router>
-    );
+    setup();
     const logo = screen.getByRole("heading", {
       name: /Fix My Stuff/,
     });
     const loginBottun = screen.getByRole("button", {
       name: "Login",
     });
-
     const inputSearch = screen.getByRole("textbox");
     expect(logo).toBeInTheDocument();
     expect(inputSearch).toBeInTheDocument();
@@ -33,18 +29,7 @@ describe("Desktop nav", () => {
   });
 
   test("redirect to /login when login btn is pressed", () => {
-    const history = createMemoryHistory();
-    render(
-        <Router history={history}>
-          <DesktopNav
-            pathname="/"
-            userInfo={{}}
-            isAuth={false}
-            navItems={navItems}
-            hideAndShowAuthDialog={jest.fn()}
-          />
-        </Router>
-    );
+    setup();
     const loginButton = screen.getByRole("button", {
       name: "Login",
     });
@@ -52,19 +37,11 @@ describe("Desktop nav", () => {
     expect(history.location.pathname).toBe("/Log-in");
   });
 
-  test("not show login button when user is authnenticated", () => {
-    const history = createMemoryHistory();
-    render(
-        <Router history={history}>
-          <DesktopNav
-            isAuth={true}
-            pathname="/"
-            userInfo={{}}
-            navItems={navItems}
-            hideAndShowAuthDialog={jest.fn()}
-          />
-        </Router>
-    );
+  test("should not show login button when user is authnenticated", () => {
+    const user = {
+      name: "John",
+    };
+    setup([], user, true);
     const loginButton = screen.queryByRole("button", {
       name: "Login",
     });

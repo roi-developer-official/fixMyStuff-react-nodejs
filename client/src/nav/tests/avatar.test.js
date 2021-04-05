@@ -1,13 +1,14 @@
 import { screen, render } from "@testing-library/react";
 import Avatar from "../avatar/avatar";
-const userInfo = {
-  firstName: "John",
-  lastName: "Doe",
-  image: null,
-};
 
-test("avatar menu not visible by default", () => {
-  render(<Avatar user={false} />);
+
+
+const setup = (user = {}, isAuth=false)=>{
+  return render(<Avatar user={user} isAuth={isAuth} />);
+}
+
+test("avatar menu should not be visible by default", () => {
+  setup();
   const firstName = screen.queryByText("John");
   expect(firstName).not.toBeInTheDocument();
   const image = screen.queryByRole("img");
@@ -15,9 +16,12 @@ test("avatar menu not visible by default", () => {
 });
 
 test("avatar rendered with image tag", async () => {
-  userInfo.image =
-    "https://images.pexels.com/photos/6615739/pexels-photo-6615739.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260";
-  render(<Avatar user={userInfo} pathname={"/Find-jobs"} />);
+  const user = {
+    firstName: "John",
+    lastName: "Doe",
+    image: "https://images.pexels.com/photos/6615739/pexels-photo-6615739.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+  };
+  setup(user, true);
   const firstName = await screen.findByText("John");
   expect(firstName).toBeInTheDocument();
   const image = screen.getByRole("img");

@@ -5,21 +5,21 @@ import Avatar from "../avatar/avatar";
 import LoginButton from "../loginbutton/loginButton";
 import NavSearch from "./nav-search/navSearch";
 
-export function NavItems({ items, isAuth, pathname }) {
+export function NavItems({ items, isAuth }) {
 
   return (
     <ul className="nav_items">
-      {items.map((i, idx) => {
-        if (idx === 1) return <RenderAuthNavItem key={i.name} path={i.name} isAuth={isAuth}/>;
+      {items.map((item, idx) => {
+        if (idx === 1) return <RenderAuthNavItem key={item.name} path={item.name} isAuth={isAuth}/>;
         else
           return (
-            <li key={i.name}>
+            <li key={item.name}>
               <NavLink
                 className="nav_item"
-                to={pathname}
+                to={item.name.replace(' ', '-')}
                 activeStyle={{ color: "#08a072", fontWeight: "bold" }}
               >
-                {i.name}
+                {item.name}
               </NavLink>
             </li>
           );
@@ -29,14 +29,13 @@ export function NavItems({ items, isAuth, pathname }) {
   );
 }
 
-export default function DesktopNav({ navItems, userInfo, pathname, isAuth }) {
-
+export default function DesktopNav({ navItems, user, isAuth }) {
   return (
     <nav className="nav">
       <Logo></Logo>
       <NavSearch />
-      <NavItems items={navItems} isAuth={isAuth} pathname={pathname} />
-      <Avatar user={userInfo}></Avatar>
+      <NavItems items={navItems} isAuth={isAuth}/>
+      <Avatar isAuth={isAuth} user={user}></Avatar>
     </nav>
   );
 }

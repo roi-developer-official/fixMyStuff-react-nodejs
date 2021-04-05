@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { isUserAuthenticated } from "../../shared";
 import "./avatar.css";
 import AvatarMenu from "./menu/avatarMenu";
 
@@ -15,10 +14,9 @@ export function ReturnImageIfExists({userInfo}) {
     }
 }
 
-function Avatar({ user }) {
+function Avatar({user, isAuth}) {
   const [showMenu, setShowMenu] = useState(false);
   const [showAvatar, setShowAvatar] = useState(false);
-  const isAuth = isUserAuthenticated(user);
 
   useEffect(() => {
     window.document.addEventListener("click", hideAvatarMenu);

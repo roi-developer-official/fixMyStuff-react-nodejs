@@ -3,8 +3,7 @@ import { Button } from "../../Global_UI";
 
 export default function LoginButton({ isAuth, className }) {
   const history = useHistory();
-
-
+  
   if (!isAuth) {
     return (
       <li style={{listStyle:"none"}}>
