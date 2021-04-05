@@ -12,7 +12,6 @@ function UnAuthNavLink({ path }) {
     if(!/sign-in/i.test(pathname) && !/log-in/i.test(pathname))
       setShowDialog(!showDialog);
   }
-
   return (
     <div key={path}>
       <li

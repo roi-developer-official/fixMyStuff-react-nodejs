@@ -4,8 +4,8 @@ import { useDispatch } from 'react-redux';
 import {logOut} from '../actions/authAction';
 
 export default function AvatarMenu(){
-
     const dispatch = useDispatch();
+
     function logout(){
         dispatch(logOut());
     }

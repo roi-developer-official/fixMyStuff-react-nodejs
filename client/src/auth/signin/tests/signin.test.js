@@ -1,5 +1,5 @@
-import { mount, shallow } from "enzyme";
-import { Provider, useDispatch, useSelector } from "react-redux";
+import { mount } from "enzyme";
+import { Provider } from "react-redux";
 import { findByAttr, storeFactory } from "../../../tests/testUtils";
 import { actionTypes } from "../../../actions/authAction";
 import SignIn from "../signin";

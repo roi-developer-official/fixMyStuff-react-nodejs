@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import DesktopNav from "../desktop/desktopNav";
+import DesktopNav from "../desktopNav";
 import { Router } from "react-router";
 import userEvent from "@testing-library/user-event";
 import { createMemoryHistory } from "history";
@@ -14,7 +14,7 @@ const setup = (navItems = [], user = {}, isAuth = false) => {
 };
 
 describe("Desktop nav", () => {
-  test("displays a logo, input search and login button", async () => {
+  test("should display a logo, input search and login button", async () => {
     setup();
     const logo = screen.getByRole("heading", {
       name: /Fix My Stuff/,

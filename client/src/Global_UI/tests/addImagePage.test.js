@@ -1,6 +1,6 @@
 import { mount } from "enzyme";
 import { useState } from "react";
-import AddImagePage from "../addImagePage";
+import {AddImagePage} from "../";
 
 const mockSetState = jest.fn();
 jest.mock("react", () => ({

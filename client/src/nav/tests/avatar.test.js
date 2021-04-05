@@ -1,6 +1,5 @@
 import { screen, render } from "@testing-library/react";
-import Avatar from "../avatar/avatar";
-
+import Avatar from "../avatar";
 
 
 const setup = (user = {}, isAuth=false)=>{

@@ -1,6 +1,6 @@
 import { mount } from "enzyme";
 import { validation } from "../../../shared/";
-import PageFour from "../pages/pageFour";
+import PageFour from "../pageFour";
 import { useSelector, useDispatch } from "react-redux";
 import { useRef, useState } from "react";
 

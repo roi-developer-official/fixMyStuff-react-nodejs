@@ -5,9 +5,19 @@ import Nav, { formatPath } from "../nav";
 import { storeFactory } from "../../tests/testUtils";
 import { Provider } from "react-redux";
 
+const history = createMemoryHistory();
+const setup = () => {
+  const store = storeFactory();
+  return render(
+    <Provider store={store}>
+      <Router history={history}>
+        <Nav />
+      </Router>
+    </Provider>
+  );
+};
+
 describe("Nav", () => {
-  const history = createMemoryHistory();
-  
   test("formatted path replcale all space with -", () => {
     let string = "/-";
     string = formatPath(string);
@@ -17,14 +27,7 @@ describe("Nav", () => {
   test("show pathname", () => {
     const path = "/Find-jobs";
     history.push(path);
-    const store = storeFactory();
-    render(
-      <Provider store={store}>
-        <Router history={history}>
-          <Nav />
-        </Router>
-      </Provider>
-    );
+    setup();
     const pathname = screen.getByRole("heading", {
       name: formatPath(path),
     });

@@ -1,40 +1,35 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import RenderAuthNavItem from "../util/renderAuthNavItem";
+import RenderAuthNavItem from "../renderAuthNavItem";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 
+const history = createMemoryHistory();
+
+const setup = (path = "/my-page", isAuth = false)=>{
+  return render(
+    <Router history={history}>
+      <RenderAuthNavItem path={path} isAuth={isAuth} />
+    </Router>
+  );
+}
 describe("renderAuthNavItem", () => {
-  const path = "My-page";
-  const history = createMemoryHistory();
+
   test("should render navitem according to auth props", () => {
-    render(
-      <Router history={history}>
-        <RenderAuthNavItem path={path} isAuth={false} />
-      </Router>
-    );
+    setup();
     const myPageLink = screen.queryByRole("link");
     expect(myPageLink).not.toBeInTheDocument();
   });
 
   test("should not show authDialog by default", () => {
-    render(
-      <Router history={history}>
-        <RenderAuthNavItem path={path} isAuth={false} />
-      </Router>
-    );
+    setup();
     const authDialog = screen.queryByText("You are not logged in");
     expect(authDialog).not.toBeInTheDocument();
   });
 
   test("should show authDialog when user is not authneticated", () => {
-    const history = createMemoryHistory();
-    render(
-      <Router history={history}>
-        <RenderAuthNavItem path={path} isAuth={false} />
-      </Router>
-    );
-    const myPageLink = screen.getByText("My-page");
+    setup();
+    const myPageLink = screen.getByText(/My-page/i);
     userEvent.click(myPageLink);
     const signinlink = screen.getByRole("link", {
       name: "Sign-up for an account",
@@ -46,13 +41,8 @@ describe("renderAuthNavItem", () => {
   });
 
   test("redirect to my page when user authneticated", () => {
-    const history = createMemoryHistory();
-    render(
-      <Router history={history}>
-        <RenderAuthNavItem path={path} isAuth={true} />
-      </Router>
-    );
-    const myPageLink = screen.getByText("My-page");
+    setup("/My-page", true)
+    const myPageLink = screen.getByText(/My-page/i);
     userEvent.click(myPageLink);
     expect(history.location.pathname).toBe("/My-page");
   });

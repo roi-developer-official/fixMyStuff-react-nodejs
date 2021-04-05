@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createMemoryHistory } from "history";
-import Pageone from "../pages/pageOne";
+import Pageone from "../pageOne";
 import { mount } from "enzyme";
 import React from "react";
 import { Router } from "react-router";

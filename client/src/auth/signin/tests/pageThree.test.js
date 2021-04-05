@@ -1,5 +1,5 @@
 import { mount } from "enzyme";
-import PageThree from "../pages/PageThree";
+import PageThree from "../PageThree";
 import { useDispatch, useSelector } from "react-redux";
 
 const setup = (props = {}) => {

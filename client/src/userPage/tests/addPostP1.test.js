@@ -1,5 +1,5 @@
 import { mount } from "enzyme";
-import PageOne from "../pages/pageOne";
+import PageOne from "../pageOne";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router";
 import { useReducer } from "react";
