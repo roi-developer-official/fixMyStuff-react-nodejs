@@ -1,13 +1,16 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import AuthDialog from "../authdialog/authDialog";
 
 function UnAuthNavLink({ path }) {
   const [showDialog, setShowDialog] = useState(false);
+  const history = useHistory();
+  const pathname = history.location.pathname;
 
   function toggleDialog(e){
     e.stopPropagation();
-    setShowDialog(!showDialog);
+    if(!/sign-in/i.test(pathname) && !/log-in/i.test(pathname))
+      setShowDialog(!showDialog);
   }
 
   return (
