@@ -1,6 +1,6 @@
-import { returnFormDataLogin, returnFormDataSignIn } from "./";
+import { returnFormData } from "./";
 
-describe("returnFormDataSignIn", () => {
+describe("returnFormData", () => {
   const signInInputs = {
     page1: [
       { name: "firstName", value: "bob", error: "" },
@@ -18,12 +18,28 @@ describe("returnFormDataSignIn", () => {
     formData.append("lastName" , "alice");
     formData.append("role"  , 1);
     formData.append("profession", "carpenter");
-    const form = returnFormDataSignIn(signInInputs);
+    const form = returnFormData(signInInputs);
     expect(form.get("firstName")).toEqual(formData.get("firstName"));
     expect(form.get("lastName")).toEqual(formData.get("lastName"));
     expect(form.get("role")).toEqual(formData.get("role"));
     expect(form.get("profession")).toEqual(formData.get("profession"));
   });
+
+  test('should add the rest to the formData', ()=>{
+    const formData = new FormData();
+    formData.append("firstName", "bob");
+    formData.append("lastName" , "alice");
+    formData.append("role"  , 1);
+    formData.append("profession", "carpenter");
+    const rest = new Map();
+    rest.set("email", "test@test.com");
+    const form = returnFormData(signInInputs, rest);
+    expect(form.get("firstName")).toEqual(formData.get("firstName"));
+    expect(form.get("lastName")).toEqual(formData.get("lastName"));
+    expect(form.get("role")).toEqual(formData.get("role"));
+    expect(form.get("profession")).toEqual(formData.get("profession"));
+    expect(form.get("email")).toEqual("test@test.com");
+  })
 });
 
 describe("returnFormDataLogin", ()=>{
@@ -36,7 +52,7 @@ describe("returnFormDataLogin", ()=>{
     const formData = new FormData();
     formData.append("firstName", "bob");
     formData.append("lastName" , "alice");
-    const form = returnFormDataLogin(loginInputs);
+    const form = returnFormData(loginInputs);
     expect(form.get("firstName")).toEqual(formData.get("firstName"));
     expect(form.get("lastName")).toEqual(formData.get("lastName"));
   })

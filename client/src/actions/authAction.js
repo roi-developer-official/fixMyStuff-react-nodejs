@@ -1,7 +1,6 @@
 import axios from "axios";
 import {
-  returnFormDataSignIn,
-  returnFormDataLogin,
+  returnFormData,
   extractErrorMessage,
 } from "./helpers";
 
@@ -24,7 +23,7 @@ export const actionTypes = {
  */
 export const signIn = () => (dispatch, getState) => {
   const inputs = getState().authReducer.signInInputs;
-  const reqData = returnFormDataSignIn(inputs);
+  const reqData = returnFormData(inputs);
   return axios
     .post("api/auth/signup", reqData)
     .then((res) =>
@@ -50,7 +49,7 @@ export const signIn = () => (dispatch, getState) => {
  */
 export const login = () => (dispatch, getState) => {
   const inputs = getState().authReducer.loginInputs;
-  let reqData = returnFormDataLogin(inputs);
+  let reqData = returnFormData(inputs);
   return axios
     .post("api/auth/login", reqData)
     .then((res) =>

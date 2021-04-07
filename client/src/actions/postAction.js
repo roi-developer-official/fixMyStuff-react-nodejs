@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { extractErrorMessage } from './helpers';
+import { extractErrorMessage, returnFormData} from './helpers';
 export const actionTypes = {
     POST_ACTION_START: "POST_ACTION_START",
     POST_ADD_FAIL: "POST_ADD_FAIL",
@@ -16,12 +16,14 @@ export const actionTypes = {
  * @param {function} callBack 
  * @returns 
  */
-export const addPost = (reqData,callBack)=>{
-    return dispatch =>{
-        axios.post('user/create-post', reqData)
+export const addPost = (email)=>  (dispatch, getState) =>{
+    const inputs = getState().postReducer.addPostInputs;
+    const rest = new Map();
+    rest.set("email", email);
+    const reqData = returnFormData(inputs,rest);
+        axios.post('/api/user/create-post', reqData)
         .then(res=>{
             dispatch({type : actionTypes.POST_ADD_SUCCESS, payload: res.data.post})
-            callBack();
         })
         .catch(error=>{
             console.log(error);
@@ -29,6 +31,6 @@ export const addPost = (reqData,callBack)=>{
             dispatch({type : actionTypes.POST_ADD_FAIL, payload : message })
         })
     }
-}
+
 
 

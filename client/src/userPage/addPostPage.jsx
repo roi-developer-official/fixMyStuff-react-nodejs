@@ -5,6 +5,7 @@ import {
   AddImagePage,
   PagesContainer,
 } from "../Global_UI";
+import {useAuth} from '../hooks/useAuth';
 import { buttons as page2Buttons } from "./elements";
 import { useHistory } from "react-router";
 import PageOne from "./pageOne";
@@ -14,6 +15,7 @@ import { useEffect, useRef } from "react";
 
 function AddPostPage() {
   const history = useHistory();
+  const [user] = useAuth();
   const { loading, error, success, currentPage } = useSelector(
     (state) => state.postReducer
   );
@@ -44,7 +46,7 @@ function AddPostPage() {
           page: "page2"
         });
         dispatch({ type: actionTypes.POST_ACTION_START });
-        dispatch(addPost());
+        dispatch(addPost(user.email));
         break;
       case "Back":
         dispatch({ type: actionTypes.POST_DECREMENT_STEP });
