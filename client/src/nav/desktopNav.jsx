@@ -1,9 +1,10 @@
 import { Logo } from "../Global_UI";
 import RenderAuthNavItem from "./renderAuthNavItem";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import Avatar from "./avatar";
 import LoginButton from "./loginButton";
 import NavSearch from "./navSearch";
+import { useEffect, useState } from "react";
 
 export function NavItems({ items, isAuth }) {
 
@@ -30,12 +31,19 @@ export function NavItems({ items, isAuth }) {
 }
 
 export default function DesktopNav({ navItems, user, isAuth }) {
+  const history = useHistory();
+  const [showAvatar, setShowAvatar] = useState("");
+
+  useEffect(()=>{
+    setShowAvatar(!/My-page/i.test(history.location.pathname));
+  }, [history.location.pathname])
+
   return (
     <nav className="nav">
       <Logo></Logo>
       <NavSearch />
       <NavItems items={navItems} isAuth={isAuth}/>
-      <Avatar isAuth={isAuth} user={user}></Avatar>
+      {showAvatar && <Avatar isAuth={isAuth} user={user}></Avatar>}
     </nav>
   );
 }

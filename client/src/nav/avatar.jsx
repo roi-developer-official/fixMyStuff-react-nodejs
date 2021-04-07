@@ -40,7 +40,7 @@ function Avatar({user, isAuth}) {
 
   if (isAuth && showAvatar)
     return (
-      <div className={`avatar_wrapper`}>
+      <div data-testid="component-avatar" className={`avatar_wrapper`}>
         {showMenu && <AvatarMenu></AvatarMenu>}
         <div
           onClick={toggleAvatarMenu}

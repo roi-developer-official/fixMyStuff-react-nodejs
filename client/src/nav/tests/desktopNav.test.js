@@ -1,10 +1,20 @@
-import { render, screen } from "@testing-library/react";
+import {
+  queryByTestId,
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react";
 import DesktopNav from "../desktopNav";
 import { Router } from "react-router";
 import userEvent from "@testing-library/user-event";
 import { createMemoryHistory } from "history";
 
+
 let history = createMemoryHistory();
+const user = {
+  name: "John",
+};
+
 const setup = (navItems = [], user = {}, isAuth = false) => {
   return render(
     <Router history={history}>
@@ -38,13 +48,28 @@ describe("Desktop nav", () => {
   });
 
   test("should not show login button when user is authnenticated", () => {
-    const user = {
-      name: "John",
-    };
     setup([], user, true);
     const loginButton = screen.queryByRole("button", {
       name: "Login",
     });
     expect(loginButton).not.toBeInTheDocument();
+  });
+});
+
+test("should not show avatar on my-page", async () => {
+  history.push("/My-page");
+  const { container } = setup([], user, true);
+  await waitFor(() => {
+    expect(
+      queryByTestId(container, "component-avatar")
+    ).not.toBeInTheDocument();
+  });
+});
+
+test("should show avatar when not on my-page", async () => {
+  history.push("/Find-jobs");
+  const { container } = setup([], user, true);
+  await waitFor(() => {
+    expect(queryByTestId(container, "component-avatar")).toBeInTheDocument();
   });
 });
