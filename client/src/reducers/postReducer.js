@@ -1,19 +1,27 @@
 import {actionTypes} from '../actions/postAction';
 const initialState = {
   posts: [],
+  post: null,
   loading: false,
   success: false,
   error: null,
   currentPage: 1,
-  addPostInput: [
-    { name: "title", value: "", error: "" },
-    { name: "maxPayment", value: "", error: "" },
-    { name: "description", value: "", error: "" },
-    { name: "image", value: "" },
-  ],
+  addPostInputs: {
+    page1: [
+      { name: "title", value: "", error: "" },
+      { name: "maxPayment", value: "", error: "" },
+      { name: "description", value: "", error: "" }
+    ],
+    page2 : [
+      { name: "image", value: ""},
+    ]
+  },
 };
 
 const postReducer = (state = initialState, action) => {
+  
+  let index;
+  let updatedInput;
   switch (action.type) {
       case actionTypes.POST_INCREMENT_STEP: 
         return {
@@ -25,29 +33,35 @@ const postReducer = (state = initialState, action) => {
             ...state,
             currentPage :state.currentPage - 1
         };
-    case actionTypes.ADD_POST_SET_INPUT:
-        const updatedInput = state.addPostInput.slice();
-        const index = updatedInput.findIndex((input)=>input.name === action.name);
-        updatedInput[index].value = action.value;
-        updatedInput[index].error = action.error;
-        return {
+        case actionTypes.POST_ADD_SET_INPUT:
+          updatedInput = [...state.addPostInputs[action.page]];
+          index = updatedInput.findIndex((input) => input.name === action.name);
+          updatedInput[index].value = action.value;
+          updatedInput[index].error = action.error;
+          return {
             ...state,
-            addPostInput : updatedInput
-        }
+            addPostInputs: { ...state.addPostInputs, [action.page]: updatedInput },
+          };
     case actionTypes.POST_RESET_STATE:
-        return {
-            ...state,
-            currentPage: 1,
-            addPostInput :initialState.addPostInput,
-            error: null,
-            loading:false,
-            success: false
-        };
+        return initialState;
     case actionTypes.POST_ACTION_START:
         return {
             ...state,
             loading: true,
             error: null,
+        }
+      case actionTypes.POST_ADD_FAIL:
+        return {
+          ...state,
+          loading:false,
+          error: action.payload
+        }
+      case actionTypes.POST_ADD_SUCCESS:
+        return {
+          ...state,
+          loading: false,
+          error: null,
+          post: action.payload
         }
     default:
       return state;

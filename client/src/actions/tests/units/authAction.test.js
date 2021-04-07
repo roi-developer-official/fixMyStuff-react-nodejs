@@ -39,7 +39,7 @@ const initialState = {
 afterEach(()=>{
   const store = storeFactory();
   store.dispatch({type : actionTypes.AUTH_RESET_STATE})
-})
+});
 
 test("action success return currect value", () => {
   const store = storeFactory();

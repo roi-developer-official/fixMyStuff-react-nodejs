@@ -5,7 +5,7 @@ import {
 } from "./elements";
 import { actionTypes } from "../actions/postAction";
 import { addToRefsArray } from "../shared";
-import { Textarea, Logo, Inputs, Buttons } from "../Global_UI";
+import { Textarea, Logo, Inputs, Buttons, FormPage } from "../Global_UI";
 import { useHistory } from "react-router-dom";
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,7 +19,7 @@ export default function PageOne({ show, changePage }) {
   const dispatch = useDispatch();
 
   function onInputChange(name, value, error) {
-    dispatch({ type: actionTypes.ADD_POST_SET_INPUT, name, value, error });
+    dispatch({ type: actionTypes.POST_ADD_SET_INPUT, name, value, error, page: "page1" });
   }
 
   function onButtonClicked(label) {
@@ -36,7 +36,7 @@ export default function PageOne({ show, changePage }) {
   }
 
   return (
-    <div className={`add_post_page${show ? " show" : ""}`}>
+    <FormPage show={show}>
       <div className="logo_header">
         <Logo></Logo>
       </div>
@@ -61,6 +61,6 @@ export default function PageOne({ show, changePage }) {
         onClick={onButtonClicked}
         className="form_buttons_wrapper"
       />
-    </div>
+      </FormPage>
   );
 }
