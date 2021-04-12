@@ -19,7 +19,7 @@
 
 /* posts head */
 .userp_posts_head {
-  height: 35px;
+  height: 25px;
   background-color: #08a072;
   width: 100%;
 }
@@ -94,6 +94,12 @@
 
 .post_accordion_item > .details_container.close{
     animation: hideDetails 0.3s ease forwards;
+}
+
+.post_accordion_emoji{
+    font-size: 25px;
+    margin-left: auto;
+    margin-right: 10px;
 }
 
 @keyframes showDetails {
