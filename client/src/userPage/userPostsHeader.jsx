@@ -1,8 +1,5 @@
 import {Button,Input} from '../Global_UI';
-
-import './userPostsHeader.css';
 import { useHistory } from 'react-router';
-
 
 export default function UserPostsHeader(){
 
@@ -21,6 +18,7 @@ export default function UserPostsHeader(){
             >
             </Button>
             </div>
+            <Button label={"Delete"} className={"userp_posts_delete_btn"}></Button>
         </div>
     )
 }
