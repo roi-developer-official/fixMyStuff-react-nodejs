@@ -1,24 +1,27 @@
-import {Button,Input} from '../Global_UI';
-import { useHistory } from 'react-router';
+import { Button } from "../Global_UI";
+import { useHistory } from "react-router";
 
-export default function UserPostsHeader(){
-
-    const history = useHistory();
-    return (
-        <div className="userp_header_wrapper">
-            <h1>Posts</h1>
-            <div className="userp_header_select">
-                <Input inputType="select" options={[]}/>
-            </div>
-            <div className="userp_header_button">
-            <Button
-            label={'Create new post'}
-            className={'userp_header_btn'}
-            onClick={()=>history.push('/Create-post')}
-            >
-            </Button>
-            </div>
-            <Button label={"Delete"} className={"userp_posts_delete_btn"}></Button>
-        </div>
-    )
+export default function UserPostsHeader() {
+  const history = useHistory();
+  return (
+    <>
+    <h1 className="userp_header_title">Posts</h1>
+    <div className="userp_header_btns">
+        <Button
+          label="New"
+          className="userp_new_btn"
+          onClick={() => history.push("/Create-post")}
+        ></Button>
+        <Button
+          label="Sort"
+          className="userp_sort_btn"
+          onClick={() => history.push("/Create-post")}
+        ></Button>
+      <Button 
+      label="Delete" 
+      className="userp_posts_delete_btn"
+      ></Button>
+    </div>
+    </>
+  );
 }
