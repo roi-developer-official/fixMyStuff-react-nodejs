@@ -1,8 +1,9 @@
 import PostsHead from "./PostsHead";
+import React from 'react';
 import "./userPosts.css";
 import Accordion from './postsAccordion';
 
-export default function UserPosts() {
+export default function UserPosts({showDeleteInputs}) {
   let items = [
     {
       title: "My chair is broken --please help me fix it",
@@ -15,10 +16,14 @@ export default function UserPosts() {
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, alias.",
     },
   ];
+ 
   return (
     <div className="userp_posts_container">
-      <PostsHead></PostsHead>
-      <Accordion items={items} multy={false}/>
+      <PostsHead  ></PostsHead>
+      <Accordion 
+      showDeleteInputs={showDeleteInputs} 
+      items={items} multy={false}
+      />
     </div>
   );
 }

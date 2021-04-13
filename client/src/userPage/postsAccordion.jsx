@@ -1,7 +1,8 @@
 import React from "react";
+import { Input } from "../Global_UI";
 import withAccordion from "../hoc/withAccordion";
 
-function Accordion({ items, isOpenIndex, handleClick, isClickedIndexes }) {
+function Accordion({ items, isOpenIndex, handleClick, isClickedIndexes, showDeleteInputs }) {
  
   function getClassName(i){
     if(isOpenIndex === i){
@@ -28,6 +29,7 @@ function Accordion({ items, isOpenIndex, handleClick, isClickedIndexes }) {
         <div onClick={() => handleClick(i)} className="title_container">
           <p>{item.title}</p>
           {returnEmojy(i)}
+         {showDeleteInputs && <Input inputType="checkbox"/>}
         </div>
         <div
           className={`details_container${getClassName(i)}`}

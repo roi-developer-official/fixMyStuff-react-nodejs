@@ -51,6 +51,7 @@ export default function withAccordion(WrapperComponent) {
           isOpenIndex={isOpenIndex}
           handleClick={this.handleClick}
           isClickedIndexes={this.state.isClickedIndexes}
+          showDeleteInputs={this.props.showDeleteInputs}
         />
       );
     }

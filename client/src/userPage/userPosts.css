@@ -82,7 +82,6 @@
 }
 
 
-
 .userp_head_items {
   display: flex;
   width: calc(80% - 13px);
@@ -94,6 +93,44 @@
   color: white;
 }
 
+
+.userp_sort_opt_wrapper{
+  position: absolute;
+  top: 110%;
+  left:1%;
+  width: 150px;
+  height: fit-content;
+  z-index: 100;
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.userp_sort_opt{
+  width: 100%;
+  font-size: 13px;
+  padding: 6px 15px;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.userp_sort_opt:hover{
+  background-color: rgb(226, 226, 226);
+}
+.userp_sort_opt:first-child{
+  cursor: default;
+  font-weight: bold;
+  font-size: 13px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.userp_sort_opt:last-child{
+  border-top:none;
+  border-bottom:none;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
 
 
 /* accordion */
