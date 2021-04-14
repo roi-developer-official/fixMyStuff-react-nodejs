@@ -16,13 +16,13 @@ require('config');
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-// const csurfProtection = csurf({
-//     cookie: {
-//         httpOnly:true,
-//         sameSite:true,
-//         secure: process.env.NODE_ENV !== "development" ? true : false
-//     }
-// });
+const csurfProtection = csurf({
+    cookie: {
+        httpOnly:true,
+        sameSite:true,
+        secure: process.env.NODE_ENV !== "development" ? true : false
+    }
+});
 
 const checkJwt = expressJwt({
     secret: process.env.TOKEN_SECRET,
@@ -31,7 +31,7 @@ const checkJwt = expressJwt({
 });
 
 
-// app.use(csurfProtection);
+app.use(csurfProtection);
 
 app.get('/api/initv',(req,res)=>{
     res.status(200).json({csrfToken: req.csrfToken()}); 
@@ -54,7 +54,7 @@ app.use('/api/auth',authRoute);
 
 app.use((error,req,res,next)=>{
 
-    console.log('error',error);
+    console.log('app-error',error);
     const status = error.status ? error.status : error.code ? error.code  : 500;
     const message = error.message ? error.message : error.inner ? error.inner.message : 'something went wrong';
     let reqError = {
@@ -69,13 +69,12 @@ app.use((error,req,res,next)=>{
     res.status(status).json(reqError);
 });
 
-
 const PORT = process.env.PORT || 4200;
 let server;
 
 server = app.listen(PORT, (err)=>{
     if(err){
-        console.log(err);
+        console.log("app-error", err);
     } else {
 
         // console.log('sucess_connection_server');

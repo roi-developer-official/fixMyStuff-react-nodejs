@@ -97,9 +97,6 @@ describe('authentication and auth steps',()=>{
         });   
     });
 
-
-
-
     async function createUserAndPassword(){
         await User.create(user);
         const hash = await bcrypt.hash(user.password, 12);

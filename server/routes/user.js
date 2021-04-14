@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router();
-const { body, cookie } = require('express-validator');
+const { body, cookie, query } = require('express-validator');
 const inputValidation = require('../util/inputValidation').validate;
 const userController = require('../controllers/user');
 const decodeJwt = require('jwt-decode');
@@ -9,9 +9,12 @@ const User = require('../models/user');
 const validateUserIntegrity = async(value,req)=>{
     const decoded = decodeJwt(value);
     let user = await User.scope({method:['findByEmail',decoded.email]}).findOne({attributes:['id', 'email']});
-    if(!user || user.toJSON().email !== req.body.email){
+
+    let email = user.toJSON().email;
+    if(!user || (email !== req.body.email && email !== req.query.email)){
         return Promise.reject('no user with that email');
     }
+
     req.user = user.toJSON()
 }
 
@@ -28,6 +31,16 @@ inputValidation([
     })
 ]) , userController.createPost);
 
+
+router.get('/posts', inputValidation([
+    cookie("connect").notEmpty().custom(async (value, {req})=>{
+        return validateUserIntegrity(value,req);
+    }).escape(),
+    query("page").notEmpty().isString().trim().escape().customSanitizer(value=>{
+        return parseInt(value);
+    }),
+    query("email").isEmail().escape()
+]), userController.getPosts)
 
 
 
