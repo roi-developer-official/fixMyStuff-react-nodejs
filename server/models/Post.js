@@ -12,7 +12,7 @@ const Post = sequelize.define('Post',
         type: DataTypes.INTEGER,
         allowNull:true,
         validate:{
-            isNumeric:true,
+            isInt:true,
             min:0
         }
     },

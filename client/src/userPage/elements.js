@@ -1,7 +1,7 @@
 export const inputs = {
   page1: [
     {
-      label: "Title",
+      label: "What happend? (few words)",
       type: "text",
       name: "title",
       validations: {
@@ -9,7 +9,7 @@ export const inputs = {
       },
     },
     {
-      label: "Pick a price you are willing to pay",
+      label: "wow much you willing to pay for it",
       type: "number",
       name: "maxPayment",
       value: 0,
@@ -35,15 +35,14 @@ export const inputs = {
   ],
 };
 
-export const textAreas = 
-    {
-      label: "Description",
-      name: "description",
-      cols: 30,
-      rows: 5,
-      validations: {
-        required: true,
-      },
+export const textAreas = {
+  label: "Add detailed description",
+  name: "description",
+  cols: 30,
+  rows: 5,
+  validations: {
+    required: false,
+  },
 };
 
 export const buttons = {
@@ -63,16 +62,16 @@ export const buttons = {
   ],
   page2: [
     {
-        label: 'Back',            
-        style:{
-            backgroundColor:'#ccc'
-        }
+      label: "Back",
+      style: {
+        backgroundColor: "#ccc",
+      },
     },
     {
-        label: 'Done',
-        style:{
-            backgroundColor: '#08c982'
-        }
-    }
-  ]
+      label: "Done",
+      style: {
+        backgroundColor: "#08c982",
+      },
+    },
+  ],
 };

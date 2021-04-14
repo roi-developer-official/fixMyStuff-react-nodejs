@@ -1,186 +1,162 @@
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300&family=Patua+One&display=swap');
-*{
-  margin:0;
-  padding:0;
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@300&family=Patua+One&display=swap");
+* {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
-html{
+html {
   background-color: #f9f9fa;
-  height:fit-content;
-  min-height:100vh;
+  height: fit-content;
+  min-height: 100vh;
   position: relative;
 }
-#root{
+#root {
   height: fit-content;
   min-height: fit-content;
 }
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-main{
+main {
   position: relative;
   width: 100%;
   padding: 0 20px;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
-.logo_header{
+.logo_header {
   height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.pages_container
-{
-    position: relative;
-    margin: auto;
-    margin-top: 0px;
-    width:100%;
-    height: 400px;
-    margin-bottom: 85px;
-    padding: 10px 20px;
-    max-width: 400px;
-    min-width: 380px;
+.pages_container {
+  position: relative;
+  margin: auto;
+  margin-top: 0px;
+  width: 100%;
+  height: 400px;
+  margin-bottom: 85px;
+  padding: 10px 20px;
+  max-width: 400px;
+  min-width: 380px;
 }
 
-.form_number_input_wrapper{
+.form_number_input_wrapper {
   display: flex;
   justify-content: space-between;
   padding-bottom: 14px;
   position: relative;
   width: 80%;
-  margin:auto;
+  margin: auto;
 }
 
-.form_number_input_wrapper > .validation_text{
+.form_number_input_wrapper > .validation_text {
   margin-left: 4px;
-  bottom:0;
+  bottom: 0;
 }
-.form_textarea_wrapper{
+.form_textarea_wrapper {
   display: flex;
   flex-direction: column;
   padding-bottom: 14px;
   position: relative;
   width: 80%;
-  margin:auto;
+  margin: auto;
 }
 
-.form_textarea_wrapper > label{
+.form_textarea_wrapper > label,
+.form_input_wrapper > label,
+.form_select_wrapper > label {
   margin-bottom: 4px;
+  font-size: 14px;
 }
 
-
-.form_input_wrapper
-{
-    display:flex;
-    flex-direction: column;
-    padding-bottom: 14px;
-    position: relative;
-    width: 80%;
-    margin:auto;
+.form_input_wrapper {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 14px;
+  position: relative;
+  width: 80%;
+  margin: auto;
 }
 
-.form_input_wrapper > label
-{
-    margin-bottom: 4px;
-
+.form_input_wrapper > input {
+  height: 30px;
+  border: 1px solid #ccc;
+  padding-left: 5px;
+  font-size: 14px;
 }
 
-.form_input_wrapper > input
-{
-    height: 30px;
-    border:1px solid #ccc;
-    padding-left: 5px;
-    font-size:14px;
+.form_input_wrapper > input:focus {
+  outline: none;
+  border-width: 2px;
+  border-color: rgb(111, 194, 224);
 }
 
-.form_input_wrapper > input:focus
-{
-    outline: none;
-    border-width: 2px;
-    border-color: rgb(111, 194, 224);
+.validation_text {
+  position: relative;
+  bottom: -2px;
+  font-size: 12px;
+  color: red;
 }
 
-.validation_text
-{
-    position: relative;
-    bottom: -2px;
-    font-size: 12px;
-    color:red;
+.form_buttons_wrapper {
+  width: 80%;
+  height: fit-content;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  align-self: center;
+  margin: auto;
+  margin-top: 30px;
 }
 
-
-.form_buttons_wrapper
-{
-    width: 80%;
-    height: fit-content;
-    position: relative;
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-end;
-    align-self: center;
-    margin:auto;
-    margin-top: 30px;
+.form_buttons_wrapper > button {
+  width: 80px;
+  height: 35px;
+  border: none;
+  cursor: pointer;
+  border-radius: 3px;
+  margin: 0 2px;
+  color: white;
+  font-size: 15px;
 }
 
-
-.form_buttons_wrapper >  button
-{
-    width: 80px;
-    height: 35px;
-    border:none;
-    cursor: pointer;
-    border-radius: 3px;
-    margin:0 2px;
-    color:white;
-    font-size: 15px;
+.form_select_wrapper {
+  display: flex;
+  width: 80%;
+  flex-direction: column;
+  margin: auto;
+  display: none;
 }
-
-.form_select_wrapper
-{
-    display: flex;
-    width: 80%;
-    flex-direction: column;
-    margin: auto;
-    display: none;
-}
-.form_select_wrapper.show{
+.form_select_wrapper.show {
   display: block;
 }
 
-.form_select_wrapper > label
-{
-    margin-bottom:5px;
-}
-
-
-@media (min-width:1000px)
-{
-  main{
-    padding:0 60px;
+@media (min-width: 1000px) {
+  main {
+    padding: 0 60px;
     /* top:50px; */
     height: 100%;
     min-height: 100%;
-
   }
 }
 
-@media (min-width:1268px)
-{
- main{
-   padding: 0 140px;
- 
- }
+@media (min-width: 1268px) {
+  main {
+    padding: 0 140px;
+  }
 }

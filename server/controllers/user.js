@@ -8,7 +8,7 @@ module.exports.createPost = async (req, res, next) => {
   const id = user.id;
   const data = req.body;
   let image = null;
-
+  
   if (req.file) image = req.file.path;
 
   const post = await Post.create({
@@ -18,11 +18,11 @@ module.exports.createPost = async (req, res, next) => {
     image: image,
     userId: id,
   });
-
+ 
   if (!post) {
     if (req.file) deleteFile(req.file.path);
     return throwError("somthing went wrong", 500, next);
-  } else res.status(200).send("post created");
+  } else res.status(201).json(post.dataValues);
 };
 
 const POST_PER_PAGE = 8;
@@ -42,7 +42,7 @@ module.exports.getPosts = async (req, res, next) => {
     offset: (page - 1)  * POST_PER_PAGE,
     limit: POST_PER_PAGE
   });
-  
+
   let output = {
     result: {
       posts: [...posts],

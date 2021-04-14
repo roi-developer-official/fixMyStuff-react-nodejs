@@ -14,7 +14,7 @@ function SortOptions({ show , toggle}) {
   return null;
 }
 
-export default function UserPostsHeader({toggleDeleteInputs}) {
+export default function UserPostsHeader({toggleDeleteInputs, deleteButtonState }) {
   const history = useHistory();
   const [showSortOpt, setShowSortOpt] = useState(false);
 
@@ -33,7 +33,7 @@ export default function UserPostsHeader({toggleDeleteInputs}) {
         ></Button>
         <SortOptions toggle={toggleShowSortOption}  show={showSortOpt} />
         <Button label="Sort" onClick={toggleShowSortOption} className="userp_sort_btn"></Button>
-        <Button onClick={toggleDeleteInputs} label="Delete" className="userp_posts_delete_btn"></Button>
+        <Button onClick={toggleDeleteInputs} label={deleteButtonState?"Done" : "Delete" } className="userp_posts_delete_btn"></Button>
       </div>
     </>
   );

@@ -18,15 +18,14 @@
   margin-bottom: 100px;
 }  
 
-
 /* posts head */
-
 .userp_header_title{
   font-size: 28px;
   position: relative;
   text-decoration: underline;
-  left:10px;
+  left:5px;
 }
+
 .userp_header_btns{
   max-width: 700px;
   margin-top: 25px;

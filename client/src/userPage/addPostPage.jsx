@@ -24,9 +24,10 @@ function AddPostPage() {
 
   useEffect(() => {
     if (success) {
+
       timerId.current = setTimeout(() => {
-        dispatch({ type: actionTypes.POST_RESET_STATE });
         history.push("/My-page");
+        dispatch({ type: actionTypes.POST_RESET_STATE });
       }, 700);
     } else {
       clearTimeout(timerId.current);
@@ -62,7 +63,7 @@ function AddPostPage() {
       <Steps currnetStep={currentPage} steps={[1, 2]}></Steps>
       <FormFeedback
         error={error}
-        message={success ? "Signup Successfuly!" : error}
+        message={success ? "Post Created Successfully!" : error}
         success={success}
       />
       <PagesContainer>

@@ -5,20 +5,23 @@
  */
 export function returnFormData(inputs, rest) {
   let reqData = new FormData();
-  for (let key in inputs) {
-    if (inputs[key].length > 0)
-      for (let input of inputs[key]) {
-        reqData.append(input.name, input.value);
-      }
-    else {
-      for (let input of inputs) {
-        reqData.append(input.name, input.value);
+  if (Array.isArray(inputs)) {
+    for (let input of inputs) {
+      reqData.append(input.name, input.value);
+    }
+  } else {
+    for (let key in inputs) {
+      if (inputs[key].length > 0) {
+        for (let input of inputs[key]) {
+          reqData.append(input.name, input.value);
+        }
       }
     }
   }
   if (rest && rest.size > 0) {
     rest.forEach((val, key) => reqData.append(key, val));
   }
+
   return reqData;
 }
 

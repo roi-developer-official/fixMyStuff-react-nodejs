@@ -27,7 +27,7 @@ const setup = (props = {}) => {
   );
 };
 
-describe.skip("add post page 1", () => {
+describe("add post page 1", () => {
 beforeEach(() => {
   useReducer.mockReturnValue([mockState, mockReducer]);
 });
@@ -80,4 +80,16 @@ afterEach(() => {
     nextButton.simulate("click");
     expect(mockChangePage).toBeCalledTimes(1);
   });
+
+  test('should display error FormFeedback on error', ()=>{
+    const wrapper = setup();
+    mockState.inputs[0].value = "valid";
+    mockState.inputs[1].value = 12;
+    const doneButton = wrapper.find({label : "Done"});
+    doneButton.simulate("click");
+    const feedback = wrapper.find({ className: "form_feedback_wrapper" });
+    expect(feedback).toHaveLength(1);
+    expect(feedback.text()).toBe("Login Successfuly!");
+  })
 });
+

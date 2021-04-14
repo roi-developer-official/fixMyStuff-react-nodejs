@@ -1,28 +1,31 @@
 import PostsHead from "./PostsHead";
-import React from 'react';
+import React, { useEffect } from "react";
 import "./userPosts.css";
-import Accordion from './postsAccordion';
+import Accordion from "./postsAccordion";
+import { useDispatch, useSelector } from "react-redux";
+import {useAuth} from "../hooks/useAuth";
+import { getPosts } from "../actions/postAction";
+export default function UserPosts({ showDeleteInputs }) {
 
-export default function UserPosts({showDeleteInputs}) {
-  let items = [
-    {
-      title: "My chair is broken --please help me fix it",
-      description:
-        "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Aut saepe error iusto reiciendis libero corrupti, unde consequuntur. Sint laborum neque, minus eos, molestias delectus sapiente natus cum dignissimos autem quia.",
-    },
-    {
-      title: "My bed fell apart, must fix it before tommorow",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, alias.",
-    },
-  ];
- 
+  const dispatch = useDispatch();
+  const { user } = useAuth();
+  let { posts } = useSelector((state) => state.postReducer);
+  useEffect(() => {
+    dispatch(getPosts(user.email));
+  }, [dispatch, user.email]);
+
+  useEffect(()=>{
+    console.log(posts);
+  },[posts])
+
+
   return (
     <div className="userp_posts_container">
-      <PostsHead  ></PostsHead>
-      <Accordion 
-      showDeleteInputs={showDeleteInputs} 
-      items={items} multy={false}
+      <PostsHead></PostsHead>
+      <Accordion
+        showDeleteInputs={showDeleteInputs}
+        items={posts}
+        multy={false}
       />
     </div>
   );

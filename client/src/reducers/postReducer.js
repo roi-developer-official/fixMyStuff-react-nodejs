@@ -61,7 +61,8 @@ const postReducer = (state = initialState, action) => {
           ...state,
           loading: false,
           error: null,
-          post: action.payload
+          post: action.payload,
+          success:true
         }
     default:
       return state;

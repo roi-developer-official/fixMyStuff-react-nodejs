@@ -17,7 +17,7 @@ function UserPage() {
     <div className="userp_container">
       <UserDetails />
       <PostsContainer>
-        <UserPostsHeader toggleDeleteInputs={toggleDeleteInputs} />
+        <UserPostsHeader deleteButtonState={showDeleteInputs} toggleDeleteInputs={toggleDeleteInputs} />
         <UserPosts showDeleteInputs={showDeleteInputs}/>
       </PostsContainer>
     </div>
