@@ -1,6 +1,6 @@
 import { Button } from "../Global_UI";
 import { useHistory } from "react-router";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import V from "../assets/v.svg";
 
 let sortItems = [
@@ -18,17 +18,23 @@ let sortItems = [
   },
 ];
 
-function SortOptions({ show, hideSortOptions, setOrderValue }) {
-  const [activeIndex, setActiveIndex] = useState(0);
+function SortOptions({ hideSortOptions, setOrderValue, activeIndex }) {
 
-  function setActiveSort(index) {
-    setActiveIndex(index);
-  }
+  let hideSortOptionsCalled = useCallback(
+    () => hideSortOptions.call(null, activeIndex),
+    [hideSortOptions, activeIndex]
+  );
+  useEffect(() => {
+    window.addEventListener("click", hideSortOptionsCalled);
+    return () => window.removeEventListener("click", hideSortOptionsCalled);
+  }, [hideSortOptionsCalled]);
+
+
   function onSortClicked(orderBy, index) {
     setOrderValue(orderBy);
-    setActiveSort(index);
-    hideSortOptions();
+    hideSortOptions(index);
   }
+
   function returnActiveIndexMark(index) {
     if (index === activeIndex) {
       return (
@@ -39,31 +45,29 @@ function SortOptions({ show, hideSortOptions, setOrderValue }) {
             marginRight: "4px",
             width: "13px",
             height: "13px",
-            paddingTop:"1px"
+            paddingTop: "1px",
           }}
         />
       );
     }
   }
-
-  if (show)
-    return (
-      <div className="userp_sort_opt_wrapper">
-        <div className="userp_sort_opt">Select order</div>
-        {sortItems.map((item, index) => (
-          <div
-            onClick={() => onSortClicked(item.order, index)}
-            className="userp_sort_opt"
-          >
-            <div className="userp_sort_opt_text">
-              {returnActiveIndexMark(index)}
-              {item.text}
-            </div>
+  return (
+    <div className="userp_sort_opt_wrapper">
+      <div className="userp_sort_opt">Select order</div>
+      {sortItems.map((item, index) => (
+        <div
+          key={index}
+          onClick={() => onSortClicked(item.order, index)}
+          className="userp_sort_opt"
+        >
+          <div className="userp_sort_opt_text">
+            {returnActiveIndexMark(index)}
+            {item.text}
           </div>
-        ))}
-      </div>
-    );
-  return null;
+        </div>
+      ))}
+    </div>
+  );
 }
 
 export default function UserPostsHeader({
@@ -73,8 +77,10 @@ export default function UserPostsHeader({
 }) {
   const history = useHistory();
   const [showSortOpt, setShowSortOpt] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  function toggleShowSortOption() {
+  function toggleShowSortOption(index) {
+    if (index !== activeIndex) setActiveIndex(index);
     setShowSortOpt(!showSortOpt);
   }
 
@@ -87,14 +93,16 @@ export default function UserPostsHeader({
           className="userp_new_btn"
           onClick={() => history.push("/Create-post")}
         ></Button>
-        <SortOptions
-          hideSortOptions={toggleShowSortOption}
-          show={showSortOpt}
-          setOrderValue={setOrderValue}
-        />
+        {showSortOpt && (
+          <SortOptions
+            activeIndex={activeIndex}
+            hideSortOptions={toggleShowSortOption}
+            setOrderValue={setOrderValue}
+          />
+        )}
         <Button
           label="Sort"
-          onClick={toggleShowSortOption}
+          onClick={() => toggleShowSortOption(activeIndex)}
           className="userp_sort_btn"
         ></Button>
         <Button
