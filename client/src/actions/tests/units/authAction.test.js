@@ -1,4 +1,3 @@
-import authReducer from "../../../reducers/authReducer";
 import { storeFactory, user } from "../../../tests/testUtils";
 import { actionTypes } from "../../authAction";
 
@@ -14,9 +13,7 @@ const initialState = {
       { name: "lastName", value: "", error: "" },
       { name: "city", value: "", error: "" },
     ],
-    page2: [
-      { name : "image", value :""}
-    ],
+    page2: [{ name: "image", value: "" }],
     page3: [
       { name: "role", value: 1, error: "" },
       { name: "profession", value: "", error: "" },
@@ -36,9 +33,9 @@ const initialState = {
   ],
 };
 
-afterEach(()=>{
+afterEach(() => {
   const store = storeFactory();
-  store.dispatch({type : actionTypes.AUTH_RESET_STATE})
+  store.dispatch({ type: actionTypes.AUTH_RESET_STATE });
 });
 
 test("action success return currect value", () => {
@@ -55,8 +52,8 @@ test("action success return currect value", () => {
     expiry: "2019",
     success: true,
     signInInputs: initialState.signInInputs,
-    currentStep:1,
-    loginInputs : initialState.loginInputs
+    currentStep: 1,
+    loginInputs: initialState.loginInputs,
   });
 });
 
@@ -74,8 +71,8 @@ test("action fail return currect value", () => {
     user: {},
     success: false,
     signInInputs: initialState.signInInputs,
-    loginInputs : initialState.loginInputs,
-    currentStep:1
+    loginInputs: initialState.loginInputs,
+    currentStep: 1,
   });
 });
 
@@ -86,28 +83,26 @@ test("should set signin inputs", () => {
     name: "firstName",
     value: "abc",
     error: "some error",
-    page: "page1"
+    page: "page1",
   });
   const newState = store.getState().authReducer;
-  const expectedState = { name : "firstName", value : "abc", error : "some error"};
+  const expectedState = {
+    name: "firstName",
+    value: "abc",
+    error: "some error",
+  };
   expect(newState.signInInputs.page1[0]).toEqual(expectedState);
 });
 
-test('should set login inputs', ()=>{
+test("should set login inputs", () => {
   const store = storeFactory();
-  store.dispatch({type: actionTypes.AUTH_LOGIN_SET_INPUT, name : "email", value: "abc", error: "some error"});
+  store.dispatch({
+    type: actionTypes.AUTH_LOGIN_SET_INPUT,
+    name: "email",
+    value: "abc",
+    error: "some error",
+  });
   const newState = store.getState().authReducer;
-  const expectedState = { name : "email", value : "abc", error : "some error"};
+  const expectedState = { name: "email", value: "abc", error: "some error" };
   expect(newState.loginInputs[0]).toEqual(expectedState);
-})
-
-test('should increment the step', ()=>{
-  const action = authReducer(initialState, { type: actionTypes.AUTH_INCREMENT_STEP});
-  expect(action).toEqual({...initialState, currentStep:2})
 });
-
-test('should decrement the step', ()=>{
-  const action = authReducer(initialState, { type: actionTypes.AUTH_DECREMENT_STEP});
-  expect(action).toEqual({...initialState, currentStep:0})
-});
-

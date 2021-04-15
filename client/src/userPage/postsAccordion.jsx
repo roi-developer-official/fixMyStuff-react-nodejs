@@ -22,7 +22,8 @@ function Accordion({ items, isOpenIndex, handleClick, isClickedIndexes, showDele
     }
    
   }
-
+  console.log(items);
+  
   return items.map((item, i) => {
     return (
       <div key={i} className="post_accordion_item">

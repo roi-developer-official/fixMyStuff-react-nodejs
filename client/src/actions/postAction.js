@@ -6,9 +6,8 @@ export const actionTypes = {
   POST_ADD_SUCCESS: "POST_ADD_SUCCESS",
   POST_RESET_STATE: "POST_RESET_STATE",
   POST_ADD_SET_INPUT: "POST_ADD_SET_INPUT",
-  POST_INCREMENT_STEP: "POST_INCREMENT_STEP",
-  POST_DECREMENT_STEP: "POST_DECREMENT_STEP",
   POST_GET_POSTS: "POST_GET_POSTS",
+  POST_GET_POSTS_SUCESS: "POST_GET_POSTS_SUCESS",
 };
 
 /**
@@ -25,17 +24,25 @@ export const addPost = (email) => (dispatch, getState) => {
   axios
     .post("/api/user/create-post", reqData)
     .then((res) => {
-      dispatch({ type: actionTypes.POST_ADD_SUCCESS, payload: res.data.post });
+      dispatch({ type: actionTypes.POST_ADD_SUCCESS, payload: res.data });
     })
     .catch((error) => {
-      console.log(error);
       const message = extractErrorMessage(error);
       dispatch({ type: actionTypes.POST_ADD_FAIL, payload: message });
     });
 };
 
-
-export const getPosts = (email,page) => (dispatch) => {
-  axios.get(`/api/user/posts/email=${email}&page=${page}`);
-
+export const getPosts = (email, page) => (dispatch) => {
+  axios
+    .get(`/api/user/posts?&email=${email}&page=${page}`)
+    .then((res) => {
+      dispatch({
+        type: actionTypes.POST_GET_POSTS_SUCESS,
+        payload: res.data.result.posts,
+      });
+    })
+    .catch((error) => {
+      const message = extractErrorMessage(error);
+      dispatch({ type: actionTypes.POST_ADD_FAIL, payload: message });
+    });
 };

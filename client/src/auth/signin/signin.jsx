@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { buttons as page2Buttons } from "./elements";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -16,9 +16,8 @@ import { useHistory } from "react-router";
 const steps = [1, 2, 3, 4];
 
 export default function SignIn() {
-  const { loading, error, success, currentStep } = useSelector(
-    (state) => state.authReducer
-  );
+  const { loading, error, success } = useSelector((state) => state.authReducer);
+  const [currentStep, setCurrentStep] = useState(1);
   const timerId = useRef();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -48,14 +47,15 @@ export default function SignIn() {
             name: input.name,
             value: input.value,
           });
-        dispatch({ type: actionTypes.AUTH_INCREMENT_STEP });
+        setCurrentStep(currentStep + 1);
+
         break;
       case "Done":
         dispatch({ type: actionTypes.AUTH_ACTION_START });
         dispatch(signIn());
         break;
       case "Back":
-        dispatch({ type: actionTypes.AUTH_DECREMENT_STEP });
+        setCurrentStep(currentStep - 1);
         break;
       default:
         return;

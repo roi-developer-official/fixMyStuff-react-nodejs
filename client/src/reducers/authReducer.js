@@ -91,16 +91,6 @@ const authReducer = (state = initialState, action) => {
         expiry: action.payload.expiry,
         success: true,
       };
-    case actionTypes.AUTH_INCREMENT_STEP:
-      return {
-        ...state,
-        currentStep: state.currentStep + 1,
-      };
-    case actionTypes.AUTH_DECREMENT_STEP:
-      return {
-        ...state,
-        currentStep: state.currentStep - 1,
-      };
     default:
       return state;
   }

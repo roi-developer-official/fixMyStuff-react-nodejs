@@ -23,16 +23,6 @@ const postReducer = (state = initialState, action) => {
   let index;
   let updatedInput;
   switch (action.type) {
-      case actionTypes.POST_INCREMENT_STEP: 
-        return {
-            ...state,
-            currentPage :state.currentPage + 1
-        };
-      case actionTypes.POST_DECREMENT_STEP: 
-        return {
-            ...state,
-            currentPage :state.currentPage - 1
-        };
         case actionTypes.POST_ADD_SET_INPUT:
           updatedInput = [...state.addPostInputs[action.page]];
           index = updatedInput.findIndex((input) => input.name === action.name);
@@ -43,7 +33,11 @@ const postReducer = (state = initialState, action) => {
             addPostInputs: { ...state.addPostInputs, [action.page]: updatedInput },
           };
     case actionTypes.POST_RESET_STATE:
-        return initialState;
+        return {
+          ...state,
+          error:null,
+          success:false
+        };
     case actionTypes.POST_ACTION_START:
         return {
             ...state,
@@ -61,8 +55,15 @@ const postReducer = (state = initialState, action) => {
           ...state,
           loading: false,
           error: null,
-          post: action.payload,
+          posts: state.posts.concat([action.payload]),
           success:true
+        }
+      case actionTypes.POST_GET_POSTS_SUCESS:
+        return {
+          ...state,
+          error:null,
+          loading:false,
+          posts: action.payload,
         }
     default:
       return state;

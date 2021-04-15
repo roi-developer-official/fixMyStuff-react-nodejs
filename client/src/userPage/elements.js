@@ -40,9 +40,6 @@ export const textAreas = {
   name: "description",
   cols: 30,
   rows: 5,
-  validations: {
-    required: false,
-  },
 };
 
 export const buttons = {

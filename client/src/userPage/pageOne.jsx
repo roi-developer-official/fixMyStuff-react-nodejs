@@ -26,7 +26,7 @@ export default function PageOne({ show, changePage }) {
     if (label === "Cancel") history.push("/My-page");
     else {
       for (let i = 0; i < inputs.length; i++) {
-        if (inputs[i].error.length > 0 || inputs[i].value.length === 0) {
+        if (inputs[i].error.length > 0) {
           refs.current[i].focus();
           return;
         }

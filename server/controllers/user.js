@@ -9,6 +9,7 @@ module.exports.createPost = async (req, res, next) => {
   const data = req.body;
   let image = null;
   
+  console.log(user);
   if (req.file) image = req.file.path;
 
   const post = await Post.create({

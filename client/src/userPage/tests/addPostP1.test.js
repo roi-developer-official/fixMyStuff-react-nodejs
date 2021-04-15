@@ -2,94 +2,85 @@ import { mount } from "enzyme";
 import PageOne from "../pageOne";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router";
-import { useReducer } from "react";
+import { Provider } from "react-redux";
+import { storeFactory } from "../../tests/testUtils";
+
 let history;
-let mockReducer = jest.fn();
 const mockChangePage = jest.fn();
-let mockState = {
-  inputs: [
+
+const state = {
+  loading: false,
+  error: null,
+  success: false,
+  addPostInputs: {
+    page1: [
+      { name: "title", value: "", error: "" },
+      { name: "maxPayment", value: "", error: "" },
+      { name: "description", value: "", error: "" },
+    ],
+    page2: [{ name: "image", value: "" }],
+  },
+};
+let inputs = {
+  page1: [
     { name: "title", value: "", error: "" },
     { name: "maxPayment", value: "", error: "" },
+    { name: "description", value: "", error: "" },
   ],
+  page2: [{ name: "image", value: "" }],
 };
 
-jest.mock("react", () => ({
-  ...jest.requireActual("react"),
-  useReducer: jest.fn(),
-}));
-
-const setup = (props = {}) => {
+describe("add-post", () => {
   history = createMemoryHistory();
-  return mount(
-    <Router history={history}>
-      <PageOne {...props} />
-    </Router>
-  );
-};
 
-describe("add post page 1", () => {
-beforeEach(() => {
-  useReducer.mockReturnValue([mockState, mockReducer]);
+  const setup = (props = {}, initalState = { postReducer: { ...state } }) => {
+    const store = storeFactory(initalState);
+    return mount(
+      <Router history={history}>
+        <Provider store={store}>
+          <PageOne {...props} />
+        </Provider>
+      </Router>
+    );
+  };
+
+  afterEach(() => {
+    state.addPostInputs = JSON.parse(JSON.stringify(inputs));
+    mockChangePage.mockClear();
+  });
+
+  describe("page 1", () => {
+    test("should render without errors", () => {
+      const wrapper = setup({ changePage: mockChangePage });
+      const wrappingDiv = wrapper.find({ className: "form_page" });
+      expect(wrappingDiv).toHaveLength(1);
+    });
+
+    test("should redirect to /my-page on cancel clicked", () => {
+      const wrapper = setup();
+      const cancelDiv = wrapper.find({ label: "Cancel" });
+      expect(cancelDiv).toHaveLength(1);
+      cancelDiv.simulate("click");
+      expect(history.location.pathname).toBe("/My-page");
+    });
+
+    test("should not change the page when errors in not null", () => {
+      const wrapper = setup({ changePage: mockChangePage });
+      state.addPostInputs.page1[0].value = "valid";
+      state.addPostInputs.page1[0].error = "some error";
+      state.addPostInputs.page1[1].value = 12;
+      const nextButton = wrapper.find({ label: "Next" });
+      nextButton.simulate("click");
+      expect(mockChangePage).not.toBeCalled();
+    });
+
+    test("should change the page when page have no error", () => {
+      state.addPostInputs.page1[0].value = "valid";
+      state.addPostInputs.page1[1].value = 12;
+      const wrapper = setup({ changePage: mockChangePage });
+      const nextButton = wrapper.find({ label: "Next" });
+      nextButton.simulate("click");
+      expect(mockChangePage).toBeCalledTimes(1);
+    });
+  });
 });
-
-afterEach(() => {
-  mockState.inputs = [
-    { name: "title", value: "", error: "" },
-    { name: "maxPayment", value: "", error: "" },
-  ];
-  mockChangePage.mockClear();
-});
-
-  test("should render without errors", () => {
-    const wrapper = setup();
-    const wrappingDiv = wrapper.find({ className: "add_post_page" });
-    expect(wrappingDiv).toHaveLength(1);
-  });
-
-  test("should redirect to /my-page on cancel clicked", () => {
-    const wrapper = setup();
-    const cancelDiv = wrapper.find({ label: "Cancel" });
-    expect(cancelDiv).toHaveLength(1);
-    cancelDiv.simulate("click");
-    expect(history.location.pathname).toBe("/My-page");
-  });
-
-  test("should not change page when inputs value invalid", () => {
-    const wrapper = setup({ changePage: mockChangePage });
-    const nextButton = wrapper.find({ label: "Next" });
-    expect(nextButton).toHaveLength(1);
-    nextButton.simulate("click");
-    expect(mockChangePage).not.toBeCalled();
-  });
-
-  test("should not change the page when errors in not null", () => {
-    const wrapper = setup({ changePage: mockChangePage });
-    mockState.inputs[0].value = "valid";
-    mockState.inputs[1].value = 12;
-    mockState.inputs[0].error = "some error";
-    const nextButton = wrapper.find({ label: "Next" });
-    nextButton.simulate("click");
-    expect(mockChangePage).not.toBeCalled();
-  });
-
-  test("should change the page when page have no error", () => {
-    const wrapper = setup({ changePage: mockChangePage });
-    mockState.inputs[0].value = "valid";
-    mockState.inputs[1].value = 12;
-    const nextButton = wrapper.find({ label: "Next" });
-    nextButton.simulate("click");
-    expect(mockChangePage).toBeCalledTimes(1);
-  });
-
-  test('should display error FormFeedback on error', ()=>{
-    const wrapper = setup();
-    mockState.inputs[0].value = "valid";
-    mockState.inputs[1].value = 12;
-    const doneButton = wrapper.find({label : "Done"});
-    doneButton.simulate("click");
-    const feedback = wrapper.find({ className: "form_feedback_wrapper" });
-    expect(feedback).toHaveLength(1);
-    expect(feedback.text()).toBe("Login Successfuly!");
-  })
-});
-

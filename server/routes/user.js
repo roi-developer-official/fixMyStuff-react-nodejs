@@ -12,6 +12,7 @@ const validateUserIntegrity = async (value, req) => {
     method: ["findByEmail", decoded.email],
   }).findOne({ attributes: ["id", "email"] });
 
+  console.log(user);
   let email = user.toJSON().email;
   if (!user || (email !== req.body.email && email !== req.query.email)) {
     return Promise.reject("no user with that email");
@@ -28,23 +29,16 @@ router.post(
     body("description").notEmpty().isString().trim().escape(),
     body("email").notEmpty().isEmail().escape(),
     body("image").optional().escape(),
-    cookie("connect").custom(async (value, { req }) => {
-      return validateUserIntegrity(value, req);
-    }),
   ]),
+  cookie("connect").custom(async (value, { req }) => {
+    return validateUserIntegrity(value, req);
+  }),
   userController.createPost
 );
-
 
 router.get(
   "/posts",
   inputValidation([
-    cookie("connect")
-      .notEmpty()
-      .custom(async (value, { req }) => {
-        return validateUserIntegrity(value, req);
-      })
-      .escape(),
     query("page")
       .notEmpty()
       .isString()
@@ -56,6 +50,12 @@ router.get(
       .isInt(),
     query("email").isEmail().escape(),
   ]),
+  cookie("connect")
+    .notEmpty()
+    .custom(async (value, { req }) => {
+      return validateUserIntegrity(value, req);
+    })
+    .escape(),
   userController.getPosts
 );
 
