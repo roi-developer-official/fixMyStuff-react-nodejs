@@ -1,31 +1,38 @@
 import UserDetails from "./userDetails";
 import UserPosts from "./userPosts";
 import UserPostsHeader from "./userPostsHeader";
-
-import React, {useState} from 'react';
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { deletePosts } from "../actions/postAction";
+import { useAuth } from "../hooks/useAuth";
 function PostsContainer({ children }) {
   return <div className="userp_posts">{children}</div>;
 }
 
 function UserPage() {
   const [showDeleteInputs, setShowDeleteInputs] = useState(false);
-  const [page,setPage] = useState(1);
-  const [order,setOrder] = useState("updatedAt");
+  const user = useAuth()[0];
+  const dispatch = useDispatch();
 
-  function toggleDeleteInputs(){
-    setShowDeleteInputs(!showDeleteInputs)
-  }
-
-  function setOrderValue(value){
-    setOrder(value);
+  function toggleDeleteInputs() {
+    if (showDeleteInputs) {
+      dispatch(deletePosts(user.email));
+    } else {
+      setShowDeleteInputs(!showDeleteInputs);
+    }
   }
 
   return (
     <div className="userp_container">
       <UserDetails />
       <PostsContainer>
-        <UserPostsHeader setOrderValue={setOrderValue} deleteButtonState={showDeleteInputs} toggleDeleteInputs={toggleDeleteInputs} />
-        <UserPosts order={order} page={page} showDeleteInputs={showDeleteInputs}/>
+        <UserPostsHeader
+          deleteButtonState={showDeleteInputs}
+          toggleDeleteInputs={toggleDeleteInputs}
+        />
+        <UserPosts
+          showDeleteInputs={showDeleteInputs}
+        />
       </PostsContainer>
     </div>
   );

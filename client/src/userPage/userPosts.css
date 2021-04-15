@@ -128,11 +128,16 @@
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
 }
-
 .userp_sort_opt_text{
   display: flex;
 }
 
+.no_posts_text{
+  text-align: center;
+  margin:15px auto;
+  font-size: 15px;
+  color: gray;
+}
 /* accordion */
 
 .userp_posts_head {

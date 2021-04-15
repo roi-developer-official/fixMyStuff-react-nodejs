@@ -8,6 +8,14 @@ export const actionTypes = {
   POST_ADD_SET_INPUT: "POST_ADD_SET_INPUT",
   POST_GET_POSTS: "POST_GET_POSTS",
   POST_GET_POSTS_SUCESS: "POST_GET_POSTS_SUCESS",
+  POST_GET_POSTS_FAIL: "POST_GET_POSTS_FAIL",
+  POST_DELETE_POSTS: "POST_DELETE_POSTS",
+  POST_ADD_DELETE_POST: "POST_ADD_DELETE_POST",
+  POST_REMOVE_DELETE_POST: "POST_REMOVE_DELETE_POST",
+  POST_INCREMENT_PAGE: "POST_INCREMENT_PAGE",
+  POST_DECREMENT_PAGE: "POST_INCREMENT_PAGE",
+  POST_SET_ORDER: "POST_SET_ORDER",
+  POST_DELETE_POSTS_FAIL: "POST_DELETE_POSTS_FAIL",
 };
 
 /**
@@ -31,10 +39,17 @@ export const addPost = (email) => (dispatch, getState) => {
       dispatch({ type: actionTypes.POST_ADD_FAIL, payload: message });
     });
 };
-
-export const getPosts = (email, page,order) => (dispatch) => {
+/**
+ * @function getPosts
+ * @param {string} email - user email
+ * @param {number} page - the page number to be fetched
+ * @param {string} order - order on which to fetch.
+ * @returns {array} - posts array
+ */
+export const getPosts = () => (dispatch, getState) => {
+  const { page, order } = getState().postReducer;
   axios
-    .get(`/api/user/posts?&email=${email}&page=${page}&order=${order}`)
+    .get(`/api/user/posts?&page=${page}&order=${order}`)
     .then((res) => {
       dispatch({
         type: actionTypes.POST_GET_POSTS_SUCESS,
@@ -43,6 +58,33 @@ export const getPosts = (email, page,order) => (dispatch) => {
     })
     .catch((error) => {
       const message = extractErrorMessage(error);
-      dispatch({ type: actionTypes.POST_ADD_FAIL, payload: message });
+      dispatch({ type: actionTypes.POST_GET_POSTS_FAIL, payload: message });
     });
+};
+
+/**
+ * @function deletePosts - delete multyple posts
+ * @param {string} email - the email of the user
+ * @returns
+ */
+export const deletePosts = () => (dispatch, getState) => {
+  let deleted = getState().postReducer.deletedPosts;
+  let reqData;
+  if (deleted.length > 0) {
+    reqData = {
+      deleted,
+    };
+
+    axios
+      .post("/api/user/delete-posts", reqData)
+      .then(() => dispatch(getPosts()))
+      .catch((error) =>
+        dispatch({
+          type: actionTypes.POST_DELETE_POSTS_FAIL,
+          payload: extractErrorMessage(error),
+        })
+      );
+  } else {
+    return;
+  }
 };

@@ -1,7 +1,10 @@
 import { Button } from "../Global_UI";
 import { useHistory } from "react-router";
 import { useCallback, useEffect, useState } from "react";
+
 import V from "../assets/v.svg";
+import { useDispatch } from "react-redux";
+import { actionTypes } from "../actions/postAction";
 
 let sortItems = [
   {
@@ -18,20 +21,20 @@ let sortItems = [
   },
 ];
 
-function SortOptions({ hideSortOptions, setOrderValue, activeIndex }) {
+function SortOptions({ hideSortOptions, activeIndex }) {
+  const dispatch = useDispatch();
 
-  let hideSortOptionsCalled = useCallback(
-    () => hideSortOptions.call(null, activeIndex),
-    [hideSortOptions, activeIndex]
-  );
+  const callHideOptions = useCallback(() => hideSortOptions.call(null, false), [
+    hideSortOptions,
+  ]);
+
   useEffect(() => {
-    window.addEventListener("click", hideSortOptionsCalled);
-    return () => window.removeEventListener("click", hideSortOptionsCalled);
-  }, [hideSortOptionsCalled]);
-
+    window.addEventListener("click", callHideOptions);
+    return () => window.removeEventListener("click", callHideOptions);
+  }, [callHideOptions]);
 
   function onSortClicked(orderBy, index) {
-    setOrderValue(orderBy);
+    dispatch({ type: actionTypes.POST_SET_ORDER, payload: orderBy });
     hideSortOptions(index);
   }
 
@@ -57,7 +60,7 @@ function SortOptions({ hideSortOptions, setOrderValue, activeIndex }) {
       {sortItems.map((item, index) => (
         <div
           key={index}
-          onClick={() => onSortClicked(item.order, index)}
+          onMouseDown={() => onSortClicked(item.order, index)}
           className="userp_sort_opt"
         >
           <div className="userp_sort_opt_text">
@@ -70,18 +73,20 @@ function SortOptions({ hideSortOptions, setOrderValue, activeIndex }) {
   );
 }
 
-export default function UserPostsHeader({
-  toggleDeleteInputs,
-  deleteButtonState,
-  setOrderValue,
-}) {
+function UserPostsHeader({ toggleDeleteInputs, deleteButtonState }) {
   const history = useHistory();
-  const [showSortOpt, setShowSortOpt] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
+
+  const [state, setState] = useState({
+    showSortOpt: false,
+    activeIndex: 0,
+  });
 
   function toggleShowSortOption(index) {
-    if (index !== activeIndex) setActiveIndex(index);
-    setShowSortOpt(!showSortOpt);
+    if (typeof index === "number") {
+      setState({ showSortOpt: !state.showSortOpt, activeIndex: index });
+    } else {
+      setState({ ...state, showSortOpt: false });
+    }
   }
 
   return (
@@ -93,16 +98,15 @@ export default function UserPostsHeader({
           className="userp_new_btn"
           onClick={() => history.push("/Create-post")}
         ></Button>
-        {showSortOpt && (
+        {state.showSortOpt && (
           <SortOptions
-            activeIndex={activeIndex}
+            activeIndex={state.activeIndex}
             hideSortOptions={toggleShowSortOption}
-            setOrderValue={setOrderValue}
           />
         )}
         <Button
           label="Sort"
-          onClick={() => toggleShowSortOption(activeIndex)}
+          onClick={() => toggleShowSortOption(state.activeIndex)}
           className="userp_sort_btn"
         ></Button>
         <Button
@@ -114,3 +118,5 @@ export default function UserPostsHeader({
     </>
   );
 }
+
+export default UserPostsHeader;

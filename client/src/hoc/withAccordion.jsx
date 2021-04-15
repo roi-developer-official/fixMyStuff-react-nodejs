@@ -16,21 +16,23 @@ export default function withAccordion(WrapperComponent) {
     addToIsClickedIndexes(index) {
       if (!this.state.isClickedIndexes.includes(index)) {
         let newIsClickedIndexes = this.state.isClickedIndexes.concat([index]);
-        this.setState({...this.state, isClickedIndexes : newIsClickedIndexes});
+        this.setState({ ...this.state, isClickedIndexes: newIsClickedIndexes });
       }
     }
 
-    handleClick(index) {
+    handleClick(index, isDeleteMode) {
       let newIsOpen;
       let state = !this.state.isOpen[index];
-      if (!this.props.multy) {
-        newIsOpen = this.state.isOpen.map(() => false);
-      } else {
-        newIsOpen = this.state.isOpen.slice();
+      if (!isDeleteMode) {
+        if (!this.props.multy) {
+          newIsOpen = this.state.isOpen.map(() => false);
+        } else {
+          newIsOpen = this.state.isOpen.slice();
+        }
+        newIsOpen[index] = state;
+        this.addToIsClickedIndexes(index);
+        this.setState({ isOpen: newIsOpen, isClicked: true });
       }
-      newIsOpen[index] = state;
-      this.addToIsClickedIndexes(index);
-      this.setState({ isOpen: newIsOpen, isClicked: true });
     }
 
     getOpenIndexes() {

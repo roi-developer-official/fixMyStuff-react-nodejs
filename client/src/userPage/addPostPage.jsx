@@ -16,7 +16,7 @@ import { useEffect, useRef, useState } from "react";
 function AddPostPage() {
   const history = useHistory();
   const user = useAuth()[0];
-  const { loading, error, success } = useSelector((state) => state.postReducer);
+  const { loading, addPostError : error, success } = useSelector((state) => state.postReducer);
   const [currentStep, setCurrentStap] = useState(1);
   const dispatch = useDispatch();
   const timerId = useRef();
