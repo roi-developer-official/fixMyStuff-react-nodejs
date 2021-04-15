@@ -11,13 +11,9 @@ const validateUserIntegrity = async (value, req) => {
   let user = await User.scope({
     method: ["findByEmail", decoded.email],
   }).findOne({ attributes: ["id", "email"] });
-
-  console.log(user);
-  let email = user.toJSON().email;
-  if (!user || (email !== req.body.email && email !== req.query.email)) {
+  if (!user) {
     return Promise.reject("no user with that email");
   }
-
   req.user = user.toJSON();
 };
 
@@ -48,15 +44,29 @@ router.get(
         return parseInt(value);
       })
       .isInt(),
-    query("email").isEmail().escape(),
+    query("order").notEmpty().isString().escape(),
   ]),
   cookie("connect")
     .notEmpty()
-    .custom(async (value, { req }) => {
+    .custom((value, { req }) => {
       return validateUserIntegrity(value, req);
     })
     .escape(),
   userController.getPosts
+);
+
+router.post(
+  "/delete-posts",
+  inputValidation([
+    body("deleted").notEmpty().isArray(),
+  ]),
+  cookie("connect")
+    .notEmpty()
+    .custom((value, { req }) => {
+      return validateUserIntegrity(value, req);
+    })
+    .escape(),
+  userController.deletePosts
 );
 
 module.exports = router;

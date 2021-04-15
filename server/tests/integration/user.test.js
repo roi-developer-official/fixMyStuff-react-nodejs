@@ -22,7 +22,6 @@ const data = {
   email: user.email,
   password: user.password,
 };
-let page = 1;
 const post = {
   title: "some title",
   maxPayment: 10,
@@ -31,14 +30,13 @@ const post = {
   userId: 1,
 };
 
+let page = 1;
+
 describe("user", () => {
   let cookie;
   let token;
   let loginRes;
 
-  async function createPost() {
-    await Post.create(post);
-  }
   async function createUserAndPassword() {
     await User.create(user);
     const hash = await bcrypt.hash(user.password, 12);
@@ -60,9 +58,20 @@ describe("user", () => {
       });
   }
 
-  async function createPostExec(reqData) {
+   function createPostExec(email = user.email, sendPost = post) {
     return request(server)
       .post("/api/user/create-post")
+      .set("Cookie", [cookie, loginRes.headers["set-cookie"][0]])
+      .send({
+        _csrf: token,
+        ...sendPost,
+        email: user.email,
+      });
+  }
+
+  function deletePostExec(reqData) {
+    return request(server)
+      .post("/api/user/delete-posts")
       .set("Cookie", [cookie, loginRes.headers["set-cookie"][0]])
       .send({
         _csrf: token,
@@ -76,6 +85,13 @@ describe("user", () => {
     token = res.body.csrfToken;
   }
 
+  function getPostsExec() {
+    return request(server)
+      .get(`/api/user/posts?&email=${data.email}&page=${page}&order=createdAt`)
+      .set("Cookie", loginRes.headers["set-cookie"][0])
+      .send();
+  }
+
   beforeEach(async () => {
     await createUserAndPassword();
     await setCookieAndToken();
@@ -84,17 +100,13 @@ describe("user", () => {
 
   afterEach(async () => {
     await deleteUserAndPassword();
-    server.close();
+    await Post.destroy({ where: {}, truncate: true });
+    await server.close();
   });
 
   describe("user --post/create-post", () => {
-
     test("should pass the validation with right values", async () => {
-      let reqData = {
-        ...post,
-        email: user.email,
-      };
-      const res = await createPostExec(reqData);
+      const res = await createPostExec();
       expect(res.status).toBe(201);
       expect(res.body).toMatchObject(post);
     });
@@ -108,23 +120,13 @@ describe("user", () => {
     });
 
     test("should reject the request when values not currect", async () => {
-      let reqData = {
-        email: user.email,
-        post: {},
-      };
-      let res = await createPostExec(reqData);
+      let res = await createPostExec(user.email,{});
       expect(res.status).toBe(401);
       expect(res.body.error.message).toBe("Invalid value");
     });
   });
 
   describe("user --get/posts", () => {
-    function getPostsExec() {
-      return request(server)
-        .get(`/api/user/posts?&email=${data.email}&page=${page}`)
-        .set("Cookie", loginRes.headers["set-cookie"][0])
-        .send();
-    }
 
     test("should pass the validation with right values", async () => {
       let res = await getPostsExec();
@@ -148,12 +150,25 @@ describe("user", () => {
     });
 
     test("should return post array", async () => {
-      await createPost();
-      await createPost();
+      await createPostExec();
+      await createPostExec();
       let res = await getPostsExec();
       let posts = res.body.result.posts;
       expect(posts).toHaveLength(2);
       expect(posts[0]).toMatchObject(post);
+      expect(res.status).toBe(200);
+    });
+  });
+
+  describe("user --post/delete-posts", () => {
+    test("should pass validation with right values", async () => {
+      await createPostExec();
+      await createPostExec();
+      const deleteReqData = {
+        deleted: [1, 2],
+        email: user.email,
+      };
+      const res = await deletePostExec(deleteReqData);
       expect(res.status).toBe(200);
     });
   });

@@ -1,5 +1,6 @@
 const Post = require("../models/Post");
 const { throwError } = require("../util/throwError");
+const { Op } = require("sequelize");
 const deleteFile = require("../util/deleteFile").deleteFile;
 const User = require("../models/user");
 
@@ -8,8 +9,7 @@ module.exports.createPost = async (req, res, next) => {
   const id = user.id;
   const data = req.body;
   let image = null;
-  
-  console.log(user);
+
   if (req.file) image = req.file.path;
 
   const post = await Post.create({
@@ -19,7 +19,7 @@ module.exports.createPost = async (req, res, next) => {
     image: image,
     userId: id,
   });
- 
+
   if (!post) {
     if (req.file) deleteFile(req.file.path);
     return throwError("somthing went wrong", 500, next);
@@ -29,19 +29,18 @@ module.exports.createPost = async (req, res, next) => {
 const POST_PER_PAGE = 8;
 
 module.exports.getPosts = async (req, res, next) => {
-
   let page = req.query.page;
-  const userId = await User.scope({
-    method: ["findByEmail", req.user.email],
-  }).findOne({ attributes: ["id"] });
+  let order = req.query.order;
+  let orderBy = order === "updatedAt" ? "DESC" : "ASC";
 
-  let id = userId.dataValues.id
+  let id = req.user.id
   const posts = await Post.findAll({
     where: {
       userId: id,
     },
-    offset: (page - 1)  * POST_PER_PAGE,
-    limit: POST_PER_PAGE
+    order: [[order, orderBy]],
+    offset: (page - 1) * POST_PER_PAGE,
+    limit: POST_PER_PAGE,
   });
 
   let output = {
@@ -51,4 +50,19 @@ module.exports.getPosts = async (req, res, next) => {
   };
 
   res.status(200).json(output);
+};
+
+module.exports.deletePosts = async (req, res, next) => {
+  let ids = req.body.deleted;
+  let id = req.user.id;
+  let deleted = await Post.destroy({
+    where: {
+      userId: id,
+      id: [...ids],
+    },
+  });
+  if (deleted === ids.length) res.sendStatus(200);
+  else {
+    return next("something went wrong!, Unable to delete!");
+  }
 };
