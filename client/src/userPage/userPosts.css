@@ -91,7 +91,6 @@
   color: white;
 }
 
-
 .userp_sort_opt_wrapper{
   position: absolute;
   top: 110%;
@@ -130,6 +129,9 @@
   border-bottom-right-radius: 5px;
 }
 
+.userp_sort_opt_text{
+  display: flex;
+}
 
 /* accordion */
 

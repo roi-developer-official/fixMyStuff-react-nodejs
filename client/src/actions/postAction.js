@@ -32,9 +32,9 @@ export const addPost = (email) => (dispatch, getState) => {
     });
 };
 
-export const getPosts = (email, page) => (dispatch) => {
+export const getPosts = (email, page,order) => (dispatch) => {
   axios
-    .get(`/api/user/posts?&email=${email}&page=${page}`)
+    .get(`/api/user/posts?&email=${email}&page=${page}&order=${order}`)
     .then((res) => {
       dispatch({
         type: actionTypes.POST_GET_POSTS_SUCESS,
