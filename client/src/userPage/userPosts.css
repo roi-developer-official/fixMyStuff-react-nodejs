@@ -183,12 +183,9 @@
   overflow: hidden;
 }
 
-.post_accordion_item:last-child > .details_container{
-   border-bottom: 0.5px solid rgb(206, 206, 206);
-}
-
 .post_accordion_item > .details_container.open{
     animation: showDetails 0.3s ease forwards;
+    border-bottom: 0.5px solid rgb(206, 206, 206);
 }
 
 .post_accordion_item > .details_container.close{

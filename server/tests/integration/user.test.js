@@ -32,10 +32,18 @@ const post = {
 
 let page = 1;
 
+let deleteReqData = {
+  deleted: [],
+  email: user.email,
+  page: 1,
+  order: "createdAt",
+};
+
 describe("user", () => {
   let cookie;
   let token;
   let loginRes;
+  let _loginToken;
 
   async function createUserAndPassword() {
     await User.create(user);
@@ -56,12 +64,13 @@ describe("user", () => {
         _csrf: token,
         ...data,
       });
+    _loginToken = loginRes.headers["set-cookie"][0];
   }
 
-   function createPostExec(email = user.email, sendPost = post) {
+  function createPostExec(sendPost = post) {
     return request(server)
       .post("/api/user/create-post")
-      .set("Cookie", [cookie, loginRes.headers["set-cookie"][0]])
+      .set("Cookie", [cookie, _loginToken])
       .send({
         _csrf: token,
         ...sendPost,
@@ -69,10 +78,10 @@ describe("user", () => {
       });
   }
 
-  function deletePostExec(reqData) {
+  function deletePostExec(reqData = deleteReqData) {
     return request(server)
       .post("/api/user/delete-posts")
-      .set("Cookie", [cookie, loginRes.headers["set-cookie"][0]])
+      .set("Cookie", [cookie, _loginToken])
       .send({
         _csrf: token,
         ...reqData,
@@ -87,8 +96,8 @@ describe("user", () => {
 
   function getPostsExec() {
     return request(server)
-      .get(`/api/user/posts?&email=${data.email}&page=${page}&order=createdAt`)
-      .set("Cookie", loginRes.headers["set-cookie"][0])
+      .get(`/api/user/posts?&page=${page}&order=createdAt`)
+      .set("Cookie", _loginToken)
       .send();
   }
 
@@ -102,6 +111,12 @@ describe("user", () => {
     await deleteUserAndPassword();
     await Post.destroy({ where: {}, truncate: true });
     await server.close();
+    deleteReqData = {
+      deleted: [],
+      email: user.email,
+      page: 1,
+      order: "createdAt",
+    };
   });
 
   describe("user --post/create-post", () => {
@@ -120,25 +135,25 @@ describe("user", () => {
     });
 
     test("should reject the request when values not currect", async () => {
-      let res = await createPostExec(user.email,{});
+      let res = await createPostExec(user.email, {});
       expect(res.status).toBe(401);
       expect(res.body.error.message).toBe("Invalid value");
     });
   });
 
   describe("user --get/posts", () => {
-
     test("should pass the validation with right values", async () => {
       let res = await getPostsExec();
       expect(res.status).toBe(200);
     });
 
     test("sholud return error when credentials incorrect", async () => {
-      data.email = "nothing";
+      let tempLoginToken = _loginToken;
+      _loginToken = "nothing";
       let res = await getPostsExec();
       expect(res.status).toBe(401);
-      expect(res.body.error.message).toBe("Invalid value");
-      data.email = user.email;
+      expect(res.body.error.message).toBe("No authorization token was found");
+      _loginToken = tempLoginToken;
     });
 
     test("should return error when page is not currect value", async () => {
@@ -154,6 +169,8 @@ describe("user", () => {
       await createPostExec();
       let res = await getPostsExec();
       let posts = res.body.result.posts;
+      let count = res.body.result.count;
+      expect(count).toBe(2);
       expect(posts).toHaveLength(2);
       expect(posts[0]).toMatchObject(post);
       expect(res.status).toBe(200);
@@ -167,9 +184,53 @@ describe("user", () => {
       const deleteReqData = {
         deleted: [1, 2],
         email: user.email,
+        page: 2,
+        order: "createdAt",
       };
       const res = await deletePostExec(deleteReqData);
       expect(res.status).toBe(200);
+    });
+
+    async function createPosts(count){
+      for(let i  = 0 ; i < count; i++){
+        await createPostExec();
+      }
+    }
+    test("should retrun array of posts,count and page on page deleted", async () => {
+      await createPosts(16);
+
+      deleteReqData.deleted = [1, 2, 3, 4, 5, 6, 7, 8];
+      deleteReqData.page = 1;
+  
+      const res = await deletePostExec();
+      const { page, count, posts } = res.body.results;
+      expect(posts).toHaveLength(8);
+      expect(page).toBe(1);
+      expect(count).toBe(8);
+    });
+
+    test("should retrun page 1 with 8 posts", async () => {
+      await createPosts(16);
+      deleteReqData.page = 2;
+      deleteReqData.deleted = [8, 9, 10, 11, 12, 13, 14, 15];
+
+      const res = await deletePostExec();
+      const { page, count, posts } = res.body.results;
+      expect(posts).toHaveLength(8);
+      expect(page).toBe(1);
+      expect(count).toBe(8);
+    });
+
+    test("should retrun the same page with less posts", async () => {
+      await createPosts(16);
+      deleteReqData.deleted = [8, 9, 10, 11, 12, 13, 14];
+      deleteReqData.page = 2;
+    
+      const res = await deletePostExec();
+      const { page, count, posts } = res.body.results;
+      expect(posts).toHaveLength(1);
+      expect(page).toBe(2);
+      expect(count).toBe(9);
     });
   });
 });

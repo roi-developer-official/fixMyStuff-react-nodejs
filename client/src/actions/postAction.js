@@ -12,16 +12,15 @@ export const actionTypes = {
   POST_DELETE_POSTS: "POST_DELETE_POSTS",
   POST_ADD_DELETE_POST: "POST_ADD_DELETE_POST",
   POST_REMOVE_DELETE_POST: "POST_REMOVE_DELETE_POST",
-  POST_INCREMENT_PAGE: "POST_INCREMENT_PAGE",
-  POST_DECREMENT_PAGE: "POST_INCREMENT_PAGE",
+  POST_DELETE_POSTS_SUCCESS: "POST_DELETE_POSTS_SUCCESS",
+  POST_CHANGE_PAGE: "POST_CHANGE_PAGE",
   POST_SET_ORDER: "POST_SET_ORDER",
   POST_DELETE_POSTS_FAIL: "POST_DELETE_POSTS_FAIL",
 };
 
 /**
  * @function addPost Redux thunk action creator for addPost request
- * @param {object} reqData
- * @param {function} callBack
+ * @param {string} email - the email of the user
  * @returns
  */
 export const addPost = (email) => (dispatch, getState) => {
@@ -41,9 +40,6 @@ export const addPost = (email) => (dispatch, getState) => {
 };
 /**
  * @function getPosts
- * @param {string} email - user email
- * @param {number} page - the page number to be fetched
- * @param {string} order - order on which to fetch.
  * @returns {array} - posts array
  */
 export const getPosts = () => (dispatch, getState) => {
@@ -53,7 +49,10 @@ export const getPosts = () => (dispatch, getState) => {
     .then((res) => {
       dispatch({
         type: actionTypes.POST_GET_POSTS_SUCESS,
-        payload: res.data.result.posts,
+        payload: {
+          posts: res.data.result.posts,
+          count: res.data.result.count,
+        },
       });
     })
     .catch((error) => {
@@ -64,20 +63,27 @@ export const getPosts = () => (dispatch, getState) => {
 
 /**
  * @function deletePosts - delete multyple posts
- * @param {string} email - the email of the user
  * @returns
  */
 export const deletePosts = () => (dispatch, getState) => {
-  let deleted = getState().postReducer.deletedPosts;
-  let reqData;
-  if (deleted.length > 0) {
-    reqData = {
-      deleted,
-    };
+  let { deletedPosts, page, order } = getState().postReducer;
 
+  let reqData;
+  if (deletedPosts.length > 0) {
+    reqData = {
+      deleted: deletedPosts,
+      order,
+      page
+    };
     axios
       .post("/api/user/delete-posts", reqData)
-      .then(() => dispatch(getPosts()))
+      .then((res) => {
+        const { count, posts, page } = res.data.results;
+        dispatch({
+          type: actionTypes.POST_DELETE_POSTS_SUCCESS,
+          payload: { count, posts, page },
+        });
+      })
       .catch((error) =>
         dispatch({
           type: actionTypes.POST_DELETE_POSTS_FAIL,

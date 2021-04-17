@@ -19,6 +19,7 @@ const initialState = {
   },
   page: 1,
   order: "updatedAt",
+  count: 0
 };
 
 const postReducer = (state = initialState, action) => {
@@ -68,7 +69,8 @@ const postReducer = (state = initialState, action) => {
         ...state,
         getPostsError: null,
         loading: false,
-        posts: action.payload,
+        posts: action.payload.posts,
+        count: action.payload.count
       };
     case actionTypes.POST_GET_POSTS_FAIL:
       return {
@@ -88,20 +90,25 @@ const postReducer = (state = initialState, action) => {
         ...state,
         deletedPosts: updatedDeletedPosts,
       };
-    case actionTypes.POST_INCREMENT_PAGE:
+    case actionTypes.POST_CHANGE_PAGE:
       return {
         ...state,
-        page: state.page + 1,
+        page : action.payload
       };
-    case actionTypes.POST_DECREMENT_PAGE:
-      return {
-        ...state,
-        page: state.page - 1
-      }
     case actionTypes.POST_SET_ORDER:
       return {
         ...state,
-        order: action.payload
+        order: action.payload,
+      };
+    case actionTypes.POST_DELETE_POSTS_SUCCESS:
+      return {
+        ...state,
+        count: action.payload.count,
+        posts: action.payload.posts,
+        page: action.payload.page,
+        loading:false,
+        deletePostsError:null,
+        success:true
       }
     default:
       return state;

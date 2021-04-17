@@ -33,8 +33,8 @@ module.exports.getPosts = async (req, res, next) => {
   let order = req.query.order;
   let orderBy = order === "updatedAt" ? "DESC" : "ASC";
 
-  let id = req.user.id
-  const posts = await Post.findAll({
+  let id = req.user.id;
+  const { count, rows } = await Post.findAndCountAll({
     where: {
       userId: id,
     },
@@ -45,7 +45,8 @@ module.exports.getPosts = async (req, res, next) => {
 
   let output = {
     result: {
-      posts: [...posts],
+      posts: [...rows],
+      count: count,
     },
   };
 
@@ -55,14 +56,41 @@ module.exports.getPosts = async (req, res, next) => {
 module.exports.deletePosts = async (req, res, next) => {
   let ids = req.body.deleted;
   let id = req.user.id;
+  let page = req.body.page;
+  let order = req.body.order;
+  let orderBy = order === "updatedAt" ? "DESC" : "ASC";
+
   let deleted = await Post.destroy({
     where: {
       userId: id,
       id: [...ids],
     },
   });
-  if (deleted === ids.length) res.sendStatus(200);
-  else {
+
+  if (!deleted === ids.length) {
     return next("something went wrong!, Unable to delete!");
   }
+
+  let result = {
+    count: 0,
+    rows: [],
+  };
+
+  while (!result.rows.length > 0  && page > 0) {
+    result = await Post.findAndCountAll({
+      where: {
+        userId: id,
+      },
+      order: [[order, orderBy]],
+      offset: (page - 1) * POST_PER_PAGE,
+      limit: POST_PER_PAGE,
+    });
+    page--;
+  }
+
+  console.log(result);
+
+  res.status(200).json({
+    results: { posts: [...result.rows], count: result.count, page: page + 1 },
+  });
 };

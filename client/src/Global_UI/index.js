@@ -11,4 +11,5 @@ export { Inputs } from "./inputs";
 export { PopOver } from "./popover";
 export { FormPage } from "./formPage";
 export { AddImagePage } from "./addImagePage";
-export { PagesContainer } from './pagesContainer';
+export { PagesContainer } from "./pagesContainer";
+export { Pagination } from "./pagination";

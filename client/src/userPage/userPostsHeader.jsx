@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import V from "../assets/v.svg";
 import { useDispatch } from "react-redux";
-import { actionTypes } from "../actions/postAction";
+import { actionTypes, getPosts } from "../actions/postAction";
 
 let sortItems = [
   {
@@ -35,6 +35,7 @@ function SortOptions({ hideSortOptions, activeIndex }) {
 
   function onSortClicked(orderBy, index) {
     dispatch({ type: actionTypes.POST_SET_ORDER, payload: orderBy });
+    dispatch(getPosts());
     hideSortOptions(index);
   }
 

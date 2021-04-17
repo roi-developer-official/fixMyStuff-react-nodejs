@@ -20,16 +20,6 @@ const initialState = {
     page2: [{ name: "image", value: "" }],
   },
 };
-let posts = [
-  {
-    title: "some title",
-    id: 1,
-  },
-  {
-    title: "some title 2",
-    id: 2,
-  },
-];
 let store;
 
 const setup = (state = initialState) => {
@@ -57,7 +47,7 @@ describe("post reducer", () => {
     });
   });
 
-  test("sould add a post to posts array on post created", () => {
+  test("should add a post to posts array on post created", () => {
     let post = {
       title: "test title",
       maxPayment: 10,
@@ -98,34 +88,5 @@ describe("post reducer", () => {
     store.dispatch({ type: actionTypes.POST_REMOVE_DELETE_POST, payload: 1 });
     let newState = store.getState().postReducer;
     expect(newState.deletedPosts).toEqual([]);
-  });
-
-  test("should handle removing posts from origin posts array on success", () => {
-    let state = {
-      ...initialState,
-      posts: [...posts],
-    };
-    setup(state);
-    let newState = store.getState().postReducer;
-    store.dispatch({
-      type: actionTypes.POST_DELETE_POSTS_SUCCESS,
-      payload: [1],
-    });
-    newState = store.getState().postReducer;
-    expect(newState.posts).toMatchObject([{ id: 2, title: "some title 2" }]);
-  });
-
-  test("should handle removing multiple from posts array on success", () => {
-    let state = {
-      ...initialState,
-      posts: [...posts],
-    };
-    setup(state);
-    store.dispatch({
-      type: actionTypes.POST_DELETE_POSTS_SUCCESS,
-      payload: [1, 2],
-    });
-    let newState = store.getState().postReducer;
-    expect(newState.posts).toMatchObject([]);
   });
 });
