@@ -240,8 +240,8 @@
 
 .post_accordion_item > .details_container > .edit_btn{
   position: absolute;
-  right:25px;
-  top: 95%;
+  right:20px;
+  top: calc(100% - 10px);
   width: 60px;
   height: 30px;
 }
