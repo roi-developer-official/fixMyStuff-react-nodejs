@@ -47,19 +47,19 @@ describe("calculateNumOfPages", () => {
 describe("limit the array", () => {
   test("should return", () => {
     let arr = [1, 2, 3, 4, 5];
-    limitTheArray(arr, 5);
+    limitTheArray(arr, 5, 5, 5);
     expect(arr).toEqual([1, 2, 3, 4, 5]);
   });
 
   test("should return limited array", () => {
     let arr = [3, 4, 5, 6, 7];
-    limitTheArray(arr, 5);
+    limitTheArray(arr, 5, 5, 5);
     expect(arr).toEqual([1, 2, 3, 4, 5]);
   });
 
   test("should retrun limited array", () => {
     let arr = [6, 7, 8, 9, 10, 11];
-    limitTheArray(arr, 80 / 8);
+    limitTheArray(arr, 10, 6, 7);
     expect(arr).toEqual([1, 6, 7, 8, 9, 10]);
   });
 });
@@ -94,7 +94,7 @@ describe("pagination", () => {
     const wrapper = setup();
     wrapper.setProps({ ...initialProps, count: 80, currentPage: 6 });
 
-    expect(pages).toEqual([1, 6, 7, 8, 9, 10]);
+    expect(pages).toEqual([1, 5, 6, 7, 8, 9]);
   });
 
   test("should update pages on count change", () => {
@@ -128,13 +128,11 @@ describe("pagination", () => {
     expect(pages.at(1).props().style).toEqual({});
   });
 
-  test("shold return null when no pages", ()=>{
+  test("shold return null when no pages", () => {
     useState.mockReturnValueOnce([[], () => {}]);
     const wrapper = setup();
     const pagination = wrapper.find({ className: "pagination_wrapper" });
     expect(pagination).toHaveLength(0);
     expect(wrapper).toEqual({});
   });
-
-
 });

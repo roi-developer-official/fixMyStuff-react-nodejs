@@ -22,7 +22,7 @@ router.post(
   inputValidation([
     body("title").notEmpty().isString().trim().escape(),
     body("maxPayment").optional().isNumeric({ min: 0 }),
-    body("description").notEmpty().isString().trim().escape(),
+    body("description").optional().isString().trim().escape(),
     body("email").notEmpty().isEmail().escape(),
     body("image").optional().escape(),
   ]),
