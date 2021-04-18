@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { body, cookie, query } = require("express-validator");
+const { body, cookie, query, param } = require("express-validator");
 const inputValidation = require("../util/inputValidation").validate;
 const userController = require("../controllers/user");
 const decodeJwt = require("jwt-decode");
@@ -23,7 +23,6 @@ router.post(
     body("title").notEmpty().isString().trim().escape(),
     body("maxPayment").optional().isNumeric({ min: 0 }),
     body("description").optional().isString().trim().escape(),
-    body("email").notEmpty().isEmail().escape(),
     body("image").optional().escape(),
   ]),
   cookie("connect").custom(async (value, { req }) => {
@@ -57,9 +56,7 @@ router.get(
 
 router.post(
   "/delete-posts",
-  inputValidation([
-    body("deleted").notEmpty().isArray(),
-  ]),
+  inputValidation([body("deleted").notEmpty().isArray()]),
   cookie("connect")
     .notEmpty()
     .custom((value, { req }) => {
@@ -68,5 +65,32 @@ router.post(
     .escape(),
   userController.deletePosts
 );
+
+router.get(
+  "/single-post/:id",
+  param("id").notEmpty().isString().escape(),
+  cookie("connect")
+    .notEmpty()
+    .custom((value, { req }) => {
+      return validateUserIntegrity(value, req);
+    })
+    .escape(),
+  userController.getSinglePost
+);
+
+router.post(
+  "/edit-post/:id",
+  inputValidation([
+    body("title").notEmpty().isString().trim().escape(),
+    body("maxPayment").optional().isNumeric({ min: 0 }),
+    body("description").optional().isString().trim().escape(),
+    body("image").optional().escape(),
+  ]),
+  cookie("connect").custom(async (value, { req }) => {
+    return validateUserIntegrity(value, req);
+  }),
+  userController.editPost
+);
+
 
 module.exports = router;

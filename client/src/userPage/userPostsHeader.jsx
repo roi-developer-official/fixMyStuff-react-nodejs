@@ -1,7 +1,6 @@
 import { Button } from "../Global_UI";
 import { useHistory } from "react-router";
 import { useCallback, useEffect, useState } from "react";
-
 import V from "../assets/v.svg";
 import { useDispatch } from "react-redux";
 import { actionTypes, getPosts } from "../actions/postAction";
@@ -97,7 +96,7 @@ function UserPostsHeader({ toggleDeleteInputs, deleteButtonState }) {
         <Button
           label="New"
           className="userp_new_btn"
-          onClick={() => history.push("/Create-post")}
+          onClick={() => history.push("/Single-post?edit=false")}
         ></Button>
         {state.showSortOpt && (
           <SortOptions

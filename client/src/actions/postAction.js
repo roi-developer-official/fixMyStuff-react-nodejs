@@ -16,6 +16,9 @@ export const actionTypes = {
   POST_CHANGE_PAGE: "POST_CHANGE_PAGE",
   POST_SET_ORDER: "POST_SET_ORDER",
   POST_DELETE_POSTS_FAIL: "POST_DELETE_POSTS_FAIL",
+  POST_SET_SINGLE_POST: "POST_SET_SINGLE_POST",
+  POST_SET_INPUTS: "POST_SET_INPUTS",
+  POST_GET_SINGLE_FAIL: "POST_GET_SINGLE_FAIL",
 };
 
 /**
@@ -23,11 +26,9 @@ export const actionTypes = {
  * @param {string} email - the email of the user
  * @returns
  */
-export const addPost = (email) => (dispatch, getState) => {
+export const addPost = () => (dispatch, getState) => {
   const inputs = getState().postReducer.addPostInputs;
-  const rest = new Map();
-  rest.set("email", email);
-  const reqData = returnFormData(inputs, rest);
+  const reqData = returnFormData(inputs);
   axios
     .post("/api/user/create-post", reqData)
     .then((res) => {
@@ -73,7 +74,7 @@ export const deletePosts = () => (dispatch, getState) => {
     reqData = {
       deleted: deletedPosts,
       order,
-      page
+      page,
     };
     axios
       .post("/api/user/delete-posts", reqData)
@@ -93,4 +94,28 @@ export const deletePosts = () => (dispatch, getState) => {
   } else {
     return;
   }
+};
+
+export const getSinglePost = (id) => (dispatch) => {
+  axios
+    .get(`/api/user/single-post/${id}`)
+    .then((res) => {
+      dispatch({ type: actionTypes.POST_SET_INPUTS, payload: res.data });
+    })
+    .catch((error) => {
+      dispatch({
+        type: actionTypes.POST_GET_POSTS_FAIL,
+        error: extractErrorMessage(error),
+      });
+    });
+};
+
+export const editPost = (id) => (dispatch, getState) => {
+  
+  const inputs = getState().postReducer.addPostInputs;
+  const reqData = returnFormData(inputs);
+  axios
+    .post(`/api/user/edit-post/${id}`, reqData)
+    .then((res) => {})
+    .catch((error) => {});
 };

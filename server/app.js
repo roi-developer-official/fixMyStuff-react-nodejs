@@ -79,7 +79,7 @@ server = app.listen(PORT, (err) => {
   if (err) {
     console.log("app-error", err);
   } else {
-    // Post.destroy({where: {}}, { truncate: true });
+    Post.destroy({where: {}}, { truncate: true });
     // for (let i = 0; i < 50; i++) {
     //   Post.create({
     //     title: "title" + i,

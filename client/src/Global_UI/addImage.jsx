@@ -1,6 +1,6 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-export function AddImage({ setInputValue }) {
+export function AddImage({ setInputValue, imageSrc }) {
   const [dragOver, setDraggedOver] = useState(false);
   const imagePreviewRef = useRef();
   const inputRef = useRef();
@@ -12,6 +12,13 @@ export function AddImage({ setInputValue }) {
     
     setDraggedOver(true);
   }
+
+  useEffect(()=>{
+    if(imageSrc){
+      imagePreviewRef.current.src = imageSrc
+      setImage({})
+    }
+  },[imageSrc])
 
   function onDragLeave() {
     setDraggedOver(false);

@@ -1,46 +1,46 @@
-export const inputs = {
-  page1: [
-    {
-      label: "What happend? (few words)",
-      type: "text",
-      name: "title",
-      validations: {
-        required: true,
-      },
-    },
-    {
-      label: "wow much you willing to pay for it",
-      type: "number",
-      name: "maxPayment",
-      value: 0,
-      min: 0,
-      style: {
-        width: "32%",
-        height: "30px",
-        paddingLeft: "5px",
-        marginLeft: "5px",
-        marginRight: "auto",
-      },
-      validations: {
-        numeric: true,
-        min: 0,
-      },
-    },
-  ],
-  page2: [
-    {
-      name: "image",
-      value: null,
-    },
-  ],
-};
+// export const inputs = {
+//   page1: [
+//     {
+//       label: "What happend? (few words)",
+//       type: "text",
+//       name: "title",
+//       validations: {
+//         required: true,
+//       },
+//     },
+//     {
+//       label: "wow much you willing to pay for it",
+//       type: "number",
+//       name: "maxPayment",
+//       value: 0,
+//       min: 0,
+//       style: {
+//         width: "32%",
+//         height: "30px",
+//         paddingLeft: "5px",
+//         marginLeft: "5px",
+//         marginRight: "auto",
+//       },
+//       validations: {
+//         numeric: true,
+//         min: 0,
+//       },
+//     },
+//   ],
+//   page2: [
+//     {
+//       name: "image",
+//       value: null,
+//     },
+//   ],
+// };
 
-export const textAreas = {
-  label: "Add detailed description",
-  name: "description",
-  cols: 30,
-  rows: 5,
-};
+// export const textAreas = {
+//   label: "Add detailed description",
+//   name: "description",
+//   cols: 30,
+//   rows: 5,
+// };
 
 export const buttons = {
   page1: [

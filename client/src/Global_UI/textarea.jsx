@@ -5,6 +5,7 @@ export function Textarea ({
     rows,
     label,
     validations,
+    value,
     name,
     updateInput,
     addToRefsArray
@@ -39,11 +40,13 @@ export function Textarea ({
         updateInput(name,value, "");
     }
 
+
     return <div className="form_textarea_wrapper">
         <label>{label}</label>
         <textarea 
         data-test={name}
         ref={addToRefsArray}
+        value={value}
         cols={cols} 
         name={name}
         rows={rows} 

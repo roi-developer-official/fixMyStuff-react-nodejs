@@ -11,6 +11,7 @@ export function Input({
   name,
   accept,
   style,
+  className,
   min,
   updateInput,
   validations,
@@ -73,6 +74,7 @@ export function Input({
           {label}
         </label>
         <input
+          className={className}
           data-test={`${name}`}
           id={name}
           min={min}

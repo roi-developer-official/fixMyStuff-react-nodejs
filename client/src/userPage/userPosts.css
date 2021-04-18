@@ -80,6 +80,11 @@
   left: 5px;
 }
 
+.addpost_number_input{
+    width: 32%;
+    height: 30px;
+    padding-left: 5px;
+}
 .userp_head_items {
   display: flex;
   width: calc(80% - 13px);
@@ -184,7 +189,6 @@
 
 .post_accordion_item > .details_container.open {
   animation: showDetails 0.3s ease forwards;
-
   border-bottom: 0.5px solid rgb(206, 206, 206);
 }
 
@@ -207,6 +211,7 @@
 .post_accordion_item > .details_container > .description{
   width:50%;
   font-size: 14px;
+  height: fit-content;
   margin: 5px;
   margin-top: 12px;
 }
@@ -241,7 +246,7 @@
 .post_accordion_item > .details_container > .edit_btn{
   position: absolute;
   right:20px;
-  top: calc(100% - 10px);
+  top: 75%;
   width: 60px;
   height: 30px;
 }

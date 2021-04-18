@@ -8,9 +8,9 @@ import { useEffect } from "react";
 import Signin from "./auth/signin/signin";
 import LoginPage from "./auth/login/login";
 import UserPage from "./userPage/userPage";
-import AddPostPage from "./userPage/addPostPage";
 import { useDispatch, useSelector } from "react-redux";
 import { requestCsrfToken, authOnRefresh } from "./actions/authAction";
+import SinglePost from "./userPage/SinglePost";
 
 const AuthRoute = ({ children, ...rest }) => {
   const { user } = useSelector((state) => state);
@@ -52,7 +52,7 @@ function App() {
           <UnAuthRoute path="/Sign-in">
             <Signin></Signin>
           </UnAuthRoute>
-          <Route path="/Create-Post" component={AddPostPage}></Route>
+          <Route path="/Single-post/:id?" component={SinglePost}></Route>
           <Route path="/My-page" component={UserPage}></Route>
           <Redirect exact from="/" to="/Find-jobs"></Redirect>
           <Redirect from="*" to="/"></Redirect>

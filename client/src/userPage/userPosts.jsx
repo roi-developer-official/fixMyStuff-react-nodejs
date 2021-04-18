@@ -11,6 +11,7 @@ let activeStyle = {
   color: "white",
   border: "none",
 };
+
 const Error = ({ error }) => {
   if (error) return <p>{error}</p>;
   return null;
@@ -39,6 +40,7 @@ function UserPosts({ showDeleteInputs }) {
       <Error error={error} />
       {posts.length > 0 ? (
         <Accordion
+
           showDeleteInputs={showDeleteInputs}
           items={posts}
           multy={false}

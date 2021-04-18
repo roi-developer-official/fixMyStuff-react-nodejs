@@ -76,7 +76,7 @@ module.exports.deletePosts = async (req, res, next) => {
     rows: [],
   };
 
-  while (!result.rows.length > 0  && page > 0) {
+  while (!result.rows.length > 0 && page > 0) {
     result = await Post.findAndCountAll({
       where: {
         userId: id,
@@ -88,9 +88,53 @@ module.exports.deletePosts = async (req, res, next) => {
     page--;
   }
 
-  console.log(result);
-
   res.status(200).json({
     results: { posts: [...result.rows], count: result.count, page: page + 1 },
   });
+};
+
+module.exports.getSinglePost = async (req, res, next) => {
+  const postId = req.params.id;
+  const userId = req.user.id;
+
+  const post = await Post.findOne({
+    where: { userId: userId, id: postId },
+    attributes: { exclude: ["createdAt", "updatedAt"] },
+  });
+
+  if (post) res.status(200).json(post);
+  else {
+    res.status(404).send("post not found");
+  }
+};
+
+
+module.exports.editPost = async (req, res, next) => {
+  let postId = req.params.id;
+  let userId = req.user.id;
+
+  const data = req.body;
+  let image = null;
+  if (req.file) image = req.file.path;
+
+  let originPost = await Post.findOne({
+    where: { id: postId, userId: userId },
+  });
+
+  if (originPost.dataValues.image) {
+    deleteFile(originPost.image);
+  }
+  const updatedPost = await Post.update({
+    title: data.title,
+    maxPayment: data.maxPayment,
+    description: data.description,
+    image: image,
+    userId: id,
+  }, {where : {id : postId, userId : userId}});
+
+  if(updatedPost){
+    res.status(200).json(updatedPost);
+  } else {
+    return next("something went wrong!")
+  }
 };

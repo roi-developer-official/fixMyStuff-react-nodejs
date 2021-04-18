@@ -14,6 +14,7 @@ test("avatar menu should not be visible by default", () => {
   expect(image).not.toBeInTheDocument();
 });
 
+
 test("avatar rendered with image tag", async () => {
   const user = {
     firstName: "John",
@@ -26,8 +27,7 @@ test("avatar rendered with image tag", async () => {
   const image = screen.getByRole("img");
   expect(image).toBeInTheDocument();
   expect(image.src).toBe(
-    "https://images.pexels.com/photos/6615739/pexels-photo-6615739.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
-  );
+    "http://localhost/https://images.pexels.com/photos/6615739/pexels-photo-6615739.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
 });
 
 

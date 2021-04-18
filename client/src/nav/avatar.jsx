@@ -3,10 +3,11 @@ import "./avatar.css";
 import AvatarMenu from "./avatarMenu";
 
 export function ReturnImageIfExists({userInfo}) {
+  console.log(userInfo);
     if (userInfo.image !== null) {
       return (
         <div className="avatar_image">
-          <img className="avatar_image" src={userInfo.image} alt="" />
+          <img className="avatar_image" src={"/" + userInfo.image} alt="" />
         </div>
       );
     } else {

@@ -5,21 +5,38 @@ import {
   AddImagePage,
   PagesContainer,
 } from "../Global_UI";
-import { useAuth } from "../hooks/useAuth";
 import { buttons as page2Buttons } from "./elements";
-import { useHistory } from "react-router";
+import { useHistory, useParams, useLocation } from "react-router";
 import PageOne from "./pageOne";
 import { useDispatch, useSelector } from "react-redux";
-import { addPost, actionTypes } from "../actions/postAction";
+import {
+  addPost,
+  actionTypes,
+  getSinglePost,
+  editPost,
+} from "../actions/postAction";
 import { useEffect, useRef, useState } from "react";
 
-function AddPostPage() {
+function SinglePost() {
   const history = useHistory();
-  const user = useAuth()[0];
-  const { loading, addPostError : error, success } = useSelector((state) => state.postReducer);
+  const {
+    loading,
+    addPostError: error,
+    success,
+    addPostInputs: inputs,
+  } = useSelector((state) => state.postReducer);
+ 
   const [currentStep, setCurrentStap] = useState(1);
   const dispatch = useDispatch();
   const timerId = useRef();
+  let id = useParams().id;
+  let isEditMode =  new URLSearchParams(useLocation().search).get("edit") === "true";
+
+  useEffect(() => {
+    if (isEditMode) {
+      dispatch(getSinglePost(id));
+    }
+  }, [isEditMode, id, dispatch]);
 
   useEffect(() => {
     if (success) {
@@ -46,10 +63,13 @@ function AddPostPage() {
           type: actionTypes.POST_ADD_SET_INPUT,
           name: input.name,
           value: input.value,
-          page: "page2",
         });
         dispatch({ type: actionTypes.POST_ACTION_START });
-        dispatch(addPost(user.email));
+        if (isEditMode) {
+          dispatch(editPost(id));
+        } else {
+          dispatch(addPost());
+        }
         break;
       case "Back":
         setCurrentStap(currentStep - 1);
@@ -69,8 +89,13 @@ function AddPostPage() {
         success={success}
       />
       <PagesContainer>
-        <PageOne show={currentStep === 1} changePage={moveBetweenPages} />
+        <PageOne
+          inputs={inputs.page1}
+          show={currentStep === 1}
+          changePage={moveBetweenPages}
+        />
         <AddImagePage
+          imageSrc={"/" + inputs.page2[0].value}
           show={currentStep === 2}
           changePage={moveBetweenPages}
           buttons={page2Buttons.page2}
@@ -80,4 +105,4 @@ function AddPostPage() {
   );
 }
 
-export default AddPostPage;
+export default SinglePost;

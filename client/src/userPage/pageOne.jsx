@@ -1,28 +1,23 @@
-import {
-  buttons as pageButtons,
-  inputs as pageInputs,
-  textAreas as ta,
-} from "./elements";
+import { buttons as pageButtons } from "./elements";
 import { actionTypes } from "../actions/postAction";
 import { addToRefsArray } from "../shared";
 import { Textarea, Logo, Inputs, Buttons, FormPage } from "../Global_UI";
 import { useHistory } from "react-router-dom";
 import { useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
-export default function PageOne({ show, changePage }) {
+export default function PageOne({ show, changePage, inputs }) {
   const history = useHistory();
   const refs = useRef([]);
-  const { page1: inputs } = useSelector(
-    (state) => state.postReducer.addPostInputs
-  );
+  const textInputs = inputs.slice(0, 2);
+  const textArea = inputs.slice(2, 3)[0];
   const dispatch = useDispatch();
-
   function onInputChange(name, value, error) {
-    dispatch({ type: actionTypes.POST_ADD_SET_INPUT, name, value, error, page: "page1" });
+    dispatch({ type: actionTypes.POST_ADD_SET_INPUT, name, value, error });
   }
 
   function onButtonClicked(label) {
+    
     if (label === "Cancel") history.push("/My-page");
     else {
       for (let i = 0; i < inputs.length; i++) {
@@ -41,26 +36,27 @@ export default function PageOne({ show, changePage }) {
         <Logo></Logo>
       </div>
       <Inputs
-        inputs={pageInputs.page1}
+        inputs={textInputs}
         onChange={onInputChange}
         refs={refs}
         className="form_input_wrapper"
       />
       <Textarea
-        key={ta.name}
-        label={ta.label}
-        rows={ta.rows}
-        cols={ta.cols}
+        key={textArea.name}
+        label={textArea.label}
+        rows={textArea.rows}
+        cols={textArea.cols}
         updateInput={onInputChange}
-        name={ta.name}
+        value={textArea.value}
+        name={textArea.name}
         addToRefsArray={(el) => addToRefsArray(el, refs)}
-        validations={ta.validations}
+        validations={textArea.validations}
       ></Textarea>
       <Buttons
         buttons={pageButtons.page1}
         onClick={onButtonClicked}
         className="form_buttons_wrapper"
       />
-      </FormPage>
+    </FormPage>
   );
 }

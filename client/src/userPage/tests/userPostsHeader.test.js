@@ -75,5 +75,7 @@ test("should redirect to create post on new clicked", () => {
   const wrapper = setup();
   const newButton = wrapper.find({ label: "New" });
   newButton.simulate("click");
-  expect(history.location.pathname).toBe("/Create-post");
+  expect(history.location.pathname).toBe("/Single-post");
 });
+
+

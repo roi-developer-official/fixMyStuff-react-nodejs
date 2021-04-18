@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button, AddImage } from "./";
 import { FormPage } from "./formPage";
 
-export function AddImagePage({ show, changePage , buttons}) {
+export function AddImagePage({ show, changePage , buttons, imageSrc}) {
   let [input, setInput] = useState({ name: "image", value: null });
 
   function setImageValue(value) {
@@ -11,7 +11,7 @@ export function AddImagePage({ show, changePage , buttons}) {
 
   return (
     <FormPage show={show}>
-      <AddImage setInputValue={setImageValue}></AddImage>
+      <AddImage imageSrc={imageSrc} setInputValue={setImageValue}></AddImage>
       <div className="form_buttons_wrapper">
         {buttons.map((btn, i) => (
           <Button

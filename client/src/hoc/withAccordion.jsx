@@ -11,6 +11,7 @@ export default function withAccordion(WrapperComponent) {
         isClickedIndexes: [],
       };
       this.handleClick = this.handleClick.bind(this);
+      this.closeAll = this.closeAll.bind(this);
     }
 
     addToIsClickedIndexes(index) {
@@ -18,6 +19,15 @@ export default function withAccordion(WrapperComponent) {
         let newIsClickedIndexes = this.state.isClickedIndexes.concat([index]);
         this.setState({ ...this.state, isClickedIndexes: newIsClickedIndexes });
       }
+    }
+
+    closeAll() {
+      let length = this.props.items.length;
+      this.setState({
+        ...this.state,
+        isClickedIndexes: [],
+        isOpen: new Array(length).fill(false, 0, length),
+      });
     }
 
     handleClick(index, isDeleteMode) {
@@ -54,6 +64,7 @@ export default function withAccordion(WrapperComponent) {
           handleClick={this.handleClick}
           isClickedIndexes={this.state.isClickedIndexes}
           showDeleteInputs={this.props.showDeleteInputs}
+          closeAll={this.closeAll}
         />
       );
     }

@@ -12,6 +12,7 @@ export function Inputs({ inputs, onChange, refs, className }) {
           name={input.name}
           options={input.options}
           value={input.value}
+          className={input.className}
           updateInput={onChange}
           addToRefsArray={(el) => addToRefsArray(el, refs)}
           validations={input.validations}
