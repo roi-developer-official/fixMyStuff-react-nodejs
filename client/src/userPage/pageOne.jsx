@@ -12,12 +12,12 @@ export default function PageOne({ show, changePage, inputs }) {
   const textInputs = inputs.slice(0, 2);
   const textArea = inputs.slice(2, 3)[0];
   const dispatch = useDispatch();
+
   function onInputChange(name, value, error) {
     dispatch({ type: actionTypes.POST_ADD_SET_INPUT, name, value, error });
   }
 
   function onButtonClicked(label) {
-    
     if (label === "Cancel") history.push("/My-page");
     else {
       for (let i = 0; i < inputs.length; i++) {

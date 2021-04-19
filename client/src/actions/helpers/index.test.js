@@ -1,5 +1,4 @@
 import { returnFormData } from "./";
-
 describe("returnFormData", () => {
   const signInInputs = {
     page1: [
@@ -42,7 +41,7 @@ describe("returnFormData", () => {
     expect(form.get("email")).toEqual("test@test.com");
     let len = 0;
 
-    for (let i of form.entries()){
+    for (let i of form.entries()) {
       len++;
       //check for values
       expect(i[1]).toEqual(formData.get(i[0])); //bob === .get("firstName")
@@ -53,7 +52,6 @@ describe("returnFormData", () => {
     expect(len).toBe(5);
   });
 
-  
   test("shold return form data with right values", () => {
     const loginInputs = [
       { name: "firstName", value: "bob", error: "" },
@@ -65,10 +63,10 @@ describe("returnFormData", () => {
     const form = returnFormData(loginInputs);
 
     let len = 0;
-    for (let i of form.entries()){
+    for (let i of form.entries()) {
       len++;
       expect(i[1]).toEqual(formData.get(i[0]));
-      expect(formData.has(i[0])).toBeTruthy(); 
+      expect(formData.has(i[0])).toBeTruthy();
     }
 
     expect(len).toBe(2);

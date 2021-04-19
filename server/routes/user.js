@@ -68,7 +68,18 @@ router.post(
 
 router.get(
   "/single-post/:id",
-  param("id").notEmpty().isString().escape(),
+  inputValidation([
+    param("id")
+    .notEmpty()
+    .isString()
+    .custom((value) => {
+      if (isNaN(parseInt(value))) {
+        return Promise.reject("invalid value id");
+      }
+      return value;
+    })
+    .trim().escape(),
+  ]),
   cookie("connect")
     .notEmpty()
     .custom((value, { req }) => {
@@ -81,6 +92,17 @@ router.get(
 router.post(
   "/edit-post/:id",
   inputValidation([
+    param("id")
+      .notEmpty()
+      .isString()
+      .custom((value) => {
+        if (isNaN(parseInt(value))) {
+          return Promise.reject("invalid value id");
+        }
+        return value;
+      })
+      .trim()
+      .escape(),
     body("title").notEmpty().isString().trim().escape(),
     body("maxPayment").optional().isNumeric({ min: 0 }),
     body("description").optional().isString().trim().escape(),
@@ -91,6 +113,5 @@ router.post(
   }),
   userController.editPost
 );
-
 
 module.exports = router;

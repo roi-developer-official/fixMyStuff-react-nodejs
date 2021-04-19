@@ -1,6 +1,13 @@
 import { actionTypes } from "../../../actions/postAction";
 import { storeFactory } from "../../../tests/testUtils";
 
+const singlePost = {
+  id: 1,
+  title: "post title",
+  maxPayment: 10,
+  description: "post description",
+  image: null,
+};
 const initialState = {
   posts: [],
   post: null,
@@ -21,10 +28,10 @@ const initialState = {
   },
 };
 let store;
-
 const setup = (state = initialState) => {
   store = storeFactory({ postReducer: { ...state } });
 };
+
 describe("post reducer", () => {
   beforeEach(() => {
     setup();
@@ -49,12 +56,16 @@ describe("post reducer", () => {
 
   test("should add a post to posts array on post created", () => {
     let post = {
+      id: 1,
       title: "test title",
       maxPayment: 10,
       description: "some description",
       image: null,
     };
-    store.dispatch({ type: actionTypes.POST_ADD_SUCCESS, payload: post });
+    store.dispatch({
+      type: actionTypes.POST_ADD_SUCCESS,
+      payload: { post, message: "success" },
+    });
     const newState = store.getState().postReducer;
     expect(newState.posts).toHaveLength(1);
     expect(newState.posts[0]).toStrictEqual(post);
@@ -88,5 +99,28 @@ describe("post reducer", () => {
     store.dispatch({ type: actionTypes.POST_REMOVE_DELETE_POST, payload: 1 });
     let newState = store.getState().postReducer;
     expect(newState.deletedPosts).toEqual([]);
+  });
+
+  test("should add a edit the state posts when post edit succed", () => {
+    
+    setup();
+    store.dispatch({
+      type: actionTypes.POST_ADD_SUCCESS,
+      payload: { post: singlePost, message: "add succedd" },
+    });
+    let newPost = {
+      id: 1,
+      title: "post title 2",
+      maxPayment: 20,
+      descrption: "post desription 2",
+      image: null,
+    };
+    store.dispatch({
+      type: actionTypes.POST_EDIT_POST_SUCCESS,
+      payload: { post: newPost, message: "edited!" },
+    });
+    const newState = store.getState().postReducer;
+    expect(newState.posts).toHaveLength(1);
+    expect(newState.posts[0]).toStrictEqual(newPost);
   });
 });

@@ -39,6 +39,14 @@ let deleteReqData = {
   order: "createdAt",
 };
 
+let editReqData = {
+  title: "updated title",
+  maxPayment: 20,
+  description: "updated description",
+  image: null,
+  userId: 1,
+};
+
 describe("user", () => {
   let cookie;
   let token;
@@ -74,7 +82,6 @@ describe("user", () => {
       .send({
         _csrf: token,
         ...sendPost,
-        email: user.email,
       });
   }
 
@@ -99,6 +106,22 @@ describe("user", () => {
       .get(`/api/user/posts?&page=${page}&order=createdAt`)
       .set("Cookie", _loginToken)
       .send();
+  }
+
+  function getSinglePostExec(id = 1) {
+    return request(server)
+      .get(`/api/user/single-post/${id}`)
+      .set("Cookie", _loginToken);
+  }
+
+  function editPostExec(reqData = editReqData, id = 1) {
+    return request(server)
+      .post(`/api/user/edit-post/${id}`)
+      .set("Cookie", [cookie, _loginToken])
+      .send({
+        _csrf: token,
+        ...reqData,
+      });
   }
 
   beforeEach(async () => {
@@ -191,8 +214,8 @@ describe("user", () => {
       expect(res.status).toBe(200);
     });
 
-    async function createPosts(count){
-      for(let i  = 0 ; i < count; i++){
+    async function createPosts(count) {
+      for (let i = 0; i < count; i++) {
         await createPostExec();
       }
     }
@@ -201,7 +224,7 @@ describe("user", () => {
 
       deleteReqData.deleted = [1, 2, 3, 4, 5, 6, 7, 8];
       deleteReqData.page = 1;
-  
+
       const res = await deletePostExec();
       const { page, count, posts } = res.body.results;
       expect(posts).toHaveLength(8);
@@ -225,12 +248,59 @@ describe("user", () => {
       await createPosts(16);
       deleteReqData.deleted = [8, 9, 10, 11, 12, 13, 14];
       deleteReqData.page = 2;
-    
+
       const res = await deletePostExec();
       const { page, count, posts } = res.body.results;
       expect(posts).toHaveLength(1);
       expect(page).toBe(2);
       expect(count).toBe(9);
+    });
+  });
+
+  describe("user --get/single-post", () => {
+    test("should pass the validation when currect values given", async () => {
+      await createPostExec();
+      const res = await getSinglePostExec();
+      expect(res.body).toMatchObject(post);
+      expect(res.status).toBe(200);
+    });
+
+    test("should return 401 when invalid is given", async () => {
+      await createPostExec();
+      const res = await getSinglePostExec("abc");
+      expect(res.status).toBe(401);
+      expect(res.error.text).toMatch(/invalid|id/);
+    });
+
+    test("should return 404 when no id was given", async () => {
+      await createPostExec();
+      const res = await getSinglePostExec("");
+      expect(res.status).toBe(404);
+      expect(res.error.message).toMatch("cannot GET /api/user/single-post/");
+    });
+  });
+
+  describe("user --post/edit-post", () => {
+    test("should pass the validation when currect values was given", async () => {
+      await createPostExec();
+      let res = await editPostExec();
+      console.log(res.body);
+      expect(res.body).toMatchObject(editReqData);
+      expect(res.status).toBe(200);
+    });
+
+    test("should retrun error when no post id is given", async () => {
+      await createPostExec();
+      let res = await editPostExec(editReqData, "");
+      expect(res.error.message).toMatch("cannot POST /api/user/edit-post/");
+      expect(res.status).toBe(404);
+    });
+
+    test("should retrun error when post id in not valid", async () => {
+      await createPostExec();
+      let res = await editPostExec(editReqData, "abc");
+      expect(res.error.text).toMatch(/invalid|id/);
+      expect(res.status).toBe(401);
     });
   });
 });

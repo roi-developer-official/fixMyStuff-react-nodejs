@@ -1,11 +1,13 @@
 import { mount } from "enzyme";
-import { useSelector, useDispatch } from "react-redux";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Router, useParams } from "react-router";
 import SinglePost from "../SinglePost";
 import { createMemoryHistory } from "history";
-import { getSinglePost } from "../../actions/postAction";
-import { Router } from "react-router-dom";
-
-const state = {
+import { getSinglePost, addPost, editPost } from "../../actions/postAction";
+const history = createMemoryHistory();
+let currentStep = 1;
+let initalState = {
   loading: false,
   addPostError: null,
   success: false,
@@ -46,10 +48,11 @@ const state = {
     page2: [{ name: "image", value: "" }],
   },
 };
+let postId = 51;
 
-jest.mock("../../actions/postAction", () => ({
-  ...jest.requireActual("../../actions/postAction"),
-  getSinglePost: jest.fn((id) => id),
+jest.mock("react", () => ({
+  ...jest.requireActual("react"),
+  useState: jest.fn(),
 }));
 
 jest.mock("react-redux", () => ({
@@ -58,7 +61,22 @@ jest.mock("react-redux", () => ({
   useSelector: jest.fn(),
 }));
 
-let history = createMemoryHistory();
+jest.mock("react-router", () => ({
+  ...jest.requireActual("react-router"),
+  useParams: jest.fn(),
+}));
+
+jest.mock("../../actions/postAction", () => ({
+  ...jest.requireActual("../../actions/postAction"),
+  getSinglePost: jest.fn(),
+  addPost: jest.fn(),
+  editPost: jest.fn(),
+}));
+
+function pushHistory(edit) {
+  history.push(`/single-post/?edit=${edit}`);
+}
+
 const setup = () => {
   return mount(
     <Router history={history}>
@@ -66,16 +84,58 @@ const setup = () => {
     </Router>
   );
 };
-
+let mockSetState = jest.fn((step) => (currentStep = step));
 beforeEach(() => {
-  useSelector.mockReturnValue(state);
-  getSinglePost.mockImplementation((id) => id );
-  useDispatch.mockReturnValue((id) => {
-    getSinglePost(id);
-  });
+  useParams.mockReturnValue({ id: postId });
+  useState.mockReturnValue([currentStep, mockSetState]);
+  useDispatch.mockReturnValue(() => {});
+  useSelector.mockReturnValue(initalState);
 });
 
-test("should render without errors", () => {
-  const wrapper = setup();
-  expect(getSinglePost).toBeCalledWith({ type: "POST_RESET_STATE" });
+afterEach(() => {
+  getSinglePost.mockClear();
+  editPost.mockClear();
+  addPost.mockClear();
 });
+
+test("should render without errors and dispatch", () => {
+  setup();
+  pushHistory(false);
+  expect(getSinglePost).not.toBeCalled();
+});
+
+test("should dispatch getSinglePost with the id", () => {
+  setup();
+  pushHistory(true);
+  expect(getSinglePost).toBeCalledTimes(1);
+  expect(getSinglePost).toBeCalledWith(51);
+});
+
+test("should dispatch addPost in non edit mode", () => {
+  const wrapper = setup();
+  pushHistory(false);
+  const doneButton = wrapper.find({ "data-test": "button-done" });
+  doneButton.simulate("click");
+  expect(addPost).toBeCalled();
+  expect(editPost).not.toBeCalled();
+});
+
+test("should dispatch editPost in edit mode", () => {
+  const wrapper = setup();
+  pushHistory(true);
+  const doneButton = wrapper.find({ "data-test": "button-done" });
+  doneButton.simulate("click");
+  expect(editPost).toBeCalled();
+  expect(addPost).not.toBeCalled();
+});
+
+test("should increment and decrement current step", () => {
+  const wrapper = setup();
+  let nextButton = wrapper.find({ "data-test": "button-next" });
+  nextButton.simulate("click");
+  expect(mockSetState).toBeCalledWith(2);
+  let backButton = wrapper.find({ "data-test": "button-back" });
+  backButton.simulate("click");
+  expect(mockSetState).toBeCalledWith(0);
+});
+

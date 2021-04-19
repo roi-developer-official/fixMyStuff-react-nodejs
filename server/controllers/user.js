@@ -3,6 +3,7 @@ const { throwError } = require("../util/throwError");
 const { Op } = require("sequelize");
 const deleteFile = require("../util/deleteFile").deleteFile;
 const User = require("../models/user");
+const { sequelize } = require("../models/user");
 
 module.exports.createPost = async (req, res, next) => {
   const user = req.user;
@@ -102,12 +103,11 @@ module.exports.getSinglePost = async (req, res, next) => {
     attributes: { exclude: ["createdAt", "updatedAt"] },
   });
 
-  if (post) res.status(200).json(post);
+  if (post instanceof Post) res.status(200).json(post);
   else {
     res.status(404).send("post not found");
   }
 };
-
 
 module.exports.editPost = async (req, res, next) => {
   let postId = req.params.id;
@@ -124,17 +124,26 @@ module.exports.editPost = async (req, res, next) => {
   if (originPost.dataValues.image) {
     deleteFile(originPost.image);
   }
-  const updatedPost = await Post.update({
-    title: data.title,
-    maxPayment: data.maxPayment,
-    description: data.description,
-    image: image,
-    userId: id,
-  }, {where : {id : postId, userId : userId}});
 
-  if(updatedPost){
-    res.status(200).json(updatedPost);
-  } else {
-    return next("something went wrong!")
+  let result;
+  try {
+    result = await sequelize.transaction(async (t) => {
+      await Post.update(
+        {
+          title: data.title,
+          maxPayment: data.maxPayment,
+          description: data.description,
+          image: image,
+          userId: userId,
+        },
+        { where: { id: postId, userId: userId }, transaction: t }
+      );
+      const post = await Post.findOne({ where: { id: postId }, transaction: t });
+      return post;
+    });
+  } catch (error) {
+    return next("something went wrong!");
   }
+
+  res.status(200).send(result);
 };

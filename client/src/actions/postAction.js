@@ -18,6 +18,8 @@ export const actionTypes = {
   POST_DELETE_POSTS_FAIL: "POST_DELETE_POSTS_FAIL",
   POST_SET_SINGLE_POST: "POST_SET_SINGLE_POST",
   POST_SET_INPUTS: "POST_SET_INPUTS",
+  POST_EDIT_POST_SUCCESS: "POST_EDIT_POST_SUCCESS",
+  POST_EDIT_POST_FAIL: "POST_EDIT_POST_FAIL",
   POST_GET_SINGLE_FAIL: "POST_GET_SINGLE_FAIL",
 };
 
@@ -32,7 +34,10 @@ export const addPost = () => (dispatch, getState) => {
   axios
     .post("/api/user/create-post", reqData)
     .then((res) => {
-      dispatch({ type: actionTypes.POST_ADD_SUCCESS, payload: res.data });
+      dispatch({
+        type: actionTypes.POST_ADD_SUCCESS,
+        payload: { post: res.data, message: "Post created!" },
+      });
     })
     .catch((error) => {
       const message = extractErrorMessage(error);
@@ -82,7 +87,7 @@ export const deletePosts = () => (dispatch, getState) => {
         const { count, posts, page } = res.data.results;
         dispatch({
           type: actionTypes.POST_DELETE_POSTS_SUCCESS,
-          payload: { count, posts, page },
+          payload: { count, posts, page, message: "Deletion complete!" },
         });
       })
       .catch((error) =>
@@ -111,11 +116,21 @@ export const getSinglePost = (id) => (dispatch) => {
 };
 
 export const editPost = (id) => (dispatch, getState) => {
-  
   const inputs = getState().postReducer.addPostInputs;
   const reqData = returnFormData(inputs);
+
   axios
     .post(`/api/user/edit-post/${id}`, reqData)
-    .then((res) => {})
-    .catch((error) => {});
+    .then((res) => {
+      dispatch({
+        type: actionTypes.POST_EDIT_POST_SUCCESS,
+        payload: { post : res.data , message: "Edit succeed!" },
+      });
+    })
+    .catch((error) => {
+      dispatch({
+        type: actionTypes.POST_EDIT_POST_FAIL,
+        payload: extractErrorMessage(error),
+      });
+    });
 };

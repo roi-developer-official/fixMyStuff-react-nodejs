@@ -23,7 +23,6 @@ const state = {
   success: false,
 };
 
-
 describe("add-post", () => {
   history = createMemoryHistory();
 
@@ -46,7 +45,6 @@ describe("add-post", () => {
   });
 
   describe("page 1", () => {
-
     test("should render without errors", () => {
       const wrapper = setup();
       const wrappingDiv = wrapper.find({ className: "form_page show" });
@@ -61,19 +59,17 @@ describe("add-post", () => {
       expect(history.location.pathname).toBe("/My-page");
     });
 
-
     test("should not change the page when errors in not null", () => {
       let inputs = JSON.parse(JSON.stringify(initalProps.inputs));
       inputs[0].value = "valid";
       inputs[0].error = "some error";
       inputs[1].value = 12;
 
-      const wrapper = setup({...initalProps, inputs: inputs});
+      const wrapper = setup({ ...initalProps, inputs: inputs });
       wrapper.mount();
       const nextButton = wrapper.find({ label: "Next" });
       nextButton.simulate("click");
       expect(mockChangePage).not.toBeCalled();
-
     });
 
     test("should change the page when page have no error", () => {
@@ -86,6 +82,20 @@ describe("add-post", () => {
       expect(mockChangePage).toBeCalledTimes(1);
     });
 
-    
+    test("should popualte inputs when such inputs was given on edit mode", () => {
+      let inputs = JSON.parse(JSON.stringify(initalProps.inputs));
+      inputs[0].value = "title";
+      inputs[1].value = 12;
+      inputs[2].value = "description";
+      const wrapper = setup({ ...initalProps, inputs: inputs });
+      const titleInput = wrapper.find({ "data-test": "title"});
+      const maxPaymentInput = wrapper.find({ "data-test": "maxPayment"});
+      const descriptionInput = wrapper.find({ "data-test": "description"});
+      expect(titleInput.prop("value")).toBe("title")
+      expect(maxPaymentInput.prop("value")).toBe(12);
+      expect(descriptionInput.prop("value")).toBe("description");
+    });
+
+
   });
 });

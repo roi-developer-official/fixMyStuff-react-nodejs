@@ -25,7 +25,6 @@ function SinglePost() {
     success,
     addPostInputs: inputs,
   } = useSelector((state) => state.postReducer);
- 
   const [currentStep, setCurrentStap] = useState(1);
   const dispatch = useDispatch();
   const timerId = useRef();
@@ -36,7 +35,7 @@ function SinglePost() {
     if (isEditMode) {
       dispatch(getSinglePost(id));
     }
-  }, [isEditMode, id, dispatch]);
+  }, [isEditMode,id, dispatch]);
 
   useEffect(() => {
     if (success) {
@@ -85,7 +84,7 @@ function SinglePost() {
       <Steps currnetStep={currentStep} steps={[1, 2]}></Steps>
       <FormFeedback
         error={error}
-        message={success ? "Post Created Successfully!" : error}
+        message={success ? success : error}
         success={success}
       />
       <PagesContainer>

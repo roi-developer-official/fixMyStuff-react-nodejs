@@ -6,6 +6,7 @@ const initialState = {
   loading: false,
   success: false,
   addPostError: null,
+  editPostError: null,
   getPostsError: null,
   deletePostsError: null,
   currentPage: 1,
@@ -92,8 +93,8 @@ const postReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         error: null,
-        posts: state.posts.concat([action.payload]),
-        success: true,
+        posts: state.posts.concat([action.payload.post]),
+        success: action.payload.message,
       };
     case actionTypes.POST_GET_POSTS_SUCESS:
       return {
@@ -139,7 +140,7 @@ const postReducer = (state = initialState, action) => {
         page: action.payload.page,
         loading: false,
         deletePostsError: null,
-        success: true,
+        success: action.payload.message,
       };
     case actionTypes.POST_SET_SINGLE_POST:
       return {
@@ -151,14 +152,32 @@ const postReducer = (state = initialState, action) => {
       mergedInputs = updatedInputs.page1.concat(updatedInputs.page2);
       for (const [key, value] of Object.entries(action.payload)) {
         newInput = mergedInputs.find((input) => input.name === key);
-        if(newInput){
+        if (newInput) {
           newInput.value = value;
-       }
+        }
       }
       return {
         ...state,
         addPostInputs: updatedInputs,
       };
+    case actionTypes.POST_EDIT_POST_SUCCESS:
+      let updatadPosts = JSON.parse(JSON.stringify(state.posts));
+      let index = updatadPosts.findIndex((post) => post.id === action.payload.post.id);
+      updatadPosts[index] = action.payload.post;
+      return {
+        ...state,
+        success: action.payload.message,
+        posts: updatadPosts,
+        loading: false,
+        editPostError: null,
+      };
+    case actionTypes.POST_EDIT_POST_FAIL:
+      return {
+        ...state,
+        editPostError: action.payload,
+        loading: false,
+      };
+
     default:
       return state;
   }
