@@ -64,12 +64,13 @@ module.exports.signUp = async (req,res,next)=>{
         return next(error);
     }
 
-    const {firstName, lastName, email,image, createdAt,updatedAt}  = result.dataValues;
+    const {firstName, lastName, email,image, city, createdAt,updatedAt}  = result.dataValues;
     const user = {
         firstName: firstName,
         lastName : lastName,
         email:email,
-        image: image
+        image: image,
+        city: city
     }
 
     let output = {
@@ -91,7 +92,7 @@ module.exports.login = async(req,res,next)=>{
     const {email, password} = req.body;
     const user = req.user;
     const hash = await Password.findOne({where: {userId: user.id}});
-    const {firstName, lastName,createdAt,image,updatedAt} = user;
+    const {firstName, lastName, city,createdAt,image,updatedAt} = user;
 
     try {
     const match = await bcrypt.compare(password,hash.value);
@@ -101,6 +102,7 @@ module.exports.login = async(req,res,next)=>{
             firstName : firstName,
             lastName : lastName,
             email:email,
+            city: city,
             image:image
         }
         let output = {
@@ -138,7 +140,7 @@ module.exports.refreshPage = async (req,res,next)=>{
         const decoded = jwt.verify(req.cookies.connect,process.env.TOKEN_SECRET);
         
         if(decoded){
-            const user = await User.scope({method:['findByEmail',decoded.email]}).findOne({attributes:['firstName' , 'lastName', 'image','email']});
+            const user = await User.scope({method:['findByEmail',decoded.email]}).findOne({attributes:['firstName' , 'lastName', 'image','email',"city"]});
             const output ={
                 user: user,
                 expiresIn: decoded.exp
