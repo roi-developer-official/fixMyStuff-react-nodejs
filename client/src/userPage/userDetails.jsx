@@ -15,27 +15,8 @@ export function capitelizeFirstLetter(string) {
     .concat(string.substring(1, string.length));
 }
 
-let items = [
-  { label: "Edit details" },
-  { label: "Change password" },
-  { label: "Delete account" },
-];
-function EditMyDetailsMenu({ show }) {
-  if (show)
-    return (
-      <div className="edit_menu_items">
-        {items.map((item) => (
-          <div className="edit_menu_item">{item.label}</div>
-        ))}
-      </div>
-    );
-
-  return null;
-}
-
 function UserDetails() {
   const { user } = useSelector((state) => state.authReducer);
-  const [showMenu, setShowMenu] = useState(false);
   const history = useHistory();
   console.log(user);
 
@@ -53,12 +34,11 @@ function UserDetails() {
         <p>{capitelizeFirstLetter(user.city)}</p>
         <p>{user.email}</p>
         <Button
-          onClick={() => setShowMenu(!showMenu)}
+          onClick={()=>history.push("edit-user-details")}
           className="userp_details_btn"
           label="Edit"
         ></Button>
       </div>
-      <EditMyDetailsMenu show={showMenu} />
     </div>
   );
 }

@@ -120,6 +120,10 @@ export const getSinglePost = (id) => (dispatch) => {
     });
 };
 
+/**
+ * @function editPost - sends request to edit a post
+ * @param {number} id - the id of the edited post
+ */
 export const editPost = (id) => (dispatch, getState) => {
   const inputs = getState().postReducer.addPostInputs;
   const reqData = returnFormData(inputs);

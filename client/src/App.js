@@ -11,6 +11,7 @@ import UserPage from "./userPage/userPage";
 import { useDispatch, useSelector } from "react-redux";
 import { requestCsrfToken, authOnRefresh } from "./actions/authAction";
 import SinglePost from "./userPage/SinglePost";
+import EditUserDetails from "./userPage/editUserDetails";
 
 const AuthRoute = ({ children, ...rest }) => {
   const { user } = useSelector((state) => state);
@@ -53,6 +54,7 @@ function App() {
             <Signin></Signin>
           </UnAuthRoute>
           <Route path="/Single-post/:id?" component={SinglePost}></Route>
+          <Route path="/Edit-user-details" component={EditUserDetails}/>
           <Route path="/My-page" component={UserPage}></Route>
           <Redirect exact from="/" to="/Find-jobs"></Redirect>
           <Redirect from="*" to="/"></Redirect>

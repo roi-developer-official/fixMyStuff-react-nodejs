@@ -65,21 +65,4 @@
         cursor: pointer;
     }
 
-    .edit_menu_items{
-        width: 100%;
-        height: fit-content;
-        margin-top: 2px;
-        margin-left: 10px;
-    }
-
-    .edit_menu_item{
-        margin: 12px 0;
-        margin-left: 2px;
-        font-size: 14px;
-        cursor: pointer;
-    }
-    .edit_menu_item:hover{
-        text-decoration: underline;
-        font-weight: bold;
-    }
 }

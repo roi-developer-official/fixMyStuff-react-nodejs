@@ -35,7 +35,8 @@ export default function DesktopNav({ navItems, user, isAuth }) {
   const [showAvatar, setShowAvatar] = useState("");
 
   useEffect(()=>{
-    setShowAvatar(!/My-page/i.test(history.location.pathname));
+    const showAvatar = !/My-page/i.test(history.location.pathname) && !/edit-user-details/i.test(history.location.pathname);
+    setShowAvatar(showAvatar);
   }, [history.location.pathname])
 
   return (

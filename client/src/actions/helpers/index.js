@@ -35,13 +35,3 @@ export function extractErrorMessage(error) {
     return error.response.data.error.message;
   } else return "500 Connection Refuse";
 }
-
-
-export function generateNewPostFromInputs(inputs){
-  let post = {};  
-
-  for(let {key,value } of Object.keys(inputs)){
-    console.log(key, value);
-  }
-
-}
