@@ -5,8 +5,7 @@ const initialState = {
   post: null,
   loading: false,
   success: false,
-  addPostError: null,
-  editPostError: null,
+  singlePostError: null,
   getPostsError: null,
   deletePostsError: null,
   currentPage: 1,
@@ -70,11 +69,12 @@ const postReducer = (state = initialState, action) => {
     case actionTypes.POST_RESET_STATE:
       return {
         ...state,
-        addPostError: null,
+        singlePostError: null,
         deletePostsError: null,
         getPostsError: null,
         success: false,
         deletedPosts: [],
+        addPostInputs : initialState.addPostInputs
       };
     case actionTypes.POST_ACTION_START:
       return {
@@ -86,13 +86,13 @@ const postReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        addPostError: action.payload,
+        singlePostError: action.payload,
       };
     case actionTypes.POST_ADD_SUCCESS:
       return {
         ...state,
         loading: false,
-        error: null,
+        singlePostError: null,
         posts: state.posts.concat([action.payload.post]),
         success: action.payload.message,
       };
@@ -150,8 +150,10 @@ const postReducer = (state = initialState, action) => {
     case actionTypes.POST_SET_INPUTS:
       updatedInputs = JSON.parse(JSON.stringify(state.addPostInputs));
       mergedInputs = updatedInputs.page1.concat(updatedInputs.page2);
-      for (const [key, value] of Object.entries(action.payload)) {
+      for (let [key, value] of Object.entries(action.payload)) {
+        value = value === "null" ? null : value;
         newInput = mergedInputs.find((input) => input.name === key);
+
         if (newInput) {
           newInput.value = value;
         }
@@ -169,12 +171,12 @@ const postReducer = (state = initialState, action) => {
         success: action.payload.message,
         posts: updatadPosts,
         loading: false,
-        editPostError: null,
+        singlePostError: null,
       };
     case actionTypes.POST_EDIT_POST_FAIL:
       return {
         ...state,
-        editPostError: action.payload,
+        singlePostError: action.payload,
         loading: false,
       };
 

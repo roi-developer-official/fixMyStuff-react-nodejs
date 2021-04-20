@@ -61,6 +61,8 @@ module.exports.deletePosts = async (req, res, next) => {
   let order = req.body.order;
   let orderBy = order === "updatedAt" ? "DESC" : "ASC";
 
+  //delete images !!!!
+
   let deleted = await Post.destroy({
     where: {
       userId: id,
@@ -113,16 +115,27 @@ module.exports.editPost = async (req, res, next) => {
   let postId = req.params.id;
   let userId = req.user.id;
 
+
   const data = req.body;
-  let image = null;
+  let image = data.image;
+  let isImageDeleted = false;
   if (req.file) image = req.file.path;
 
-  let originPost = await Post.findOne({
+  let originalPost = await Post.findOne({
     where: { id: postId, userId: userId },
   });
 
-  if (originPost.dataValues.image) {
-    deleteFile(originPost.image);
+  let isImageExists =
+    originalPost.getDataValue("image") !== "null" &&
+    originalPost.getDataValue("image") !== "";
+  if (req.file && isImageExists) {
+    isImageDeleted = true;
+  } else if (image === "null" && isImageExists) {
+    isImageDeleted = true;
+  }
+
+  if (isImageExists && isImageDeleted) {
+    deleteFile(originalPost.getDataValue("image"));
   }
 
   let result;
@@ -138,7 +151,10 @@ module.exports.editPost = async (req, res, next) => {
         },
         { where: { id: postId, userId: userId }, transaction: t }
       );
-      const post = await Post.findOne({ where: { id: postId }, transaction: t });
+      const post = await Post.findOne({
+        where: { id: postId },
+        transaction: t,
+      });
       return post;
     });
   } catch (error) {

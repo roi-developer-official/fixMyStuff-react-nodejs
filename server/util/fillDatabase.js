@@ -33,11 +33,3 @@ const RoleName = require('../models/role_name');
     ]);
 
 })()
-
-
-
-
-
-
-
-

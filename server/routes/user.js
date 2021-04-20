@@ -106,7 +106,7 @@ router.post(
     body("title").notEmpty().isString().trim().escape(),
     body("maxPayment").optional().isNumeric({ min: 0 }),
     body("description").optional().isString().trim().escape(),
-    body("image").optional().escape(),
+    body("image").escape(),
   ]),
   cookie("connect").custom(async (value, { req }) => {
     return validateUserIntegrity(value, req);

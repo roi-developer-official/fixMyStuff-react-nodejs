@@ -34,6 +34,8 @@ function SinglePost() {
   useEffect(() => {
     if (isEditMode) {
       dispatch(getSinglePost(id));
+    }else {
+     
     }
   }, [isEditMode,id, dispatch]);
 
@@ -94,7 +96,7 @@ function SinglePost() {
           changePage={moveBetweenPages}
         />
         <AddImagePage
-          imageSrc={"/" + inputs.page2[0].value}
+          imageSrc={inputs.page2[0].value}
           show={currentStep === 2}
           changePage={moveBetweenPages}
           buttons={page2Buttons.page2}

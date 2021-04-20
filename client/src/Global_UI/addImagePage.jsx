@@ -3,7 +3,7 @@ import { Button, AddImage } from "./";
 import { FormPage } from "./formPage";
 
 export function AddImagePage({ show, changePage , buttons, imageSrc}) {
-  let [input, setInput] = useState({ name: "image", value: null });
+  let [input, setInput] = useState({ name: "image", value: imageSrc });
 
   function setImageValue(value) {
     setInput({ name: "image", value });

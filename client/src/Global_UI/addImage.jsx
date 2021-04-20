@@ -9,14 +9,13 @@ export function AddImage({ setInputValue, imageSrc }) {
   function onDragOver(e) {
     e.preventDefault();
     e.stopPropagation();
-    
     setDraggedOver(true);
   }
 
   useEffect(()=>{
-    if(imageSrc){
-      imagePreviewRef.current.src = imageSrc
-      setImage({})
+    if(imageSrc && typeof imageSrc === "string" && imageSrc !== "null"){
+      imagePreviewRef.current.src = "/" + imageSrc
+      setImage(imageSrc)
     }
   },[imageSrc])
 

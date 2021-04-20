@@ -101,6 +101,11 @@ export const deletePosts = () => (dispatch, getState) => {
   }
 };
 
+/**
+ * @function getSinglePost
+ * @param {string} id 
+ * @returns - post with the given id
+ */
 export const getSinglePost = (id) => (dispatch) => {
   axios
     .get(`/api/user/single-post/${id}`)

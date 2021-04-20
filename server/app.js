@@ -79,18 +79,7 @@ server = app.listen(PORT, (err) => {
   if (err) {
     console.log("app-error", err);
   } else {
-    Post.destroy({where: {}}, { truncate: true });
-    // for (let i = 0; i < 50; i++) {
-    //   Post.create({
-    //     title: "title" + i,
-    //     userId: 1,
-    //     description:
-    //       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut ducimus assumenda voluptatem autem perferendis molestias, exercitationem animi quibusdam sed veniam obcaecati, nobis rerum architecto quod! Ut reiciendis soluta voluptatum ex repellat commodi explicabo vel dolorum. Expedita quidem quibusdam illum earum beatae, maxime odio? Aliquam blanditiis, magnam saepe at vel obcaecati.",
-    //     image: "public/uploads/posts/1618735783538fajMIIMG_0163.JPG",
-    //     maxPayment: 100,
-    //   });
-    // }
-    // console.log('sucess_connection_server');
+
   }
 });
 
