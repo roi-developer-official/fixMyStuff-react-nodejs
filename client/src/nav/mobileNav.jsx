@@ -12,7 +12,7 @@ function MobileNav({navItems, isAuth}){
                         return <RenderAuthNavItem key={i.name} path={i.name} isAuth={isAuth}/>;
                     return <li key={i.name}><NavLink 
                     className='mobile_nav_item' 
-                    to={i.name.replace(' ', '-')} >{i.name}</NavLink></li>
+                    to={"/" + i.name.replace(' ', '-')} >{i.name}</NavLink></li>
                 })}
             </ul>
      </nav>

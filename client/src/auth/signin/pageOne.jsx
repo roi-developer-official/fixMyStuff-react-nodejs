@@ -3,19 +3,15 @@ import React, { useRef } from "react";
 import { useHistory } from "react-router-dom";
 import {
   buttons as pageButtons,
-  inputs as pageInputs,
-  selects as pageSelects,
 } from "./elements";
 import { actionTypes } from "../../actions/authAction";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
-function PageOne({ changePage, show }) {
+function PageOne({ changePage, show , inputs }) {
   const history = useHistory();
-  const { page1: inputs } = useSelector(
-    (state) => state.authReducer.signInInputs
-  );
   const dispatch = useDispatch();
   const refs = useRef([]);
+
 
   function onButtonClick(action) {
     if (action === "Cancel") {
@@ -37,7 +33,6 @@ function PageOne({ changePage, show }) {
       name: name,
       value: value,
       error: error,
-      page: "page1",
     });
   }
 
@@ -47,16 +42,10 @@ function PageOne({ changePage, show }) {
         <Logo></Logo>
       </div>
       <Inputs
-        inputs={pageInputs.page1}
+        inputs={inputs}
         onChange={onInputChange}
         refs={refs}
         className="form_input_wrapper"
-      />
-      <Inputs
-        inputs={pageSelects.page1}
-        onChange={onInputChange}
-        refs={refs}
-        className="form_select_wrapper show"
       />
       <Buttons
         className="form_buttons_wrapper"

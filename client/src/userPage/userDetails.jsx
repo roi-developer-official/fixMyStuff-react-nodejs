@@ -1,5 +1,4 @@
 import { useSelector } from "react-redux";
-import { useState } from "react";
 import { Button } from "../Global_UI/";
 import { useHistory } from "react-router-dom";
 import "./userDetails.css";

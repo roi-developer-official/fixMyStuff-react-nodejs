@@ -8,12 +8,14 @@ export function Inputs({ inputs, onChange, refs, className }) {
       <div key={i} className={className}>
         <Input
           inputType={input.type}
-          label={input.label}
+          label={input.showLabel? input.label : ""}
           name={input.name}
           options={input.options}
           value={input.value}
           className={input.className}
+          checked={input.checked}
           updateInput={onChange}
+          style={input.style}
           addToRefsArray={(el) => addToRefsArray(el, refs)}
           validations={input.validations}
         ></Input>

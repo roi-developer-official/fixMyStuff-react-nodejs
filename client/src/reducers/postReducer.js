@@ -51,7 +51,6 @@ const initialState = {
 };
 
 const postReducer = (state = initialState, action) => {
-  let index;
   let updatedInputs;
   let mergedInputs;
   let newInput;
@@ -147,6 +146,7 @@ const postReducer = (state = initialState, action) => {
         ...state,
         post: action.payload,
       };
+      
     case actionTypes.POST_SET_INPUTS:
       updatedInputs = JSON.parse(JSON.stringify(state.addPostInputs));
       mergedInputs = updatedInputs.page1.concat(updatedInputs.page2);

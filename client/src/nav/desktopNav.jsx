@@ -17,7 +17,7 @@ export function NavItems({ items, isAuth }) {
             <li key={item.name}>
               <NavLink
                 className="nav_item"
-                to={item.name.replace(' ', '-')}
+                to={"/" + item.name.replace(' ', '-')}
                 activeStyle={{ color: "#08a072", fontWeight: "bold" }}
               >
                 {item.name}

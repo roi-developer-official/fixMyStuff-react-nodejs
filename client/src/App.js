@@ -54,7 +54,7 @@ function App() {
             <Signin></Signin>
           </UnAuthRoute>
           <Route path="/Single-post/:id?" component={SinglePost}></Route>
-          <Route path="/Edit-user-details" component={EditUserDetails}/>
+          <Route path="/Edit-user-details" exact={false} component={EditUserDetails}/>
           <Route path="/My-page" component={UserPage}></Route>
           <Redirect exact from="/" to="/Find-jobs"></Redirect>
           <Redirect from="*" to="/"></Redirect>

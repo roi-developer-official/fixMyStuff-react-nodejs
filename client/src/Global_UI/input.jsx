@@ -42,7 +42,7 @@ export function Input({
   }
 
   const onInputChange = (input) => {
-    let value = input.type === "checkbox" ? input.checked : input.value;
+    let value = inputType === "checkbox"? input.checked : input.value;
     const name = input.name;
     setState({
       value: value,
@@ -60,8 +60,36 @@ export function Input({
       }, 80);
     }
   };
-
-  if (inputType !== "select") {
+  if (inputType === "select") {
+    return (
+      <>
+        <label htmlFor={label} className="label">
+          {label}
+        </label>
+        <select
+          ref={addToRefsArray}
+          id={label}
+          data-test={name}
+          name={name}
+          style={{...style}}
+          className="select"
+          onChange={(e) => {
+            onInputChange(e.target);
+          }}
+          onBlur={(e) => validateOnBlur(e.target)}
+        >
+          {options.map((opt, i) => {
+            return (
+              <option key={i} value={opt}>
+                {opt}
+              </option>
+            );
+          })}
+        </select>
+        {state.error && <span className="validation_text">{state.error}</span>}
+      </>
+    );
+  } else {
     return (
       <Fragment>
         <label
@@ -90,37 +118,11 @@ export function Input({
           style={{ ...style }}
           value={value ? value : state.value}
         />
-        {(error || state.error) && <span className="validation_text">{error || state.error}</span>}
+        {(error || state.error) && (
+          <span className="validation_text">{error || state.error}</span>
+        )}
         {popover && showPopover && <PopOver message={popOverMessage} />}
       </Fragment>
-    );
-  } else {
-    return (
-      <>
-        <label htmlFor={label} className="label">
-          {label}
-        </label>
-        <select
-          ref={addToRefsArray}
-          id={label}
-          data-test={name}
-          name={name}
-          className="select"
-          onChange={(e) => {
-            onInputChange(e.target);
-          }}
-          onBlur={(e) => validateOnBlur(e.target)}
-        >
-          {options.map((opt, i) => {
-            return (
-              <option key={i} value={opt}>
-                {opt}
-              </option>
-            );
-          })}
-        </select>
-        {state.error && <span className="validation_text">{state.error}</span>}
-      </>
     );
   }
 }

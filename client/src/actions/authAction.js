@@ -1,8 +1,5 @@
 import axios from "axios";
-import {
-  returnFormData,
-  extractErrorMessage,
-} from "./helpers";
+import { returnFormData, extractErrorMessage } from "./helpers";
 
 export const actionTypes = {
   AUTH_ACTION_START: "AUTH_ACTION_START",
@@ -12,6 +9,8 @@ export const actionTypes = {
   AUTH_SIGN_SET_INPUT: "AUTH_SIGN_SET_INPUT",
   AUTH_LOGIN_SET_INPUT: "AUTH_LOGIN_SET_INPUT",
   AUTH_LOGOUT: "AUTH_LOGOUT",
+  AUTH_SET_INPUTS: "AUTH_SET_INPUTS",
+  AUTH_FILL_INPUTS: "AUTH_FILL_INPUTS",
 };
 
 /**
@@ -103,6 +102,7 @@ export const authOnRefresh = () => (dispatch) =>
     }
   });
 
+
 /**
  * @function RequestCsrfToken - attaches csrf token to every following request
  */
@@ -111,5 +111,3 @@ export const requestCsrfToken = () =>
     const csrfToken = res.data.csrfToken;
     axios.defaults.headers["x-csrf-token"] = csrfToken;
   });
-
-  

@@ -17,16 +17,14 @@ const TOKEN_EXPIRY = 3600000;
 
 module.exports.signUp = async (req,res,next)=>{
     const data = req.body;
-    if(req.file){
-        data.image = req.file.path;
-    }
-
+  
     let { password , profession , experience } = data;
     let roleId = Number.parseInt(data.role);
     delete data['password'];
     delete data['role'];
     delete data['profession'];
     delete data['experience'];
+    data.image === req.file? req.file.path : null;
 
     let result;
     let professionId;

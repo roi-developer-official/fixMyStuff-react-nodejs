@@ -1,18 +1,11 @@
 import React from "react";
-import { Input, Buttons, FormPage } from "../../Global_UI";
-import {
-  inputs as pageInputs,
-  buttons as pageButtons,
-  selects as pageSelects,
-} from "./elements";
-import { addToRefsArray } from "../../shared";
+import { Buttons, FormPage, Inputs } from "../../Global_UI";
+import { buttons as pageButtons } from "./elements";
 import { actionTypes } from "../../actions/authAction";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
-function PageThree({ changePage, show }) {
-  const { page3 : inputs } = useSelector((state) => state.authReducer.signInInputs);
+function PageThree({ changePage, show, inputs }) {
   const dispatch = useDispatch();
-  const checkedRef = inputs[0].value || 1;
   const refs = React.useRef([]);
 
   function onButtonClick(action) {
@@ -36,7 +29,6 @@ function PageThree({ changePage, show }) {
       name: name,
       value: value,
       error: error,
-      page: "page3"
     });
   }
 
@@ -46,46 +38,18 @@ function PageThree({ changePage, show }) {
         Are you looking for Jobs?
       </p>
       <br />
-      <div className="form_input_wrapper">
-        {pageInputs.page3.map((input, i) => {
-          return (
-            <Input
-              key={i}
-              inputType={input.type}
-              name={input.name}
-              label={input.label}
-              value={input.value}
-              checked={parseInt(checkedRef) - 1 !== i}
-              updateInput={onInputChange}
-            ></Input>
-          );
-        })}
-      </div>
-      {pageSelects.page3.map((input, i) => {
-        return (
-          <div
-            data-test="select_wrapper"
-            className={`form_select_wrapper${
-              parseInt(checkedRef) === 2 ? " show" : ""
-            }`}
-            key={i}
-          >
-            <Input
-              inputType={input.type}
-              key={input.name}
-              addToRefsArray={(el) => addToRefsArray(el, refs)}
-              name={input.name}
-              label={input.label}
-              validations={input.validations}
-              options={input.options}
-              updateInput={onInputChange}
-            />
-          </div>
-        );
-      })}
-        <Buttons buttons={pageButtons.page3} onClick={onButtonClick} className="form_buttons_wrapper"/>
+      <Inputs
+        inputs={inputs}
+        onChange={onInputChange}
+        refs={refs}
+        className="form_input_wrapper"
+      />
+      <Buttons
+        buttons={pageButtons.page3}
+        onClick={onButtonClick}
+        className="form_buttons_wrapper"
+      />
     </FormPage>
-
   );
 }
 export default PageThree;

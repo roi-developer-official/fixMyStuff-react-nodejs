@@ -16,7 +16,7 @@ import { useHistory } from "react-router";
 const steps = [1, 2, 3, 4];
 
 export default function SignIn() {
-  const { loading, error, success } = useSelector((state) => state.authReducer);
+  const { loading, error, success, signInInputs : inputs  } = useSelector((state) => state.authReducer);
   const [currentStep, setCurrentStep] = useState(1);
   const timerId = useRef();
   const dispatch = useDispatch();
@@ -72,17 +72,19 @@ export default function SignIn() {
         success={success}
       />
       <PagesContainer>
-        <PageOne show={currentStep === 1} changePage={moveBetweenPages} />
+        <PageOne inputs={inputs.page1} show={currentStep === 1} changePage={moveBetweenPages} />
         <AddImagePage
           show={currentStep === 2}
           changePage={moveBetweenPages}
           buttons={page2Buttons.page3}
         />
         <PageThree
+          inputs={inputs.page3}
           show={currentStep === 3}
           changePage={moveBetweenPages}
         ></PageThree>
         <PageFour
+          inputs={inputs.page4}
           show={currentStep === 4}
           changePage={moveBetweenPages}
         ></PageFour>
