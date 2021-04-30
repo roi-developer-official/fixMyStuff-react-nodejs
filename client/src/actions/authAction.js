@@ -19,8 +19,9 @@ export const actionTypes = {
  * @returns {dispatch} - dispating action in case of success or faliure
  */
 export const signIn = () => (dispatch, getState) => {
-  const inputs = getState().authReducer.signInInputs;
+  let inputs = getState().authReducer.signInInputs;
   const reqData = returnFormData(inputs);
+  reqData.delete("role");
   return axios
     .post("api/auth/signup", reqData)
     .then((res) =>
@@ -101,7 +102,6 @@ export const authOnRefresh = () => (dispatch) =>
       });
     }
   });
-
 
 /**
  * @function RequestCsrfToken - attaches csrf token to every following request

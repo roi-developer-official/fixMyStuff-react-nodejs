@@ -12,16 +12,33 @@ function PageThree({ changePage, show, inputs }) {
     if (action === "Back") {
       changePage(action);
     } else if (action === "Next") {
-      if (parseInt(inputs[0].value) === 2)
-        for (let i = 1; i < inputs.length; i++) {
-          if (inputs[i].error.length > 0 || inputs[i].value.length === 0) {
-            refs.current[i - 1].focus();
-            return;
+      let selectedRoleInput = inputs.find(
+        (input) => input.name === "selectedRole"
+      );
+      switch (selectedRoleInput.value) {
+        case "":
+          return;
+        case 1:
+          let isValid = true;
+          for (let i = 4; i < inputs.length; i++) {
+            if (inputs[i].error.length > 0 || inputs[i].value.length === 0) {
+              isValid = false;
+              refs.current[i - 1].focus();
+              return;
+            }
           }
-        }
-      changePage(action);
+          if (isValid) {
+            changePage(action);
+          }
+          break;
+        case 2:
+          changePage(action);
+          break;
+        default:
+      }
     }
   }
+
 
   function onInputChange(name, value, error) {
     dispatch({

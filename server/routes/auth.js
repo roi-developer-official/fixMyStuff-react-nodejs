@@ -22,7 +22,7 @@ router.post(
          return value;
       })
       .escape(),
-    body("role").notEmpty().isInt().escape(),
+    body("selectedRole").notEmpty().isInt().escape(),
     body("password").notEmpty().isString().isLength({ min: 8, max: 255 })
       .trim()
       .escape(),
