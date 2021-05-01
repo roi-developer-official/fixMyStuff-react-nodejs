@@ -1,18 +1,8 @@
 import { useSelector } from "react-redux";
 import { Button } from "../Global_UI/";
 import { useHistory } from "react-router-dom";
+import { capitelizeFirstLetter } from '../shared/';
 import "./userDetails.css";
-
-export function capitelizeFirstLetter(string) {
-  if (string === undefined) {
-    console.log(string);
-    return " ";
-  }
-  return string
-    .charAt(0)
-    .toUpperCase()
-    .concat(string.substring(1, string.length));
-}
 
 function UserDetails() {
   const { user } = useSelector((state) => state.authReducer);
@@ -33,7 +23,7 @@ function UserDetails() {
         <p>{capitelizeFirstLetter(user.city)}</p>
         <p>{user.email}</p>
         <Button
-          onClick={()=>history.push("edit-user-details")}
+          onClick={()=>history.push("/edit-user-details/edit-details")}
           className="userp_details_btn"
           label="Edit"
         ></Button>

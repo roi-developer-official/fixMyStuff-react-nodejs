@@ -15,7 +15,6 @@ export function addToRefsArray(el, refs) {
  * @returns {string|null} - the error message or null
  */
 export const validation = (validationParams, input, compareString = null) => {
-  
   for (let key of Object.keys(validationParams)) {
     if (key === "checked" && !input) {
       return "this field is must be checked";
@@ -66,10 +65,43 @@ export const validation = (validationParams, input, compareString = null) => {
 };
 
 /**
- * @function isUserAuthenticated 
+ * @function isUserAuthenticated
  * @param {object} user - the current user in the redux store
  * @returns {boolean} - true if auth and false if not
  */
-export function isUserAuthenticated(user){
+export function isUserAuthenticated(user) {
   return Object.keys(user).length > 0;
+}
+
+/**
+ * @function capitelizeFirstLetter
+ * @param {string} string - the given string
+ * @returns {string} - with the first letter capitelize
+ */
+
+export function capitelizeFirstLetter(string) {
+  if (string === undefined) {
+    return " ";
+  }
+  return string
+    .charAt(0)
+    .toUpperCase()
+    .concat(string.substring(1, string.length));
+}
+
+export function spaceBetweenLetters(string) {
+  if (string === undefined) {
+    return "";
+  }
+  let newStr = string.charAt(0).toUpperCase();
+  for (let i = 1; i < string.length; i++) {
+    if (string[i] >= "A" && string[i] <= "Z") {
+      newStr += " ";
+      newStr += string[i].toLowerCase();
+    } else {
+      newStr += string[i];
+    }
+  }
+
+  return newStr;
 }

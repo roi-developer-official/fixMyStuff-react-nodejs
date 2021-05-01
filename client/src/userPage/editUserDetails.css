@@ -13,6 +13,44 @@
 }
 
 
+.user_info_item{
+  width: fit-content;
+  margin:8px 10px;
+}
+
+.user_info_buttons{
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  margin: 5px 10px;
+}
+
+.user_info_image{
+  width: 100%;
+  margin:5px 10px;
+}
+.user_info_image > div{
+  width:50%;
+  min-width: 300px;
+}
+.user_info_edit_button{
+  width: 58px;
+  height: 32px;
+  background-color: #10966d;
+  color:white;
+  border:none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.user_info_display{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-wrap:  wrap;
+  justify-content: space-between;
+}
 .edit_menu_items {
   display: flex;
   width: 85%;

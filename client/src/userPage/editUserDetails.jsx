@@ -4,6 +4,8 @@ import { NavLink, Route, Switch, useRouteMatch } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { actionTypes } from "../actions/authAction";
 import { useEffect } from "react";
+import { capitelizeFirstLetter, spaceBetweenLetters } from "../shared";
+import { AddImage, AddImagePage, Button } from "../Global_UI";
 let items = [
   { label: "Edit details" },
   { label: "Change password" },
@@ -30,18 +32,51 @@ function EditUserDetailsMenu({ url }) {
   );
 }
 
+function UserInfoDisplay({ user }) {
+  let els = [];
+  for (let [key, value] of Object.entries(user)) {
+    if (key === "firstName" || key === "lastName") {
+      value = capitelizeFirstLetter(value);
+    }
+    if (key !== "image")
+      els.push(
+        <div className="user_info_item">
+          <p>
+            {spaceBetweenLetters(capitelizeFirstLetter(key))}: {value}
+          </p>
+          <input type="text" />
+          <button>reset</button>
+        </div>
+      );
+  }
+  els.push(
+    <div className="user_info_image">
+      <AddImage />
+    </div>
+  );
+
+  return (
+    <div className="user_info_display">
+      {els.map((el) => el)}
+      <div className="user_info_buttons">
+        <Button label="Edit" style={{}} className="user_info_edit_button" />
+      </div>
+    </div>
+  );
+}
+
 function EditDetails() {
   const user = useAuth()[0];
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch({ type: actionTypes.AUTH_FILL_INPUTS, payload: {...user } });
+    dispatch({ type: actionTypes.AUTH_FILL_INPUTS, payload: { ...user } });
   }, [user, dispatch]);
 
-  
-
   return (
-    <EditContentContainer>hello from edit details page</EditContentContainer>
+    <EditContentContainer>
+      <UserInfoDisplay user={user} />
+    </EditContentContainer>
   );
 }
 

@@ -95,6 +95,7 @@ module.exports.signUp = async (req, res, next) => {
     user: user,
     expiresIn: TOKEN_EXPIRY,
   };
+  
   const token = getToken(email, createdAt, updatedAt);
   res.cookie("connect", token, {
     httpOnly: true,
